@@ -104,7 +104,8 @@ function splitCsvLine(ln) {
 async function dispatchOutreach(issue, meta) {
   const pat = getPat();
   if (!pat) { promptForPat(); if (!getPat()) return false; }
-  const payload = {
+  // GitHub caps client_payload at 10 top-level keys, so we pack into one blob.
+  const data = {
     issue_number: issue.number,
     sent_at_utc: new Date().toISOString().replace(/\.\d+Z$/, "Z"),
     trigger_type: meta.type,
@@ -125,7 +126,7 @@ async function dispatchOutreach(issue, meta) {
       "Authorization": `Bearer ${getPat()}`,
       "X-GitHub-Api-Version": "2022-11-28",
     },
-    body: JSON.stringify({ event_type: "outreach_sent", client_payload: payload }),
+    body: JSON.stringify({ event_type: "outreach_sent", client_payload: { data: JSON.stringify(data) } }),
   });
   if (!r.ok) {
     let msg = await r.text().catch(() => "");
