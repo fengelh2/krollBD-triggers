@@ -244,6 +244,27 @@ function renderCard(issue, opts = {}) {
         <button class="btn copy" data-copy="body">Copy body</button>
       </div>
     </div>
+
+    ${(meta.email_candidates && meta.email_candidates.length) ? `
+      <div class="candidates">
+        <div class="cand-head">
+          <span>Email candidates · <em>guesses, verify before sending</em></span>
+        </div>
+        ${meta.email_candidates.map(c => {
+          const subj = encodeURIComponent(meta.email_subject || "");
+          const body = encodeURIComponent(meta.email_body || "");
+          const mailto = `mailto:${c.email}?subject=${subj}&body=${body}`;
+          const label = c.kind === "person" ? `for ${esc(c.ro)}` : "generic inbox";
+          return `
+            <div class="cand-row">
+              <code class="cand-email">${esc(c.email)}</code>
+              <span class="cand-kind">${label}</span>
+              <a class="btn small" href="${mailto}">Open in mail</a>
+              <button class="btn copy small" data-copy-cand="${esc(c.email)}">Copy</button>
+            </div>`;
+        }).join("")}
+      </div>
+    ` : ""}
     <div class="actions">
       ${opts.pending
         ? `<span class="muted-text">Logging… (Action running, refresh in ~30s)</span>`
@@ -255,6 +276,9 @@ function renderCard(issue, opts = {}) {
     copyToClipboard(meta.email_subject || "", e.target));
   card.querySelector('[data-copy="body"]').addEventListener("click", e =>
     copyToClipboard(meta.email_body || "", e.target));
+  card.querySelectorAll('[data-copy-cand]').forEach(b => b.addEventListener("click", e => {
+    copyToClipboard(e.target.dataset.copyCand, e.target);
+  }));
   const btn = card.querySelector('[data-action="reached-out"]');
   if (btn) btn.addEventListener("click", async () => {
     btn.disabled = true; btn.textContent = "Sending…";
@@ -331,8 +355,12 @@ function refresh() {
 
   const c1Done = doneEntries.filter(d => d.trigger_type === "C1").length;
   const c2Done = doneEntries.filter(d => d.trigger_type === "C2").length;
+  const r1Done = doneEntries.filter(d => d.trigger_type === "R1").length;
+  const c5Done = doneEntries.filter(d => d.trigger_type === "C5").length;
   $("#stat-c1").textContent = c1Done;
   $("#stat-c2").textContent = c2Done;
+  const r1el = $("#stat-r1"); if (r1el) r1el.textContent = r1Done;
+  const c5el = $("#stat-c5"); if (c5el) c5el.textContent = c5Done;
 
   const thisWeek = isoWeekKey(new Date());
   const weekDone = doneEntries.filter(d => d.sent_at_utc && isoWeekKey(new Date(d.sent_at_utc)) === thisWeek).length;
@@ -343,6 +371,7 @@ function refresh() {
 
 // ---- init ----
 async function init() {
+  // ensure new filter buttons are also wired (R1, C5)
   $$("#filters button").forEach(b => b.addEventListener("click", () => {
     $$("#filters button").forEach(x => x.classList.remove("active"));
     b.classList.add("active");

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Kroll PortVal · BD Triggers</title>
 <link rel="preconnect" href="https://api.github.com">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 <header class="topbar">
@@ -27,6 +27,8 @@
   <div class="stat"><span class="num" id="stat-rate">—</span><span class="lbl">Completion</span></div>
   <div class="stat sub"><span class="num" id="stat-c1">—</span><span class="lbl">C1 sent · new corp</span></div>
   <div class="stat sub"><span class="num" id="stat-c2">—</span><span class="lbl">C2 sent · retired</span></div>
+  <div class="stat sub"><span class="num" id="stat-r1">—</span><span class="lbl">R1 sent · new RO</span></div>
+  <div class="stat sub"><span class="num" id="stat-c5">—</span><span class="lbl">C5 sent · rebrand</span></div>
   <div class="stat sub"><span class="num" id="stat-week">—</span><span class="lbl">Sent this week</span></div>
 </section>
 
@@ -44,6 +46,8 @@
   <button data-filter="all" class="active">To action</button>
   <button data-filter="C1">C1 · new corp</button>
   <button data-filter="C2">C2 · retired</button>
+  <button data-filter="R1">R1 · new RO</button>
+  <button data-filter="C5">C5 · rebrand</button>
   <button data-filter="done">Reached out</button>
 </nav>
 
@@ -56,6 +60,6 @@
   <p>Outreach log is committed to <a href="https://github.com/fengelh2/krollBD-triggers/blob/main/outreach_log.csv">outreach_log.csv</a> in the repo via a GitHub Action. Clicking "Mark as reached out" fires a <code>repository_dispatch</code> using your PAT, the Action appends the row and closes the issue. Source of truth is the CSV.</p>
 </footer>
 
-<script src="app.js?v=3"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>
