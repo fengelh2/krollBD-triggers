@@ -33,10 +33,10 @@
 </div>
 
 <nav class="filters" id="filters">
-  <button data-filter="all" class="active">All</button>
+  <button data-filter="all" class="active">To action</button>
   <button data-filter="C1">C1 · new corp</button>
   <button data-filter="C2">C2 · retired</button>
-  <button data-filter="hidden">Hidden by me</button>
+  <button data-filter="done">Reached out</button>
 </nav>
 
 <main id="cards" class="cards">
@@ -45,7 +45,7 @@
 
 <footer>
   <p>Source: <a href="https://apps.sfc.hk/publicregWeb/">SFC public register</a> · Repo: <a href="https://github.com/fengelh2/krollBD-triggers/issues">github.com/fengelh2/krollBD-triggers</a></p>
-  <p>"Mark as reached out" hides the card locally and opens the GitHub issue so you can close it. The summary uses the real closed-issue count from GitHub as the source of truth.</p>
+  <p>"Reached out" state is stored in your browser (per-device). Click <em>Reached out</em> in the filter bar to review past sends and undo.</p>
 </footer>
 
 <script src="app.js"></script>
