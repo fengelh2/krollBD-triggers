@@ -3,37 +3,49 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kroll PortVal BD Triggers</title>
+<title>Kroll PortVal · BD Triggers</title>
+<link rel="preconnect" href="https://api.github.com">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
-  <h1>Kroll PortVal · BD Triggers</h1>
-  <p class="sub">SFC Type 9 register diffs · click <em>copy</em>, send, then <em>mark as reached out</em></p>
+  <h1>Kroll PortVal · Business Development Triggers</h1>
+  <p class="sub">SFC Type 9 register diffs · Hong Kong · refreshed weekly</p>
 </header>
 
 <section class="summary" id="summary">
-  <div class="stat"><span class="num" id="stat-open">—</span><span class="lbl">to action</span></div>
-  <div class="stat"><span class="num" id="stat-done">—</span><span class="lbl">reached out</span></div>
-  <div class="stat"><span class="num" id="stat-total">—</span><span class="lbl">total this cycle</span></div>
-  <div class="stat"><span class="num" id="stat-rate">—</span><span class="lbl">completion</span></div>
+  <div class="stat"><span class="num" id="stat-open">—</span><span class="lbl">To action</span></div>
+  <div class="stat"><span class="num" id="stat-done">—</span><span class="lbl">Reached out</span></div>
+  <div class="stat"><span class="num" id="stat-rate">—</span><span class="lbl">Completion</span></div>
+  <div class="stat sub"><span class="num" id="stat-c1">—</span><span class="lbl">C1 sent · new corp</span></div>
+  <div class="stat sub"><span class="num" id="stat-c2">—</span><span class="lbl">C2 sent · retired</span></div>
+  <div class="stat sub"><span class="num" id="stat-week">—</span><span class="lbl">Sent this week</span></div>
 </section>
+
+<div class="chart-wrap">
+  <div class="chart-card">
+    <div class="chart-title">
+      <h2>Reached-out per ISO week (last 12 weeks)</h2>
+      <div class="legend"><span class="g-c1"></span>C1 &nbsp; <span class="g-c2"></span>C2</div>
+    </div>
+    <svg class="chart" id="chart" viewBox="0 0 600 100" preserveAspectRatio="none"></svg>
+  </div>
+</div>
 
 <nav class="filters" id="filters">
   <button data-filter="all" class="active">All</button>
-  <button data-filter="C1">🟢 New corp (C1)</button>
-  <button data-filter="C2">🔴 Retired (C2)</button>
-  <button data-filter="hidden">👁️ Hidden by me</button>
+  <button data-filter="C1">C1 · new corp</button>
+  <button data-filter="C2">C2 · retired</button>
+  <button data-filter="hidden">Hidden by me</button>
 </nav>
 
 <main id="cards" class="cards">
-  <p class="loading">loading triggers from github…</p>
+  <p class="loading">Loading triggers…</p>
 </main>
 
 <footer>
-  <p>Data: <a href="https://github.com/fengelh2/krollBD-triggers/issues">github.com/fengelh2/krollBD-triggers</a> · source: <a href="https://apps.sfc.hk/publicregWeb/">SFC public register</a></p>
-  <p class="muted">"Mark as reached out" hides the card locally AND opens the GitHub issue so you can close it (one click).
-  The summary uses GitHub's real closed-issue count as the source of truth.</p>
+  <p>Source: <a href="https://apps.sfc.hk/publicregWeb/">SFC public register</a> · Repo: <a href="https://github.com/fengelh2/krollBD-triggers/issues">github.com/fengelh2/krollBD-triggers</a></p>
+  <p>"Mark as reached out" hides the card locally and opens the GitHub issue so you can close it. The summary uses the real closed-issue count from GitHub as the source of truth.</p>
 </footer>
 
 <script src="app.js"></script>
