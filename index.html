@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kroll PortVal BD Triggers</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <h1>Kroll PortVal · BD Triggers</h1>
+  <p class="sub">SFC Type 9 register diffs · click <em>copy</em>, send, then <em>mark as reached out</em></p>
+</header>
+
+<section class="summary" id="summary">
+  <div class="stat"><span class="num" id="stat-open">—</span><span class="lbl">to action</span></div>
+  <div class="stat"><span class="num" id="stat-done">—</span><span class="lbl">reached out</span></div>
+  <div class="stat"><span class="num" id="stat-total">—</span><span class="lbl">total this cycle</span></div>
+  <div class="stat"><span class="num" id="stat-rate">—</span><span class="lbl">completion</span></div>
+</section>
+
+<nav class="filters" id="filters">
+  <button data-filter="all" class="active">All</button>
+  <button data-filter="C1">🟢 New corp (C1)</button>
+  <button data-filter="C2">🔴 Retired (C2)</button>
+  <button data-filter="hidden">👁️ Hidden by me</button>
+</nav>
+
+<main id="cards" class="cards">
+  <p class="loading">loading triggers from github…</p>
+</main>
+
+<footer>
+  <p>Data: <a href="https://github.com/fengelh2/krollBD-triggers/issues">github.com/fengelh2/krollBD-triggers</a> · source: <a href="https://apps.sfc.hk/publicregWeb/">SFC public register</a></p>
+  <p class="muted">"Mark as reached out" hides the card locally AND opens the GitHub issue so you can close it (one click).
+  The summary uses GitHub's real closed-issue count as the source of truth.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
