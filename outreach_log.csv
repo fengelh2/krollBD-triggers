@@ -1,1 +1,2 @@
 logged_at_utc,sent_at_utc,issue_number,trigger_type,variant_id,firm,ceref,primary_ro,email_subject,email_body_hash,email_body,sent_via,notes
+2026-05-27T12:19:03Z,2026-05-27T07:30:00Z,11,C1,C1-v1,Amundi Hong Kong Limited,AAB444,NETO Florian Andre Jean,Congratulations on Amundi Hong Kong test,39f007dd53,(test dispatch from pipeline verification),pipeline-test,test from CC sandbox
