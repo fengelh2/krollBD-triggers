@@ -1,0 +1,58 @@
+name: Log outreach
+on:
+  repository_dispatch:
+    types: [outreach_sent]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Append CSV row, close issue, commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        run: |
+          python3 <<'PY'
+          import os, json, csv, pathlib, subprocess, datetime
+          payload = json.loads(os.environ['PAYLOAD'])
+          fields = [
+              'logged_at_utc','sent_at_utc','issue_number','trigger_type',
+              'variant_id','firm','ceref','primary_ro',
+              'email_subject','email_body_hash','email_body',
+              'sent_via','notes',
+          ]
+          payload['logged_at_utc'] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+          log = pathlib.Path('outreach_log.csv')
+          write_header = not log.exists()
+          with log.open('a', encoding='utf-8', newline='') as f:
+              w = csv.DictWriter(f, fieldnames=fields)
+              if write_header: w.writeheader()
+              w.writerow({k: payload.get(k, '') for k in fields})
+
+          issue = payload.get('issue_number')
+          if issue:
+              comment = (
+                  f"Outreach logged via dashboard.\n\n"
+                  f"- variant: `{payload.get('variant_id','')}`\n"
+                  f"- subject: {payload.get('email_subject','')}\n"
+                  f"- sent_at: {payload.get('sent_at_utc','')}\n"
+                  f"- sent_via: {payload.get('sent_via','')}\n"
+                  f"- body_hash: `{payload.get('email_body_hash','')}`\n"
+              )
+              subprocess.run(
+                  ['gh', 'issue', 'close', str(issue),
+                   '--repo', 'fengelh2/krollBD-triggers',
+                   '--comment', comment],
+                  check=True,
+              )
+          PY
+          git config user.name "krollbd-bot"
+          git config user.email "krollbd-bot@users.noreply.github.com"
+          git add outreach_log.csv
+          git diff --quiet --cached || git commit -m "log: outreach $(date -u +%FT%TZ)"
+          git push
