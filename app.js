@@ -207,6 +207,22 @@ function renderCard(issue, opts = {}) {
   const departed = meta.ros_departed || [];
   const rosList = meta.ros || meta.ros_current || [];
 
+  // Build a strategy chip row from the classifier's output (if present)
+  const illiq = meta.illiq_likelihood || "";
+  const ac = meta.asset_classes || "";
+  const aum = meta.aum_raw_string || "";
+  const parent = meta.parent_org || "";
+  const cls_src = meta.classification_source || "";
+  const has_strategy = illiq || ac || aum || parent;
+  const strategyChips = !has_strategy ? "" : `
+    <div class="strategy-chips">
+      ${illiq ? `<span class="chip illiq-${illiq}">illiq: ${esc(illiq)}</span>` : ""}
+      ${ac ? `<span class="chip ac">${esc(ac)}</span>` : ""}
+      ${aum ? `<span class="chip aum">AUM: ${esc(aum.slice(0,40))}</span>` : ""}
+      ${parent ? `<span class="chip parent">parent: ${esc(parent)}</span>` : ""}
+      ${cls_src ? `<span class="chip src" title="classification source">src: ${esc(cls_src)}</span>` : ""}
+    </div>`;
+
   card.innerHTML = `
     <div class="head">
       <h2 class="firm">${esc(meta.firm)}</h2>
@@ -214,6 +230,7 @@ function renderCard(issue, opts = {}) {
     </div>
     <p class="meta">CE <code>${esc(meta.ceref)}</code> · <a href="${meta.sfc_url}" target="_blank" rel="noopener">SFC register →</a> · <a href="${issue.html_url}" target="_blank" rel="noopener">GitHub issue →</a></p>
     ${meta.address ? `<p class="addr">${esc(meta.address)}</p>` : ""}
+    ${strategyChips}
     ${rosList.length ? `
       <div class="ros">
         <span class="lbl">${meta.type === 'C2' ? 'ROs still on file' : 'Responsible Officers'}</span>
@@ -248,17 +265,30 @@ function renderCard(issue, opts = {}) {
     ${(meta.email_candidates && meta.email_candidates.length) ? `
       <div class="candidates">
         <div class="cand-head">
-          <span>Email candidates · <em>guesses, verify before sending</em></span>
+          <span>Email candidates · ordered best→worst · <em>verify before sending</em></span>
         </div>
         ${meta.email_candidates.map(c => {
           const subj = encodeURIComponent(meta.email_subject || "");
           const body = encodeURIComponent(meta.email_body || "");
           const mailto = `mailto:${c.email}?subject=${subj}&body=${body}`;
-          const label = c.kind === "person" ? `for ${esc(c.ro)}` : "generic inbox";
+          const conf = (c.confidence || "low").toLowerCase();
+          const kindLabel = ({
+            "observed_on_site": "verified · on firm site",
+            "generic_on_site": "verified · generic inbox on site",
+            "ro_via_aggregator": "aggregator-declared pattern",
+            "ro_pattern_match": "pattern match from observed",
+            "ro_guess": "pattern guess",
+            "generic_guess": "generic inbox guess",
+            "person": c.ro ? `for ${esc(c.ro)}` : "person",
+            "generic": "generic",
+          })[c.kind] || c.kind || "";
+          const roHint = c.ro ? ` · ${esc(c.ro)}` : "";
+          const evidence = c.evidence ? ` title="${esc(c.evidence)}"` : "";
           return `
-            <div class="cand-row">
+            <div class="cand-row conf-${conf}"${evidence}>
+              <span class="conf-badge conf-${conf}">${conf}</span>
               <code class="cand-email">${esc(c.email)}</code>
-              <span class="cand-kind">${label}</span>
+              <span class="cand-kind">${kindLabel}${roHint}</span>
               <a class="btn small" href="${mailto}">Open in mail</a>
               <button class="btn copy small" data-copy-cand="${esc(c.email)}">Copy</button>
             </div>`;

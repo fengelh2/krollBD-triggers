@@ -40,10 +40,23 @@ button{font-family:inherit}
 .candidates{background:#fafbfc;border:1px solid var(--line);border-radius:3px;padding:10px 12px;margin-bottom:10px}
 .cand-head{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:8px}
 .cand-head em{text-transform:none;letter-spacing:0;font-style:italic;color:var(--muted);font-weight:400}
-.cand-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-top:1px dashed var(--line);font-size:12px}
+.cand-row{display:flex;align-items:center;gap:8px;padding:5px 4px;border-top:1px dashed var(--line);font-size:12px}
 .cand-row:first-of-type{border-top:0}
-.cand-email{flex:1 1 auto;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;background:transparent;padding:0;color:var(--fg)}
+.cand-row.conf-verified,.cand-row.conf-very_high{background:linear-gradient(to right,rgba(16,185,129,0.06),transparent 70%)}
+.cand-row.conf-high{background:linear-gradient(to right,rgba(59,130,246,0.06),transparent 70%)}
+.cand-email{flex:1 1 auto;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;background:transparent;padding:0;color:var(--fg);font-weight:500}
 .cand-kind{color:var(--muted);font-size:11px;white-space:nowrap}
+
+.conf-badge{
+  display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.05em;padding:2px 6px;border-radius:3px;min-width:48px;text-align:center;
+  background:#eee;color:#666;
+}
+.conf-badge.conf-verified,.conf-badge.conf-very_high{background:#10b981;color:#fff}
+.conf-badge.conf-high{background:#3b82f6;color:#fff}
+.conf-badge.conf-medium{background:#f59e0b;color:#fff}
+.conf-badge.conf-low{background:#e5e7eb;color:#6b7280}
+.conf-badge.conf-none{background:#fee2e2;color:#991b1b}
 .btn.small{padding:2px 8px;font-size:11px}
 
 @media (max-width: 700px){
