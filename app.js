@@ -44,10 +44,70 @@ function addPending(n) { const s = getPending(); s.add(String(n)); localStorage.
 function removePending(n) { const s = getPending(); s.delete(String(n)); localStorage.setItem(PENDING_KEY, JSON.stringify(Array.from(s))); }
 
 // ---- parse issue meta ----
-function parseMeta(body) {
-  const m = body && body.match(/<!--\s*DASH_META:\s*(\{[\s\S]*?\})\s*-->/);
-  if (!m) return null;
-  try { return JSON.parse(m[1]); } catch { return null; }
+// Cache for meta-file fetches (so we don't refetch the same file every render)
+const _META_CACHE = new Map();
+
+async function fetchMetaFile(path) {
+  if (_META_CACHE.has(path)) return _META_CACHE.get(path);
+  const pat = getPat();
+  const url = `https://api.github.com/repos/${REPO}/contents/${encodeURI(path)}`;
+  try {
+    const r = await fetch(url, {
+      headers: {
+        "Accept": "application/vnd.github+json",
+        ...(pat ? { "Authorization": `Bearer ${pat}` } : {}),
+      },
+    });
+    if (!r.ok) { _META_CACHE.set(path, null); return null; }
+    const data = await r.json();
+    // GitHub returns base64-encoded content with possible newlines
+    const b64 = (data.content || "").replace(/\s/g, "");
+    const json = decodeURIComponent(escape(atob(b64)));
+    const parsed = JSON.parse(json);
+    _META_CACHE.set(path, parsed);
+    return parsed;
+  } catch (e) {
+    _META_CACHE.set(path, null);
+    return null;
+  }
+}
+
+// Synchronous fallback parser (legacy formats — inline DASH_META in body)
+function parseMetaSync(body) {
+  if (!body) return null;
+  const b64 = body.match(/<!--\s*DASH_META_B64:\s*([A-Za-z0-9+/=]+)\s*-->/);
+  if (b64) {
+    try { return JSON.parse(decodeURIComponent(escape(atob(b64[1])))); } catch {}
+  }
+  const m = body.match(/<!--\s*DASH_META:\s*(\{[\s\S]*?\})\s*-->/);
+  if (m) { try { return JSON.parse(m[1]); } catch {} }
+  return null;
+}
+
+// Used by sync render code: prefers attached meta (from fetchAndAttachMetas)
+function parseMeta(bodyOrIssue) {
+  if (!bodyOrIssue) return null;
+  if (typeof bodyOrIssue === "object" && bodyOrIssue._meta !== undefined) {
+    return bodyOrIssue._meta;
+  }
+  const body = typeof bodyOrIssue === "string" ? bodyOrIssue : bodyOrIssue.body;
+  return parseMetaSync(body);
+}
+
+// Enrich a list of issues by fetching their META_FILE references in parallel.
+// After this, issue._meta is set.
+async function fetchAndAttachMetas(issues) {
+  await Promise.all(issues.map(async (i) => {
+    if (i._meta !== undefined) return;
+    const body = i.body || "";
+    const fileMatch = body.match(/META_FILE:\s*(\S+)/);
+    if (fileMatch) {
+      i._meta = await fetchMetaFile(fileMatch[1]);
+    } else {
+      i._meta = parseMetaSync(body);
+    }
+  }));
+  return issues;
 }
 
 // ---- fetch ----
@@ -196,7 +256,7 @@ function drawChart() {
 
 // ---- card render ----
 function renderCard(issue, opts = {}) {
-  const meta = parseMeta(issue.body);
+  const meta = parseMeta(issue);
   if (!meta) return null;
 
   const card = document.createElement("article");
@@ -360,7 +420,7 @@ function refresh() {
   } else {
     visible = ALL_OPEN.slice();
     if (CURRENT_FILTER !== "all") {
-      visible = visible.filter(i => { const m = parseMeta(i.body); return m && m.type === CURRENT_FILTER; });
+      visible = visible.filter(i => { const m = parseMeta(i); return m && m.type === CURRENT_FILTER; });
     }
     if (visible.length === 0) {
       cards.innerHTML = `<p class="loading">Nothing in this view.</p>`;
@@ -413,6 +473,7 @@ async function init() {
 
   try {
     [ALL_OPEN, LOG_ROWS] = await Promise.all([fetchIssues("open"), fetchLog()]);
+    await fetchAndAttachMetas(ALL_OPEN);
     refresh();
   } catch (e) {
     $("#cards").innerHTML = `<p class="loading">Failed to load: ${esc(e.message)}</p>`;
@@ -424,7 +485,7 @@ async function init() {
   }, 20000);
   // Also refetch issues on the slower side (60s) to catch close events
   setInterval(async () => {
-    try { ALL_OPEN = await fetchIssues("open"); refresh(); } catch {}
+    try { ALL_OPEN = await fetchIssues("open"); await fetchAndAttachMetas(ALL_OPEN); refresh(); } catch {}
   }, 60000);
 }
 init();
