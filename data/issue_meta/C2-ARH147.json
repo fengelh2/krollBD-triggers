@@ -1,0 +1,139 @@
+{
+  "type": "C2",
+  "type_label": "Type 9 retired",
+  "firm": "Blackstone Group (HK) Limited, The",
+  "natural": "Blackstone Group (HK) Limited, The",
+  "ceref": "ARH147",
+  "ros_current": [
+    {
+      "name": "HEADY Robert Christopher",
+      "ceref": "AUD083"
+    },
+    {
+      "name": "HUANG Eddy",
+      "ceref": "AIR924"
+    },
+    {
+      "name": "KIM Carol",
+      "ceref": "ARQ280"
+    },
+    {
+      "name": "WAI Justin",
+      "ceref": "ANU188"
+    },
+    {
+      "name": "ZHANG Liping",
+      "ceref": "ACE103"
+    }
+  ],
+  "ros_departed": [],
+  "primary_ro": "HEADY Robert Christopher",
+  "sfc_url": "https://apps.sfc.hk/publicregWeb/corp/ARH147/details?locale=en",
+  "email_subject": "Blackstone Group (HK) Limited, The — Type 9 licence transition",
+  "email_body": "Dear Robert,\n\nThis is Felix from Kroll. I am reaching out in light of publicly disclosed changes to Blackstone Group (HK) Limited, The's SFC Type 9 registration, as such transitions often prompt a review of fund-level operating and advisory arrangements.\n\nFor funds that have largely deployed capital and are managing minority positions requiring limited day-to-day GP involvement, Kroll's Fund Solutions practice supports GPs with a range of later-lifecycle options — particularly around replacement advisory, realization structuring, and cost-efficient ongoing management.\n\nShould this be relevant to you, I would be happy to introduce you to the appropriate colleagues for an informal discussion. If not, please feel free to disregard this note.\n\nKind regards,\nFelix Engelhardt\n",
+  "variant_id": "C2-v1",
+  "email_body_hash": "cea6c54f18",
+  "email_candidates": [
+    {
+      "email": "robert.heady@blackstone.com",
+      "kind": "ro_via_aggregator",
+      "confidence": "high",
+      "ro": "HEADY Robert Christopher",
+      "evidence": "The most common The Blackstone Group email format is [first].[last] (ex. jane.doe@blackstone.com), which is being used by 67.6% of The Blackstone Group work ..."
+    },
+    {
+      "email": "eddy.huang@blackstone.com",
+      "kind": "ro_via_aggregator",
+      "confidence": "high",
+      "ro": "HUANG Eddy",
+      "evidence": "The most common The Blackstone Group email format is [first].[last] (ex. jane.doe@blackstone.com), which is being used by 67.6% of The Blackstone Group work ..."
+    },
+    {
+      "email": "carol.kim@blackstone.com",
+      "kind": "ro_via_aggregator",
+      "confidence": "high",
+      "ro": "KIM Carol",
+      "evidence": "The most common The Blackstone Group email format is [first].[last] (ex. jane.doe@blackstone.com), which is being used by 67.6% of The Blackstone Group work ..."
+    },
+    {
+      "email": "justin.wai@blackstone.com",
+      "kind": "ro_via_aggregator",
+      "confidence": "high",
+      "ro": "WAI Justin",
+      "evidence": "The most common The Blackstone Group email format is [first].[last] (ex. jane.doe@blackstone.com), which is being used by 67.6% of The Blackstone Group work ..."
+    },
+    {
+      "email": "liping.zhang@blackstone.com",
+      "kind": "ro_via_aggregator",
+      "confidence": "high",
+      "ro": "ZHANG Liping",
+      "evidence": "The most common The Blackstone Group email format is [first].[last] (ex. jane.doe@blackstone.com), which is being used by 67.6% of The Blackstone Group work ..."
+    },
+    {
+      "email": "robertheady@blackstone.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "HEADY Robert Christopher"
+    },
+    {
+      "email": "rheady@blackstone.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "HEADY Robert Christopher"
+    },
+    {
+      "email": "eddyhuang@blackstone.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "HUANG Eddy"
+    },
+    {
+      "email": "ehuang@blackstone.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "HUANG Eddy"
+    },
+    {
+      "email": "carolkim@blackstone.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "KIM Carol"
+    },
+    {
+      "email": "ckim@blackstone.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "KIM Carol"
+    },
+    {
+      "email": "info@blackstone.com",
+      "kind": "generic_guess",
+      "confidence": "low",
+      "ro": null
+    },
+    {
+      "email": "compliance@blackstone.com",
+      "kind": "generic_guess",
+      "confidence": "low",
+      "ro": null
+    },
+    {
+      "email": "contact@blackstone.com",
+      "kind": "generic_guess",
+      "confidence": "low",
+      "ro": null
+    },
+    {
+      "email": "enquiry@blackstone.com",
+      "kind": "generic_guess",
+      "confidence": "low",
+      "ro": null
+    }
+  ],
+  "asset_classes": "private_equity,private_credit,real_assets,secondaries,fund_of_funds,multi",
+  "illiq_likelihood": "high",
+  "aum_raw_string": "$1.3T Assets Under Management",
+  "aum_usd_m": "",
+  "parent_org": "Blackstone Inc.",
+  "classification_source": "consensus_website_plus"
+}

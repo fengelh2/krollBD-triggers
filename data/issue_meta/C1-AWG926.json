@@ -1,0 +1,117 @@
+{
+  "type": "C1",
+  "type_label": "New Type 9 corp",
+  "firm": "Hillhouse Investment Management Limited",
+  "natural": "Hillhouse Investment Management",
+  "ceref": "AWG926",
+  "address": "Suites 2202-2209, 22/F, Two International Finance Centre, 8 Finance Street, Hong Kong",
+  "ros": [
+    {
+      "name": "CHAN Woon Yew, William",
+      "ceref": "ALJ813"
+    },
+    {
+      "name": "HORNUNG Richard Adam",
+      "ceref": "BAX710"
+    },
+    {
+      "name": "MA Cuifang",
+      "ceref": "BHP401"
+    }
+  ],
+  "primary_ro": "CHAN Woon Yew, William",
+  "sfc_url": "https://apps.sfc.hk/publicregWeb/corp/AWG926/details?locale=en",
+  "email_subject": "Congratulations on Hillhouse Investment Management's SFC Type 9 licence",
+  "email_body": "Dear William,\n\nThis is Felix from Kroll in Hong Kong. I am reaching out to congratulate you on Hillhouse Investment Management's recent Type 9 licensing with the SFC. As newly licensed asset managers establish and scale their operations, we often see a need for practical support around regulatory compliance, governance, and ongoing regulatory engagement.\n\nKroll's Financial Services, Compliance and Regulation (FSCR) team works closely with SFC regulated firms across Hong Kong, providing hands on support with licensing post approval matters, compliance framework implementation, regulatory filings, and day to day advisory support. Our objective is to help managers operate efficiently while maintaining a strong and constructive relationship with the regulator.\n\nIf helpful, I would be happy to introduce you to the relevant FSCR colleagues for an informal discussion. If not, please feel free to disregard this note.\n\nKind Regards,\nFelix\n",
+  "variant_id": "C1-v1",
+  "email_body_hash": "ba6925f63f",
+  "email_candidates": [
+    {
+      "email": "wchan@hillhouseinvestment.com",
+      "kind": "ro_via_aggregator",
+      "confidence": "high",
+      "ro": "CHAN Woon Yew, William",
+      "evidence": "The most common Hillhouse email format is [first_initial][last] (ex. jdoe@hillhouseinvestment.com), which is being used by 79.0% of Hillhouse work email ..."
+    },
+    {
+      "email": "rhornung@hillhouseinvestment.com",
+      "kind": "ro_via_aggregator",
+      "confidence": "high",
+      "ro": "HORNUNG Richard Adam",
+      "evidence": "The most common Hillhouse email format is [first_initial][last] (ex. jdoe@hillhouseinvestment.com), which is being used by 79.0% of Hillhouse work email ..."
+    },
+    {
+      "email": "cma@hillhouseinvestment.com",
+      "kind": "ro_via_aggregator",
+      "confidence": "high",
+      "ro": "MA Cuifang",
+      "evidence": "The most common Hillhouse email format is [first_initial][last] (ex. jdoe@hillhouseinvestment.com), which is being used by 79.0% of Hillhouse work email ..."
+    },
+    {
+      "email": "woon.chan@hillhouseinvestment.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "CHAN Woon Yew, William"
+    },
+    {
+      "email": "woonchan@hillhouseinvestment.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "CHAN Woon Yew, William"
+    },
+    {
+      "email": "richard.hornung@hillhouseinvestment.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "HORNUNG Richard Adam"
+    },
+    {
+      "email": "richardhornung@hillhouseinvestment.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "HORNUNG Richard Adam"
+    },
+    {
+      "email": "cuifang.ma@hillhouseinvestment.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "MA Cuifang"
+    },
+    {
+      "email": "cuifangma@hillhouseinvestment.com",
+      "kind": "ro_guess",
+      "confidence": "medium",
+      "ro": "MA Cuifang"
+    },
+    {
+      "email": "info@hillhouseinvestment.com",
+      "kind": "generic_guess",
+      "confidence": "low",
+      "ro": null
+    },
+    {
+      "email": "compliance@hillhouseinvestment.com",
+      "kind": "generic_guess",
+      "confidence": "low",
+      "ro": null
+    },
+    {
+      "email": "contact@hillhouseinvestment.com",
+      "kind": "generic_guess",
+      "confidence": "low",
+      "ro": null
+    },
+    {
+      "email": "enquiry@hillhouseinvestment.com",
+      "kind": "generic_guess",
+      "confidence": "low",
+      "ro": null
+    }
+  ],
+  "asset_classes": "",
+  "illiq_likelihood": "",
+  "aum_raw_string": "",
+  "aum_usd_m": "",
+  "parent_org": "",
+  "classification_source": ""
+}
