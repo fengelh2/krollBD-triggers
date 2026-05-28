@@ -57,6 +57,13 @@ button{font-family:inherit}
 .conf-badge.conf-medium{background:#f59e0b;color:#fff}
 .conf-badge.conf-low{background:#e5e7eb;color:#6b7280}
 .conf-badge.conf-none{background:#fee2e2;color:#991b1b}
+
+.chip.wa{font-weight:600}
+.chip.wa-verified{background:#dcfce7;color:#166534;border-color:#86efac}
+.chip.wa-probable{background:#dbeafe;color:#1e40af;border-color:#93c5fd}
+.chip.wa-unverified{background:#f3f4f6;color:#6b7280;border-color:#d1d5db}
+.chip.wa-suspect{background:#fef3c7;color:#92400e;border-color:#fcd34d}
+.chip.wa-not_found{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
 .btn.small{padding:2px 8px;font-size:11px}
 
 @media (max-width: 700px){

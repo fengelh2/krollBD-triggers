@@ -273,9 +273,12 @@ function renderCard(issue, opts = {}) {
   const aum = meta.aum_raw_string || "";
   const parent = meta.parent_org || "";
   const cls_src = meta.classification_source || "";
-  const has_strategy = illiq || ac || aum || parent;
+  const wa = meta.website_accuracy || "";
+  const has_strategy = illiq || ac || aum || parent || wa;
+  const waBadge = wa ? `<span class="chip wa wa-${esc(wa)}" title="website accuracy verdict">site: ${esc(wa)}</span>` : "";
   const strategyChips = !has_strategy ? "" : `
     <div class="strategy-chips">
+      ${waBadge}
       ${illiq ? `<span class="chip illiq-${illiq}">illiq: ${esc(illiq)}</span>` : ""}
       ${ac ? `<span class="chip ac">${esc(ac)}</span>` : ""}
       ${aum ? `<span class="chip aum">AUM: ${esc(aum.slice(0,40))}</span>` : ""}
