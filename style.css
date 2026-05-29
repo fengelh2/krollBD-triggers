@@ -289,6 +289,53 @@ svg.chart.big{height:220px}
 footer{max-width:1180px;margin:24px auto 40px;padding:0 20px;color:var(--muted);font-size:11px;text-align:left;border-top:1px solid var(--line);padding-top:14px}
 footer p{margin:2px 0}
 
+/* ============ Overview redesign (action / funnel / unlocks / strength) ============ */
+.action-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.action-chip{display:flex;flex-direction:column;padding:14px 16px;border-radius:6px;
+  text-decoration:none;border:1px solid var(--line);background:#fff;color:var(--fg);
+  transition:transform 0.05s, box-shadow 0.05s}
+.action-chip:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,0.06);text-decoration:none}
+.action-chip .num{font-size:28px;font-weight:600;line-height:1}
+.action-chip .lbl{font-size:13px;color:var(--fg-soft);margin-top:6px}
+.action-chip .sub{font-size:11px;color:var(--muted);margin-top:4px}
+.action-chip.chip-warn{border-left:4px solid var(--red);background:#fef4f4}
+.action-chip.chip-warn .num{color:var(--red)}
+.action-chip.chip-good{border-left:4px solid var(--green)}
+.action-chip.chip-good .num{color:var(--green)}
+.action-chip.chip-action{border-left:4px solid #3b82f6}
+.action-chip.chip-action .num{color:#1d4ed8}
+
+.funnel{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.funnel-stage{display:flex;align-items:baseline;gap:14px;padding:12px 18px;
+  border-radius:6px;background:linear-gradient(90deg,#1a3554,#2c5282);color:#fff;
+  text-decoration:none;transition:filter 0.05s;align-self:center}
+.funnel-stage:hover{filter:brightness(1.1);text-decoration:none}
+.funnel-stage:nth-child(3){background:linear-gradient(90deg,#1d4ed8,#3b82f6)}
+.funnel-stage:nth-child(5){background:linear-gradient(90deg,#0e7c43,#1b9b56)}
+.funnel-stage:nth-child(7){background:linear-gradient(90deg,#155e3e,#1b6e3a)}
+.funnel-stage .stage-n{font-size:26px;font-weight:700}
+.funnel-stage .stage-l{font-size:14px;font-weight:500}
+.funnel-stage .stage-d{font-size:11px;opacity:0.85;margin-left:auto}
+.funnel-drop{text-align:center;color:var(--muted);font-size:11px;padding:2px 0}
+.funnel-drop strong{color:var(--fg)}
+.funnel-callout{margin-top:14px;padding:10px 14px;background:#fff7e6;
+  border-left:4px solid #f59e0b;border-radius:4px;font-size:13px;color:var(--fg)}
+
+.improve-unlock{font-size:13px;color:var(--fg);margin:4px 0 6px}
+.improve-unlock strong{color:#1b6e3a}
+
+.cov-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cov-step{flex:1 1 0;padding:10px 14px;background:#fff;border:1px solid var(--line);border-radius:4px;min-width:120px}
+.cov-step .cov-n{font-size:20px;font-weight:600;color:var(--fg)}
+.cov-step .cov-l{font-size:12px;color:var(--fg-soft);margin-top:2px}
+.cov-step .cov-pct{font-size:11px;color:var(--muted);margin-top:2px}
+.cov-step .cov-sub{font-size:11px;color:var(--muted);margin-top:2px;font-style:italic}
+.cov-arrow{color:var(--muted);font-size:18px;flex:0 0 auto}
+
+.trigger-chip.sla-overdue{border-left:4px solid var(--red);background:#fef4f4}
+.trigger-chip.sla-warn{border-left:4px solid #f59e0b}
+.trigger-chip.sla-ok{border-left:4px solid var(--line)}
+
 /* ---- responsive ---- */
 @media (max-width: 900px){
   .two-col{grid-template-columns:1fr}

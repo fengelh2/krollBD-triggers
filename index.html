@@ -31,34 +31,49 @@
 
 <!-- ============ OVERVIEW ============ -->
 <section class="view" id="view-overview" hidden>
+
+  <!-- 1. This week -->
   <div class="section-block">
-    <h2 class="section-title">Database strength</h2>
-    <div class="kpis" id="ov-kpis">
-      <p class="loading">Loading classification data…</p>
+    <h2 class="section-title">This week <span class="section-hint">what needs my attention now</span></h2>
+    <div class="action-row" id="ov-action">
+      <p class="loading">Loading…</p>
     </div>
   </div>
 
-  <div class="section-block two-col">
-    <div class="chart-card">
-      <div class="chart-title"><h2>Website accuracy &times; illiquid-book tier</h2></div>
+  <!-- 2. BD bullseye funnel -->
+  <div class="section-block">
+    <h2 class="section-title">BD bullseye <span class="section-hint">from licensed firms to actionable outreach</span></h2>
+    <div class="funnel" id="ov-funnel">
+      <p class="loading">Computing funnel…</p>
+    </div>
+    <p class="funnel-callout" id="ov-funnel-callout"></p>
+  </div>
+
+  <!-- 3. Improvement queue (unlocks) -->
+  <div class="section-block">
+    <h2 class="section-title">Unlocks <span class="section-hint">close one gap → widen the funnel</span></h2>
+    <div class="improve-grid" id="ov-improve">
+      <p class="loading">Computing unlocks…</p>
+    </div>
+  </div>
+
+  <!-- 4. Database strength -->
+  <div class="section-block">
+    <h2 class="section-title">Database strength <span class="section-hint">context across the full register</span></h2>
+    <div class="cov-row" id="ov-coverage">
+      <p class="loading">Loading coverage…</p>
+    </div>
+    <div class="cov-row" id="ov-people" style="margin-top:8px"></div>
+    <div class="chart-card" style="margin-top:18px">
+      <div class="chart-title"><h2>Website status across book types</h2></div>
       <svg class="chart big" id="ov-wa-chart" viewBox="0 0 600 220" preserveAspectRatio="none"></svg>
       <div class="chart-legend" id="ov-wa-legend"></div>
     </div>
-    <div class="chart-card">
-      <div class="chart-title"><h2>Asset-class mix (BD-relevant only)</h2></div>
-      <svg class="chart big" id="ov-ac-chart" viewBox="0 0 600 220" preserveAspectRatio="none"></svg>
-    </div>
   </div>
 
+  <!-- 5. Recent triggers -->
   <div class="section-block">
-    <h2 class="section-title">Where to improve <span class="section-hint">prioritized by BD payoff</span></h2>
-    <div class="improve-grid" id="ov-improve">
-      <p class="loading">Computing improvement queue…</p>
-    </div>
-  </div>
-
-  <div class="section-block">
-    <h2 class="section-title">Recent triggers</h2>
+    <h2 class="section-title">Open triggers <span class="section-hint">oldest first · red = SLA-overdue</span></h2>
     <p class="muted-text">Jump to the <a href="#/triggers">full trigger queue</a> &rarr;</p>
     <div id="ov-triggers-strip" class="trigger-strip">
       <p class="loading">Loading recent triggers…</p>
