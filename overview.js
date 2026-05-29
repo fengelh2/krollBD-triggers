@@ -373,7 +373,7 @@
     if (chartAnchorNum) chartAnchorNum.textContent = n.toLocaleString();
   }
 
-  function renderPeopleRow(data) {
+  function renderPeopleRow(data, sets) {
     const inds = data.individuals.rows;
     const pairs = data.pairs.rows;
     const C = data.classification.rows;
@@ -417,7 +417,7 @@
         </div>
         <div class="cov-arrow">&rarr;</div>
         <div class="cov-step cov-step-linked">
-          <div class="cov-connector-tag">&uarr; employed by the 2,814 corps above</div>
+          <div class="cov-connector-tag">&uarr; employed by the <span class="anchor-num">${sets.corps.length.toLocaleString()}</span> corps above</div>
           <div class="cov-n">${uniqueRos.toLocaleString()}</div>
           <div class="cov-l">Serve as RO on an active T9 corp</div>
           <div class="cov-sub">${totalAssignments.toLocaleString()} assignments &middot; ${multiAffil.toLocaleString()} ROs serve &gt;1 firm</div>
@@ -497,7 +497,7 @@
       renderImproveQueue(data, sets);
       renderWaChart(data);
       renderCoverageFunnel(sets);
-      renderPeopleRow(data);
+      renderPeopleRow(data, sets);
       renderActionPanel(sets);  // last because depends on triggers
       renderTriggersStrip();
     } catch (e) {
