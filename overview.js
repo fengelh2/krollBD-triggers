@@ -8,7 +8,9 @@
   // ---- KPIs ----
   function renderKpis(data) {
     const C = data.classification.rows;
-    const corps = data.corps.rows;
+    const corpsAll = data.corps.rows;
+    const corps = corpsAll.filter(r => (r.has_active_licence || "").trim() === "Y");
+    const corpsRetired = corpsAll.length - corps.length;
     const inds = data.individuals.rows;
     const pairs = data.pairs.rows;
 
@@ -19,7 +21,7 @@
     const withAum = C.filter(K.hasAum).length;
 
     const kpis = [
-      { n: corps.length, l: "Active corps", t: "#/corps" },
+      { n: corps.length, l: "Active corps", sub: `+${corpsRetired.toLocaleString()} retired`, t: "#/corps" },
       { n: inds.length, l: "Individuals", t: "#/individuals" },
       { n: pairs.length, l: "Corp&harr;RO pairs", t: "#/pairs" },
       { n: C.length, l: "Firms classified", t: "#/corps" },
