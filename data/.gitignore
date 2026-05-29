@@ -1,0 +1,5 @@
+# Cached firm pages — regenerable, bulky, marketing copy aggregated
+firm_pages/
+
+# Hunter.io cross-process lock file — local-only, not data
+.hunter_io_cache.lock

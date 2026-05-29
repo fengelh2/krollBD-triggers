@@ -1,0 +1,82 @@
+{
+  "elkinlinks.com|pik man|wong": {
+    "status": "no_match",
+    "email": null,
+    "score": null,
+    "confidence": "none",
+    "verification_status": "no_match",
+    "source": "hunter.io",
+    "fetched_at_utc": "2026-05-29T06:19:25+00:00",
+    "quota_remaining_when_fetched": 4
+  },
+  "mangofinancial.com.hk|yuguo|chen": {
+    "status": "no_match",
+    "email": null,
+    "score": null,
+    "confidence": "none",
+    "verification_status": "no_match",
+    "source": "hunter.io",
+    "fetched_at_utc": "2026-05-29T06:19:37+00:00",
+    "quota_remaining_when_fetched": 4
+  },
+  "huizhicapital.com|wenhui|wang": {
+    "status": "ok",
+    "email": "wenhui@huizhicapital.com",
+    "score": 74,
+    "confidence": "medium",
+    "verification_status": "accept_all",
+    "source": "hunter.io",
+    "fetched_at_utc": "2026-05-29T06:19:44+00:00",
+    "quota_remaining_when_fetched": 4
+  },
+  "upbest.com|man kin|chak": {
+    "status": "no_match",
+    "email": null,
+    "score": null,
+    "confidence": "none",
+    "verification_status": "no_match",
+    "source": "hunter.io",
+    "fetched_at_utc": "2026-05-29T06:19:57+00:00",
+    "quota_remaining_when_fetched": 3
+  },
+  "meag.com|jeffrey ho yeung|lam": {
+    "status": "ok",
+    "email": "jlam@meag.com",
+    "score": 95,
+    "confidence": "high",
+    "verification_status": "valid",
+    "source": "hunter.io",
+    "fetched_at_utc": "2026-05-29T06:19:59+00:00",
+    "quota_remaining_when_fetched": 3
+  },
+  "templewater.com|mascarel de la corbiere nicolas charles philippe|de": {
+    "status": "no_match",
+    "email": null,
+    "score": null,
+    "confidence": "none",
+    "verification_status": "no_match",
+    "source": "hunter.io",
+    "fetched_at_utc": "2026-05-29T06:20:12+00:00",
+    "quota_remaining_when_fetched": 2
+  },
+  "silverstone.com.hk|jing|li": {
+    "status": "ok",
+    "email": "jing@silverstone.com.hk",
+    "score": 74,
+    "confidence": "medium",
+    "verification_status": "accept_all",
+    "source": "hunter.io",
+    "fetched_at_utc": "2026-05-29T06:20:18+00:00",
+    "quota_remaining_when_fetched": 2
+  },
+  "citiccapital.com|lin|he": {
+    "status": "ok",
+    "email": "linhe@citiccapital.com",
+    "score": 99,
+    "confidence": "high",
+    "verification_status": "valid",
+    "source": "hunter.io",
+    "fetched_at_utc": "2026-05-29T06:20:27+00:00",
+    "quota_remaining_when_fetched": 1
+  }
+}

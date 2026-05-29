@@ -337,14 +337,59 @@
   function renderPeopleRow(data) {
     const inds = data.individuals.rows;
     const pairs = data.pairs.rows;
+    const C = data.classification.rows;
     const activeInds = inds.filter(r => (r.has_active_licence || "Y") === "Y").length;
     const uniqueRos = new Set(pairs.map(p => p.ro_ceref).filter(Boolean)).size;
+    const totalAssignments = pairs.length;
+
+    // RO-level email coverage (two granularities):
+    //  - strict: RO whose primary-corp has a Hunter-verified named email
+    //    captured (hunter_email column populated)
+    //  - broad: RO at a firm with any named email (emails_on_site OR ir_email
+    //    OR hunter_email). The firm-level signal projected onto its ROs.
+    const firmHunterEmail = new Set();
+    const firmAnyNamedEmail = new Set();
+    for (const r of C) {
+      const hunter = (r.hunter_email || "").trim();
+      const onSite = (r.emails_on_site || "").trim();
+      const ir = (r.ir_email || "").trim();
+      if (hunter) firmHunterEmail.add(r.ceref);
+      if (hunter || onSite || ir) firmAnyNamedEmail.add(r.ceref);
+    }
+    const rosWithHunter = new Set();
+    const rosWithAnyNamed = new Set();
+    for (const p of pairs) {
+      if (firmHunterEmail.has(p.corp_ceref)) rosWithHunter.add(p.ro_ceref);
+      if (firmAnyNamedEmail.has(p.corp_ceref)) rosWithAnyNamed.add(p.ro_ceref);
+    }
+
     $("#ov-people").innerHTML = `
-      <div class="cov-step"><div class="cov-n">${inds.length.toLocaleString()}</div><div class="cov-l">Individuals on register</div></div>
-      <div class="cov-arrow">→</div>
-      <div class="cov-step"><div class="cov-n">${activeInds.toLocaleString()}</div><div class="cov-l">Currently active</div></div>
-      <div class="cov-arrow">→</div>
-      <div class="cov-step"><div class="cov-n">${uniqueRos.toLocaleString()}</div><div class="cov-l">Serve as RO on an active T9 corp</div><div class="cov-sub">${pairs.length.toLocaleString()} corp-RO assignments</div></div>
+      <div class="cov-connector" title="The 2,814 corps employ these ROs">
+        <div class="cov-connector-label">${totalAssignments.toLocaleString()} corp&harr;RO assignments&nbsp;&darr;</div>
+      </div>
+      <div class="cov-row">
+        <div class="cov-step">
+          <div class="cov-n">${inds.length.toLocaleString()}</div>
+          <div class="cov-l">Individuals on register</div>
+          <div class="cov-sub">all-time</div>
+        </div>
+        <div class="cov-arrow">&rarr;</div>
+        <div class="cov-step">
+          <div class="cov-n">${activeInds.toLocaleString()}</div>
+          <div class="cov-l">Currently active</div>
+        </div>
+        <div class="cov-arrow">&rarr;</div>
+        <div class="cov-step">
+          <div class="cov-n">${uniqueRos.toLocaleString()}</div>
+          <div class="cov-l">Serve as RO on an active T9 corp</div>
+        </div>
+        <div class="cov-arrow">&rarr;</div>
+        <div class="cov-step">
+          <div class="cov-n">${rosWithAnyNamed.size.toLocaleString()}</div>
+          <div class="cov-l">At firm with named email</div>
+          <div class="cov-sub">of which <strong>${rosWithHunter.size.toLocaleString()}</strong> Hunter-verified</div>
+        </div>
+      </div>
     `;
   }
 
