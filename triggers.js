@@ -255,7 +255,7 @@
     const strategyChips = !has_strategy ? "" : `
       <div class="strategy-chips">
         ${waBadge}
-        ${illiq ? `<span class="chip illiq-${illiq}">illiq: ${esc(illiq)}</span>` : ""}
+        ${illiq ? `<span class="chip illiq-${illiq}">${esc({high:"illiquids",medium:"mixed",low:"liquids only",none:"no illiquids",unknown:"book unknown"}[illiq]||illiq)}</span>` : ""}
         ${ac ? `<span class="chip ac">${esc(ac)}</span>` : ""}
         ${aum ? `<span class="chip aum">AUM: ${esc(aum.slice(0,40))}</span>` : ""}
         ${parent ? `<span class="chip parent">parent: ${esc(parent)}</span>` : ""}

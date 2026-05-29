@@ -27,7 +27,7 @@
       { n: C.length, l: "Firms classified", t: "#/corps" },
       { n: verifiedSite + probableSite, l: "Website verified / probable", sub: `${verifiedSite} verified · ${probableSite} probable`, t: "#/corps?wa=verified" },
       { n: withEmail, l: "Firms with email captured", t: "#/corps?email=yes" },
-      { n: bdRelevant, l: "BD-relevant (illiq high+med)", t: "#/corps?illiq=high" },
+      { n: bdRelevant, l: "BD-relevant (illiquids + mixed)", t: "#/corps?illiq=high" },
       { n: withAum, l: "AUM disclosed", t: "#/corps?aum=yes" },
     ];
     $("#ov-kpis").innerHTML = kpis.map(k => `
@@ -43,7 +43,7 @@
   function renderWaChart(data) {
     const C = data.classification.rows;
     const tiers = ["high", "medium", "low", ""];
-    const tierLabels = { "high": "illiq high", "medium": "illiq medium", "low": "illiq low", "": "blank" };
+    const tierLabels = { "high": "illiquids", "medium": "mixed", "low": "liquids only", "": "unclassified" };
     const buckets = ["verified", "probable", "unverified", "suspect", "not_found", "unknown"];
     const colors = {
       verified: "#1b6e3a", probable: "#3b82f6", unverified: "#cdd1d6",
