@@ -85,7 +85,7 @@
         n: readyNow,
         l: "BD-relevant · ready to email",
         sub: "verified/probable site · email captured",
-        href: "#/corps?illiq=high&wa=verified&email=yes",
+        href: "#/corps?illiq=bd&wa=site&email=yes",
         cls: "chip-good",
       },
     ];
@@ -108,25 +108,25 @@
         n: sets.bd.length,
         l: "BD-relevant",
         d: "book type = illiquids or mixed",
-        href: "#/corps?illiq=high",
+        href: "#/corps?illiq=bd",
       },
       {
         n: sets.bdSite.length,
         l: "+ website found",
         d: "verified or probable",
-        href: "#/corps?illiq=high&wa=verified",
+        href: "#/corps?illiq=bd&wa=site",
       },
       {
         n: sets.bdEmail.length,
         l: "+ email captured",
         d: "any verified email on site",
-        href: "#/corps?illiq=high&wa=verified&email=yes",
+        href: "#/corps?illiq=bd&wa=site&email=yes",
       },
       {
         n: sets.bdAum.length,
         l: "+ AUM disclosed",
         d: "any AUM extracted from website",
-        href: "#/corps?illiq=high&wa=verified&email=yes&aum=yes",
+        href: "#/corps?illiq=bd&wa=site&email=yes&aum=yes",
       },
     ];
     const base = stages[0].n || 1;

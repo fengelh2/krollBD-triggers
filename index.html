@@ -89,15 +89,17 @@
       <input type="search" id="corps-search" placeholder="search firm / parent…" />
       <select id="corps-illiq">
         <option value="">book type: all</option>
-        <option value="high">illiquids</option>
-        <option value="medium">mixed</option>
+        <option value="bd">BD-relevant (illiquids + mixed)</option>
+        <option value="high">illiquids only</option>
+        <option value="medium">mixed only</option>
         <option value="low">liquids only</option>
         <option value="unknown">unknown</option>
       </select>
       <select id="corps-wa">
         <option value="">website: all</option>
-        <option value="verified">verified</option>
-        <option value="probable">probable</option>
+        <option value="site">website found (verified + probable)</option>
+        <option value="verified">verified only</option>
+        <option value="probable">probable only</option>
         <option value="unverified">unverified</option>
         <option value="suspect">suspect</option>
         <option value="not_found">not_found</option>

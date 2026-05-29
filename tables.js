@@ -49,8 +49,16 @@
           !(r.parent_org || "").toLowerCase().includes(s) &&
           !(r.ceref || "").toLowerCase().includes(s)) return false;
     }
-    if (f.illiq && String(r.illiquid_book_likelihood || "").toLowerCase() !== f.illiq) return false;
-    if (f.wa && K.waBucket(r) !== f.wa) return false;
+    if (f.illiq) {
+      const tier = String(r.illiquid_book_likelihood || "").toLowerCase();
+      if (f.illiq === "bd") { if (tier !== "high" && tier !== "medium") return false; }
+      else if (tier !== f.illiq) return false;
+    }
+    if (f.wa) {
+      const wa = K.waBucket(r);
+      if (f.wa === "site") { if (wa !== "verified" && wa !== "probable") return false; }
+      else if (wa !== f.wa) return false;
+    }
     if (f.email === "yes" && !K.hasEmail(r)) return false;
     if (f.email === "no" && K.hasEmail(r)) return false;
     if (f.ac && !String(r.asset_classes || "").split(",").map(s => s.trim()).includes(f.ac)) return false;
