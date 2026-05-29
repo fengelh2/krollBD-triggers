@@ -1,0 +1,28 @@
+# Secrets
+.env
+.env.local
+
+# Scraped page cache — regeneratable, bulky
+data/firm_pages/
+
+# Hunter.io result cache — local-dev only; CI uses the GH-checked-in copy if needed
+# (commenting out: we DO want this committed so cache survives across CI runs)
+# data/hunter_io_cache.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local working files
+.tmp/
+*.log

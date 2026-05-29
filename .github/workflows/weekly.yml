@@ -1,0 +1,81 @@
+name: Weekly SFC pull + enrichment + trigger publish
+
+on:
+  schedule:
+    # Mondays 00:00 UTC = 08:00 Hong Kong time
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    inputs:
+      skip_scrape:
+        description: 'Skip SFC re-scrape (use existing snapshots)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: weekly
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    env:
+      SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+      FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+      HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
+      HUNTER_EMAIL: ${{ secrets.HUNTER_EMAIL }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PYTHONIOENCODING: utf-8
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Scrape SFC register
+        if: ${{ !inputs.skip_scrape }}
+        run: python tools/scrape_sfc_register.py
+
+      - name: Classify new/changed firms
+        run: python tools/classify_strategy.py
+
+      - name: Verify emails (drop wrong-firm captures)
+        run: python tools/verify_emails_against_disambig.py
+
+      - name: Derive website_accuracy column
+        run: python tools/derive_website_accuracy.py
+
+      - name: Publish triggers (writes meta files, no inline push)
+        run: python tools/publish_triggers_to_github.py --no-push
+
+      - name: Commit + push data updates
+        run: |
+          git config user.email "fengelh@gmail.com"
+          git config user.name "krollBD-bot"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No data changes this run."
+          else
+            git commit -m "weekly: $(date -u +%Y-%m-%d) refresh"
+            git push
+          fi

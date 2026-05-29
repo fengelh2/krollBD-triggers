@@ -1,0 +1,96 @@
+name: Ad-hoc backfill (deep-scrape / re-classify)
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Which tool to run'
+        required: true
+        type: choice
+        options:
+          - deep_scrape
+          - reclassify
+      scope:
+        description: 'For deep_scrape: verified-bd | verified-high | probable-bd | unverified-bd'
+        required: false
+        type: string
+        default: 'verified-bd'
+      cerefs:
+        description: 'For reclassify: comma-separated CE refs (e.g. ASK527,BUY347)'
+        required: false
+        type: string
+      force:
+        description: 'For reclassify: ignore existing classification and re-run'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Just print what would happen, do not write'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly  # share lock with weekly.yml — never race on data/
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    env:
+      SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+      FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+      HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PYTHONIOENCODING: utf-8
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Deep-scrape
+        if: inputs.task == 'deep_scrape'
+        run: |
+          ARGS="--scope ${{ inputs.scope }}"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          python tools/deep_scrape_contact_pages.py $ARGS
+
+      - name: Reclassify cerefs
+        if: inputs.task == 'reclassify'
+        run: |
+          ARGS="--cerefs ${{ inputs.cerefs }}"
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          python tools/classify_strategy.py $ARGS
+
+      - name: Commit + push data updates
+        if: ${{ !inputs.dry_run }}
+        run: |
+          git config user.email "fengelh@gmail.com"
+          git config user.name "krollBD-bot"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No data changes this run."
+          else
+            git commit -m "${{ inputs.task }}: $(date -u +%Y-%m-%d) ${{ inputs.scope }}${{ inputs.cerefs }}"
+            git push
+          fi
