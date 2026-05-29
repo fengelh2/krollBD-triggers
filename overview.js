@@ -50,57 +50,7 @@
   }
 
   // =====================================================================
-  // 1. THIS-WEEK ACTION PANEL
-  // =====================================================================
-  function renderActionPanel(sets) {
-    const issues = (window.K.Triggers && window.K.Triggers.getOpenIssues()) || [];
-    const now = new Date();
-    let overdue = 0;
-    for (const i of issues) {
-      const created = i.created_at ? new Date(i.created_at) : null;
-      if (created && businessDaysBetween(created, now) > SLA_BUSINESS_DAYS) overdue++;
-    }
-    const newThisWeek = issues.filter(i => {
-      const c = i.created_at ? new Date(i.created_at) : null;
-      return c && (now - c) < 7 * 24 * 3600 * 1000;
-    }).length;
-    const readyNow = sets.bdEmail.length;
-
-    const chips = [
-      {
-        n: issues.length,
-        l: "Open triggers",
-        sub: `${newThisWeek} new this week`,
-        href: "#/triggers",
-        cls: "chip-action",
-      },
-      {
-        n: overdue,
-        l: `SLA-overdue (>${SLA_BUSINESS_DAYS} business days)`,
-        sub: overdue ? "act before the window closes" : "all within SLA",
-        href: "#/triggers",
-        cls: overdue ? "chip-warn" : "chip-good",
-      },
-      {
-        n: readyNow,
-        l: "BD-relevant · ready to email",
-        sub: "verified/probable site · email captured",
-        href: "#/corps?illiq=bd&wa=site&email=yes",
-        cls: "chip-good",
-      },
-    ];
-
-    $("#ov-action").innerHTML = chips.map(c => `
-      <a class="action-chip ${c.cls}" href="${c.href}">
-        <span class="num">${c.n.toLocaleString()}</span>
-        <span class="lbl">${c.l}</span>
-        <span class="sub">${c.sub}</span>
-      </a>
-    `).join("");
-  }
-
-  // =====================================================================
-  // 2. BD BULLSEYE FUNNEL
+  // BD BULLSEYE FUNNEL
   // =====================================================================
   function renderBdFunnel(sets) {
     const stages = [
@@ -434,19 +384,30 @@
     const badge = document.getElementById("nav-triggers-badge");
     if (!badge) return;
     const issues = (window.K.Triggers && window.K.Triggers.getOpenIssues()) || [];
-    const now = Date.now();
-    const sevenDays = 7 * 24 * 3600 * 1000;
-    const newCount = issues.filter(i => {
-      const c = i.created_at ? new Date(i.created_at).getTime() : 0;
-      return c && (now - c) < sevenDays;
-    }).length;
-    if (newCount > 0) {
-      badge.hidden = false;
-      badge.textContent = String(newCount);
-      badge.setAttribute("title", `${newCount} trigger${newCount === 1 ? "" : "s"} created in the last 7 days`);
-    } else {
+    const open = issues.length;
+    if (open === 0) {
       badge.hidden = true;
+      return;
     }
+    // Red if any open trigger has aged past the SLA (5 business days).
+    // Otherwise muted gray badge with count.
+    const now = new Date();
+    let overdue = 0;
+    let freshThisWeek = 0;
+    const sevenDaysMs = 7 * 24 * 3600 * 1000;
+    for (const i of issues) {
+      const created = i.created_at ? new Date(i.created_at) : null;
+      if (!created) continue;
+      if (businessDaysBetween(created, now) > SLA_BUSINESS_DAYS) overdue++;
+      if ((now - created) < sevenDaysMs) freshThisWeek++;
+    }
+    badge.hidden = false;
+    badge.textContent = String(open);
+    badge.classList.toggle("nav-badge-overdue", overdue > 0);
+    const parts = [`${open} open trigger${open === 1 ? "" : "s"}`];
+    if (overdue) parts.push(`${overdue} past the 5-day window`);
+    if (freshThisWeek) parts.push(`${freshThisWeek} new this week`);
+    badge.setAttribute("title", parts.join(" · "));
   }
 
   // =====================================================================
@@ -492,19 +453,18 @@
       renderWaChart(data);
       renderCoverageFunnel(sets);
       renderPeopleRow(data, sets);
-      renderActionPanel(sets);  // last because depends on triggers
       renderTriggersStrip();
     } catch (e) {
       // Consolidated empty-state: blank out every Overview section so the
       // 'Loading…' placeholders don't sit there indefinitely.
       const msg = `<p class="loading">Failed to load: ${esc(e.message)}<br><br>` +
         `Set a GitHub PAT (top right) with <code>repo</code> scope, then refresh.</p>`;
-      for (const id of ["ov-action", "ov-funnel", "ov-funnel-callout",
+      for (const id of ["ov-funnel", "ov-funnel-callout",
                         "ov-improve", "ov-coverage", "ov-people",
                         "ov-wa-chart", "ov-wa-legend", "ov-triggers-strip",
                         "ov-anchor-corps", "ov-chart-anchor-num"]) {
         const el = document.getElementById(id);
-        if (el && id === "ov-action") el.innerHTML = msg;
+        if (el && id === "ov-funnel") el.innerHTML = msg;
         else if (el) el.innerHTML = "";
       }
       console.error(e);
@@ -521,8 +481,6 @@
     // Don't waste cycles re-rendering Overview when the user is on another tab.
     const overviewEl = document.getElementById("view-overview");
     if (overviewEl && overviewEl.hidden) return;
-    const sets = buildSets(window.__data);
-    renderActionPanel(sets);
     renderTriggersStrip();
   });
 })();

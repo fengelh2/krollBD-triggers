@@ -337,13 +337,28 @@ def find_website(name: str) -> tuple[str | None, list[str]]:
         secondary = _serpapi_search(f'"{name}" asset management Hong Kong')
     else:
         secondary = []
-    # interleave so each query's top result is near the top of the merged list
+
+    # Query C — Chinese language. Many HK boutiques (esp. mainland-affiliated)
+    # have zh-Hant-only sites that English queries miss. Only fire if neither
+    # primary nor secondary surfaced a name-matching domain.
+    tertiary: list[str] = []
+    if not any(_domain_name_score(u, name) > 0 for u in (primary[:3] + secondary[:3])):
+        tertiary = _serpapi_search(f'"{name}" 香港')
+
+    # Query D — SFC-PDF-biased. SFC publications often list the firm's official
+    # site in the corporate-info table. Only fire if all 3 prior queries failed.
+    quaternary: list[str] = []
+    if not any(_domain_name_score(u, name) > 0
+               for u in (primary[:3] + secondary[:3] + tertiary[:3])):
+        quaternary = _serpapi_search(f'"{name}" SFC Type 9')
+
+    # Interleave so each query's top result rides near the top of the merge.
     merged: list[str] = []
-    for i in range(max(len(primary), len(secondary))):
-        if i < len(primary) and primary[i] not in merged:
-            merged.append(primary[i])
-        if i < len(secondary) and secondary[i] not in merged:
-            merged.append(secondary[i])
+    lists = [primary, secondary, tertiary, quaternary]
+    for i in range(max((len(l) for l in lists), default=0)):
+        for l in lists:
+            if i < len(l) and l[i] not in merged:
+                merged.append(l[i])
     return (merged[0] if merged else None), merged
 
 

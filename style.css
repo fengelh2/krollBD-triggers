@@ -44,9 +44,11 @@ button{font-family:inherit}
 .tabs a:hover{color:var(--fg);text-decoration:none}
 .tabs a.active{color:var(--fg);border-bottom-color:var(--fg)}
 .nav-badge{display:inline-block;margin-left:6px;padding:1px 7px;
-  background:#dc2626;color:#fff;font-size:10px;font-weight:600;border-radius:10px;
+  background:#6b7280;color:#fff;font-size:10px;font-weight:600;border-radius:10px;
   line-height:1.4;vertical-align:middle;font-variant-numeric:tabular-nums}
 .nav-badge[hidden]{display:none}
+/* Turn red ONLY when at least one open trigger has aged past the 5-day window. */
+.nav-badge.nav-badge-overdue{background:#dc2626}
 
 /* ---- Views ---- */
 .view{max-width:1180px;margin:0 auto;padding:18px 20px 60px}
@@ -293,21 +295,7 @@ svg.chart.big{height:auto;max-width:680px;aspect-ratio:600/220;margin:0 auto}
 footer{max-width:1180px;margin:24px auto 40px;padding:0 20px;color:var(--muted);font-size:11px;text-align:left;border-top:1px solid var(--line);padding-top:14px}
 footer p{margin:2px 0}
 
-/* ============ Overview redesign (action / funnel / unlocks / strength) ============ */
-.action-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.action-chip{display:flex;flex-direction:column;padding:14px 16px;border-radius:6px;
-  text-decoration:none;border:1px solid var(--line);background:#fff;color:var(--fg);
-  transition:transform 0.05s, box-shadow 0.05s}
-.action-chip:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,0.06);text-decoration:none}
-.action-chip .num{font-size:28px;font-weight:600;line-height:1}
-.action-chip .lbl{font-size:13px;color:var(--fg-soft);margin-top:6px}
-.action-chip .sub{font-size:11px;color:var(--muted);margin-top:4px}
-.action-chip.chip-warn{border-left:4px solid var(--red);background:#fef4f4}
-.action-chip.chip-warn .num{color:var(--red)}
-.action-chip.chip-good{border-left:4px solid var(--green)}
-.action-chip.chip-good .num{color:var(--green)}
-.action-chip.chip-action{border-left:4px solid #3b82f6}
-.action-chip.chip-action .num{color:#1d4ed8}
+/* ============ Overview ============ */
 
 /* Funnel — corporate monochrome (charcoal/navy palette, no gradients) */
 .funnel{display:flex;flex-direction:column;gap:4px;margin-top:6px}
@@ -380,7 +368,6 @@ footer p{margin:2px 0}
   .kpis{grid-template-columns:repeat(2,1fr)}
   .modal-grid{grid-template-columns:1fr}
   .summary{grid-template-columns:repeat(3,1fr)}
-  .action-row{grid-template-columns:1fr}
   /* On narrow widths the callout tag wraps to its own line above the body */
   .funnel-callout{flex-direction:column;gap:8px}
   .callout-tag{padding-top:0}
