@@ -345,8 +345,8 @@ footer p{margin:2px 0}
 .cov-subhead-anchor{font-size:11px;font-weight:400;letter-spacing:0.02em;color:var(--muted);text-transform:none}
 .cov-subhead-anchor strong{color:#991b1b;font-weight:700;font-variant-numeric:tabular-nums}
 
-.cov-step-anchor{border:2px solid #991b1b;background:#fef2f2}
-.cov-step-anchor .cov-n{color:#991b1b}
+.cov-step.cov-step-anchor{border:2px solid #991b1b;background:#fef2f2}
+.cov-step.cov-step-anchor .cov-n{color:#991b1b !important;font-weight:700}
 .cov-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cov-step-linked{border-top:2px dashed #9ca3af;position:relative}
 .cov-connector-tag{font-size:10px;color:var(--muted);font-style:italic;
