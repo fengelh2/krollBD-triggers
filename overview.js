@@ -167,13 +167,23 @@
   function renderImproveQueue(data, sets) {
     const bd = sets.bd;
 
-    const hunter = bd.filter(r =>
+    // ---- Hunter cohort: BD + verified/probable site + no NAMED email + has website
+    // Split into two sub-buckets so the card is honest about partial-coverage state.
+    const hunterAll = bd.filter(r =>
       ["verified", "probable"].includes(K.waBucket(r)) && !K.hasEmail(r) && K.hasWebsite(r));
+    const hunterZero = hunterAll.filter(r => !K.hasGenericEmail(r));
+    const hunterGenOnly = hunterAll.filter(r => K.hasGenericEmail(r));
+
     const noSite = bd.filter(r => !K.hasWebsite(r) || K.waBucket(r) === "not_found");
-    const thin   = bd.filter(r => ["suspect", "unverified"].includes(K.waBucket(r)));
-    const onlyGeneric = bd.filter(r =>
-      ["verified", "probable"].includes(K.waBucket(r)) && !K.hasEmail(r) && K.hasGenericEmail(r));
-    const noAum  = bd.filter(r => !K.hasAum(r));
+
+    // ---- Thin cohort: BD + suspect/unverified site. Sub-split shows how many
+    // already gained ANY email from a prior deep-scrape.
+    const thin = bd.filter(r => ["suspect", "unverified"].includes(K.waBucket(r)));
+    const thinWithAnyEmail = thin.filter(r => K.hasEmail(r) || K.hasGenericEmail(r));
+    const thinStillBare = thin.filter(r => !K.hasEmail(r) && !K.hasGenericEmail(r));
+
+    // ---- AUM
+    const noAum = bd.filter(r => !K.hasAum(r));
 
     // Rank: AUM-disclosed first (so non-misleading top 5), then alpha
     const rank = (rows) => rows.slice().sort((a, b) => {
@@ -185,11 +195,12 @@
 
     const queues = [
       {
-        id: "hunter", title: "Email lookup — Hunter.io",
-        unlock: hunter.length, unlockLabel: "would become email-ready",
-        desc: "BD-relevant · verified or probable site · no email on site",
-        action: "Run Hunter.io domain-search per CEREF (50/mo free)",
-        impact: "high", rows: rank(hunter),
+        id: "hunter", title: "Named-email lookup — Hunter.io",
+        unlock: hunterAll.length, unlockLabel: "still need a named contact",
+        desc: "BD-relevant · verified/probable site · no named email captured",
+        breakdown: `<strong>${hunterZero.length.toLocaleString()}</strong> have no email at all · <strong>${hunterGenOnly.length.toLocaleString()}</strong> have a generic-only inbox already (info@ / contact@ / etc.)`,
+        action: "Run Hunter.io /email-finder for the primary RO (50/mo free; cache-aware)",
+        impact: "high", rows: rank(hunterAll),
         href: "#/corps?illiq=bd&wa=site&email=no",
       },
       {
@@ -201,20 +212,13 @@
         href: "#/corps?illiq=bd&wa=not_found",
       },
       {
-        id: "thin", title: "Deeper scrape — suspect / unverified",
-        unlock: thin.length, unlockLabel: "would gain a verified site",
-        desc: "BD-relevant · website match flagged suspect or unverified",
-        action: "Deep-scrape with JS-wait; re-classify",
+        id: "thin", title: "Suspect/unverified site — re-verify",
+        unlock: thin.length, unlockLabel: "have a shaky website match",
+        desc: "BD-relevant · website_accuracy flagged suspect or unverified",
+        breakdown: `<strong>${thinWithAnyEmail.length.toLocaleString()}</strong> already have at least one email captured (from prior deep-scrape) · <strong>${thinStillBare.length.toLocaleString()}</strong> still have nothing — these are the highest-leverage to re-scrape`,
+        action: "Deep-scrape /contact + /team, then re-classify with the new content",
         impact: "medium", rows: rank(thin),
         href: "#/corps?illiq=bd&wa=suspect",
-      },
-      {
-        id: "only-generic", title: "Named-person email — LinkedIn / Hunter",
-        unlock: onlyGeneric.length, unlockLabel: "would gain a named contact",
-        desc: "BD-relevant · only generic inbox (info@, contact@) on site",
-        action: "LinkedIn / Hunter person-finder for the primary RO",
-        impact: "medium", rows: rank(onlyGeneric),
-        href: "#/corps?illiq=bd&wa=site&email=generic_only",
       },
       {
         id: "no-aum", title: "AUM lookup — Form ADV / press",
