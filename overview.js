@@ -311,10 +311,11 @@
     //   - The thick-bordered first box in the row (already visually anchored)
     //   - Prominent number above the WA chart
     const n = sets.corps.length;
+    const fmt = (label) => `· <span class="anchor-num">${n.toLocaleString()}</span> ${label}`;
     const anchor = $("#ov-anchor-corps");
-    if (anchor) anchor.innerHTML = `· <span class="anchor-num">${n.toLocaleString()}</span> active corps · 100% baseline`;
-    const chartAnchorNum = $("#ov-chart-anchor-num");
-    if (chartAnchorNum) chartAnchorNum.textContent = n.toLocaleString();
+    if (anchor) anchor.innerHTML = fmt("active corps · 100% baseline");
+    const chartAnchor = $("#ov-chart-anchor");
+    if (chartAnchor) chartAnchor.innerHTML = fmt("classified firms · 100% baseline");
   }
 
   function renderPeopleRow(data, sets) {
@@ -435,7 +436,7 @@
       for (const id of ["ov-funnel", "ov-funnel-callout",
                         "ov-improve", "ov-coverage", "ov-people",
                         "ov-wa-chart", "ov-wa-legend",
-                        "ov-anchor-corps", "ov-chart-anchor-num"]) {
+                        "ov-anchor-corps", "ov-chart-anchor"]) {
         const el = document.getElementById(id);
         if (el && id === "ov-funnel") el.innerHTML = msg;
         else if (el) el.innerHTML = "";

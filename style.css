@@ -345,12 +345,6 @@ footer p{margin:2px 0}
 .cov-subhead-anchor{font-size:11px;font-weight:400;letter-spacing:0.02em;color:var(--muted);text-transform:none}
 .cov-subhead-anchor strong{color:#991b1b;font-weight:700;font-variant-numeric:tabular-nums}
 
-.chart-anchor-header{display:flex;align-items:baseline;gap:10px;padding:6px 10px 10px;
-  border-bottom:1px solid #e5e7eb;margin-bottom:8px}
-.chart-anchor-num{font-size:28px;font-weight:700;color:#991b1b;line-height:1;
-  font-variant-numeric:tabular-nums;letter-spacing:-0.01em}
-.chart-anchor-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
-
 .cov-step-anchor{border:2px solid #991b1b;background:#fef2f2}
 .cov-step-anchor .cov-n{color:#991b1b}
 .cov-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
