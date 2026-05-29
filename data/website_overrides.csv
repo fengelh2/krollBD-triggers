@@ -1,2 +1,12 @@
-ceref,corrected_url,reason,marked_at
-ASK527,https://www.mfs.com/who-we-are/our-locations/asia-pacific.html,MFS HK genuine site - earlier SerpAPI returned hkifa.org.hk (HK Investment Funds Association),2026-05-28
+ceref,corrected_url,reason,marked_at,skip_enrichment
+ASK527,https://www.mfs.com/who-we-are/our-locations/asia-pacific.html,MFS HK genuine site - earlier SerpAPI returned hkifa.org.hk (HK Investment Funds Association),2026-05-28,
+AAI670,,ICBC Asia HK sub of state-owned bank; SerpAPI returns global ICBC site - not Felix-as-IC target,2026-05-29,1
+AAK077,,Deutsche Bank HK sub of global bank; MD-led account relationship not IC outreach,2026-05-29,1
+AAK796,,Bank of America NA HK sub; MD-led account relationship not IC outreach,2026-05-29,1
+AAK809,,Bank of Montreal HK sub; MD-led account relationship not IC outreach,2026-05-29,1
+ADB883,,Rabobank HK sub of global cooperative; MD-led not IC outreach,2026-05-29,1
+AGJ534,,CCB Securities HK sub of China Construction Bank; MD-led not IC outreach,2026-05-29,1
+AUR302,,Bank Julius Baer HK sub of global private bank; MD-led not IC outreach,2026-05-29,1
+AXY613,,ICBC UBS Asset Management HK JV of two global banks; MD-led not IC outreach,2026-05-29,1
+BDM672,,Morgan Stanley Bank Asia HK sub of global bank; MD-led not IC outreach,2026-05-29,1
+BIY995,,BOSC International HK sub of Bank of Shanghai; MD-led not IC outreach,2026-05-29,1
