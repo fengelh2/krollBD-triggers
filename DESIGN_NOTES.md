@@ -83,30 +83,17 @@ No virtualization. 500 rows × ~8 cols renders <50 ms in Chrome. If Felix wants
 to remove the cap on Individuals (50k rows), we'd want windowing — current
 choice favors "force a sharper filter" over "blast everything to the DOM".
 
-## What Felix needs to do — repo README note
+## Dashboard data hand-off — handled by CI
 
-Add the following step to whatever weekly-run docs the publisher follows so
-the data CSVs are committed alongside the trigger issues:
+Since the repo migration to `fengelh2/krollBD`, the dashboard, tools, and data
+all live in one repo. `.github/workflows/weekly.yml` commits and pushes `data/`
+at the end of every Monday run; the dashboard reads from the same repo via the
+GitHub Contents API. No manual hand-off step is needed.
 
-> **Dashboard data hand-off** — at the end of each weekly classifier run,
-> copy the four CSVs into the triggers repo and commit:
-> ```bash
-> # from Agentic Workflows/projects/krollBD
-> cp data/strategy_classification.csv                   ../../path/to/krollBD-triggers/data/
-> cp data/snapshots/sfc_t9_corps_latest.csv             ../../path/to/krollBD-triggers/data/snapshots/
-> cp data/snapshots/sfc_t9_individuals_latest.csv       ../../path/to/krollBD-triggers/data/snapshots/
-> cp data/snapshots/sfc_t9_corp_ros_latest.csv          ../../path/to/krollBD-triggers/data/snapshots/
-> cd ../../path/to/krollBD-triggers
-> git add data/ && git commit -m "data refresh $(date -u +%Y-%m-%dT%H:%M:%SZ)" && git push
-> ```
-> The dashboard reads them through the GitHub Contents API with the same PAT
-> it already uses for issue/dispatch calls (now requires the `repo` scope).
->
-> Why this repo and not a separate one: keeps the PAT scope to a single
-> repository and avoids cross-repo OAuth pain.
-
-`publish_triggers_to_github.py` already does a `git push` at the end of its
-run — it just needs to additionally stage the four CSVs. ~3 lines.
+For an ad-hoc local run (laptop), the user can do:
+```bash
+git add data/ && git commit -m "data refresh $(date -u +%Y-%m-%dT%H:%M:%SZ)" && git push
+```
 
 ## Things I punted on
 - **No CSV column auto-detection.** Drill-down assumes the headers in

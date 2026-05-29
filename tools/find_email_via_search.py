@@ -35,12 +35,14 @@ import os
 import re
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # repo root
+load_dotenv(PROJECT_ROOT / ".env")
 SERPAPI_KEY = os.environ.get("SERPAPI_KEY")
 
 # Matches masked-email patterns inside Google snippets.

@@ -17,13 +17,13 @@ permissions:
   issues: write
 
 concurrency:
-  group: weekly
+  group: data-writes  # shared with ad-hoc.yml + log_outreach.yml — never race on data/
   cancel-in-progress: false
 
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90   # weekly batches can exceed 45min when many new firms need classification
 
     env:
       SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
@@ -40,7 +40,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0   # full history so rebase before push works
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
@@ -51,6 +51,14 @@ jobs:
 
       - name: Install deps
         run: pip install -r requirements.txt
+
+      - name: Pre-flight snapshot precondition (when skipping scrape)
+        if: ${{ inputs.skip_scrape }}
+        run: |
+          if ! ls data/snapshots/sfc_t9_corps_latest.csv >/dev/null 2>&1; then
+            echo "::error::skip_scrape=true but no prior snapshot exists at data/snapshots/sfc_t9_corps_latest.csv"
+            exit 1
+          fi
 
       - name: Scrape SFC register
         if: ${{ !inputs.skip_scrape }}
@@ -70,12 +78,15 @@ jobs:
 
       - name: Commit + push data updates
         run: |
+          set -euo pipefail
           git config user.email "fengelh@gmail.com"
           git config user.name "krollBD-bot"
           git add data/
           if git diff --cached --quiet; then
             echo "No data changes this run."
-          else
-            git commit -m "weekly: $(date -u +%Y-%m-%d) refresh"
-            git push
+            exit 0
           fi
+          git commit -m "weekly: $(date -u +%Y-%m-%d) refresh"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin main && git push && break || sleep 5
+          done

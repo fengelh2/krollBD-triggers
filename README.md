@@ -132,11 +132,29 @@ GitHub Actions: `Settings → Secrets and variables → Actions`.
 | `ANTHROPIC_API_KEY` | Fallback classifier LLM |
 | `GITHUB_TOKEN` | `gh` CLI issue creation + repo push (auto in Actions) |
 
-Mirror local `.env` to GH Actions in one command:
+Mirror local `.env` to GH Actions (handles surrounding quotes + skips empty / commented keys):
+
 ```bash
+# bash
 for k in SERPAPI_KEY FIRECRAWL_API_KEY HUNTER_API_KEY HUNTER_EMAIL DEEPSEEK_API_KEY ANTHROPIC_API_KEY; do
-  gh secret set "$k" --repo fengelh2/krollBD --body "$(grep "^$k=" .env | cut -d= -f2-)"
+  val=$(grep -E "^$k=" .env | head -1 | cut -d= -f2- | sed -E 's/^"(.*)"$/\1/; s/^'"'"'(.*)'"'"'$/\1/')
+  if [ -n "$val" ]; then
+    gh secret set "$k" --repo fengelh2/krollBD --body "$val"
+  else
+    echo "skipping $k (empty or missing)"
+  fi
 done
+```
+
+```powershell
+# PowerShell
+foreach ($k in 'SERPAPI_KEY','FIRECRAWL_API_KEY','HUNTER_API_KEY','HUNTER_EMAIL','DEEPSEEK_API_KEY','ANTHROPIC_API_KEY') {
+  $line = Select-String -Path .env -Pattern "^$k=" | Select-Object -First 1
+  if (-not $line) { Write-Host "skipping $k (missing)"; continue }
+  $val = ($line.Line -replace "^$k=") -replace '^"(.*)"$','$1' -replace "^'(.*)'$",'$1'
+  if (-not $val) { Write-Host "skipping $k (empty)"; continue }
+  gh secret set $k --repo fengelh2/krollBD --body $val
+}
 ```
 
 (`GITHUB_TOKEN` is auto-injected by Actions, no need to set.)

@@ -3,7 +3,7 @@
 // can show/hide it without re-running fetches.
 
 (function () {
-  const REPO = "fengelh2/krollBD-triggers";
+  const REPO = "fengelh2/krollBD";
   const API = `https://api.github.com/repos/${REPO}/issues`;
   const DISPATCH = `https://api.github.com/repos/${REPO}/dispatches`;
   const CSV_URL = `https://raw.githubusercontent.com/${REPO}/main/outreach_log.csv`;
@@ -27,12 +27,13 @@
     el.className = has ? "pat-status pat-ok" : "pat-status pat-missing";
   }
   function promptForPat() {
-    const t = prompt(
-      "Paste a GitHub Personal Access Token with the 'public_repo' scope (or 'repo' for a private repo).\n\n" +
-      "Stored only in this browser's localStorage. Click Cancel to clear."
-    );
-    if (t === null) { setPat(""); return; }
-    if (t.trim()) setPat(t.trim());
+    // Prefer the shared in-page modal from app.js. Fall back to alert if
+    // the modal hook isn't loaded yet (rare race during cold start).
+    if (window.K && typeof window.K.promptForPat === "function") {
+      window.K.promptForPat();
+      return;
+    }
+    alert("Click the 'GitHub token' button at the top right to set your PAT, then try again.");
   }
 
   function getPending() { try { return new Set(JSON.parse(localStorage.getItem(PENDING_KEY) || "[]")); } catch { return new Set(); } }

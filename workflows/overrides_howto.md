@@ -14,7 +14,7 @@ This means SerpAPI's fallback picked the wrong site. You can correct it in 30 se
 Open the file in any text editor:
 
 ```
-projects/krollBD/data/website_overrides.csv
+data/website_overrides.csv
 ```
 
 Add ONE row at the bottom:
@@ -37,7 +37,7 @@ Save the file. Done.
 | When | What |
 |---|---|
 | **Next weekly classifier run** (Monday morning) | Auto-picks up your override. The firm gets re-classified using your URL. |
-| **Manual re-classify NOW** | Run `python projects/krollBD/tools/classify_strategy.py --cerefs ASK527 --force` |
+| **Manual re-classify NOW** | Run `python tools/classify_strategy.py --cerefs ASK527 --force` |
 | **Effect on the dashboard** | Next time you view the BD trigger card for that firm, the website + emails + strategy are based on the corrected URL. The chip should turn 🟢 verified or 🟦 probable. |
 
 ## Priority order the classifier uses
@@ -92,7 +92,7 @@ AAF157,https://aisance.com.hk,Aisance - was trinitusam,2026-05-29
 Then either let Monday's weekly run pick them all up, or force a batch re-run:
 
 ```powershell
-python projects/krollBD/tools/classify_strategy.py --cerefs ASK527,BUY347,AAF157 --force
+python tools/classify_strategy.py --cerefs ASK527,BUY347,AAF157 --force
 ```
 
 ## Bonus column: `skip_enrichment`
@@ -128,7 +128,7 @@ runs normally.
 
 ```
 See suspect website on dashboard
-  → Open projects/krollBD/data/website_overrides.csv
+  → Open data/website_overrides.csv
   → Add one row: ceref,corrected_url,reason,date
   → Save
   → Next weekly run picks it up (or force now with --cerefs CEREF --force)

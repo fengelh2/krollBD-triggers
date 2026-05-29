@@ -25,11 +25,25 @@ from __future__ import annotations
 
 import argparse
 import csv
+import os
 import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CSV_PATH = PROJECT_ROOT / "data" / "strategy_classification.csv"
+
+
+def _atomic_write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+    """Tmp + fsync + atomic replace. Prevents partial-write data loss on Ctrl+C / OOM."""
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with tmp.open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: r.get(k, "") for k in fieldnames})
+        f.flush()
+        os.fsync(f.fileno())
+    tmp.replace(path)
 
 # Multiple signals decide whether to keep extracted emails:
 #  - name_disambiguation_status (word-match heuristic; weak — gets fooled by
@@ -135,12 +149,7 @@ def main() -> None:
     if args.dry_run:
         return
 
-    # Write back
-    with CSV_PATH.open("w", encoding="utf-8-sig", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
-        w.writeheader()
-        for r in rows:
-            w.writerow({k: r.get(k, "") for k in fieldnames})
+    _atomic_write_csv(CSV_PATH, fieldnames, rows)
     print(f"Updated {CSV_PATH}", file=sys.stderr)
 
 

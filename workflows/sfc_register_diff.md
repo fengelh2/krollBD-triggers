@@ -33,9 +33,11 @@ Every Monday:
 
   4. DIFF + PUBLISH publish_triggers_to_github.py
                     Compares latest vs prev snapshots. For each new trigger:
-                    - writes meta to data/issue_meta/{trigger_id}.json on the
-                      krollBD-triggers repo (via git push, bypasses GH abuse
-                      filter)
+                    - runs the on-trigger enrichment cascade (deep-scrape +
+                      Hunter.io) for that one firm/RO — see
+                      workflows/enrichment_cascade.md
+                    - writes meta to data/issue_meta/{trigger_id}.json in this
+                      repo (via git push, bypasses GH abuse filter)
                     - creates a minimal-body GH issue referencing the meta file
                     Dashboard shows the trigger card with strategy chips,
                     email candidates, drafted email.
@@ -46,40 +48,50 @@ You: open dashboard → review cards → copy email → send → mark as reached
 
 ## File layout
 
+Single-repo, served by GitHub Pages at https://fengelh2.github.io/krollBD/.
+
 ```
-projects/krollBD/
-├── CLAUDE.md                              project context for future Claude sessions
+fengelh2/krollBD/                          single source of truth
+├── README.md
+├── requirements.txt                       pinned deps
+├── .env.example                           copy to .env (gitignored) for local
+├── .github/workflows/
+│   ├── weekly.yml                         Mon 00:00 UTC cron
+│   └── ad-hoc.yml                         manual backfills
 ├── data/
-│   ├── snapshots/                         WEEKLY refresh — overwritten
+│   ├── snapshots/                         WEEKLY refresh
 │   │   ├── sfc_t9_corps_latest.csv        ~4,290 corps · 9 cols incl. website_url_sfc
 │   │   ├── sfc_t9_corps_prev.csv
 │   │   ├── sfc_t9_individuals_latest.csv  ~50,768 people · parsed name fields
 │   │   ├── sfc_t9_individuals_prev.csv
 │   │   ├── sfc_t9_corp_ros_latest.csv     ~8,693 (corp,RO) pairs
 │   │   └── sfc_t9_corp_ros_prev.csv
-│   │
 │   ├── strategy_classification.csv        ACCUMULATING — one row per firm
-│   │                                       ~30 cols incl. asset_classes,
-│   │                                       illiq_likelihood, AUM, emails,
-│   │                                       website_accuracy, classification_source
-│   │
+│   ├── issue_meta/                        one JSON per fired trigger
+│   ├── hunter_io_cache.json               TTL-aware per-RO lookup cache
 │   ├── firm_pages/{ceref}.md              scraped markdown cache (gitignored)
 │   ├── name_natural_overrides.csv         manual: clean up firm names
-│   └── website_overrides.csv              manual: correct wrong-website hits
-│                                          → see overrides_howto.md
+│   └── website_overrides.csv              manual: correct wrong-website + skip_enrichment
 │
-├── tools/
-│   ├── scrape_sfc_register.py             #1 above
-│   ├── classify_strategy.py               #2
+├── tools/                                 the pipeline
+│   ├── scrape_sfc_register.py             #1
+│   ├── classify_strategy.py               #2 (sticky-fields merge on dedup)
 │   ├── verify_emails_against_disambig.py  #3
 │   ├── derive_website_accuracy.py         #3b
-│   ├── publish_triggers_to_github.py      #4
-│   ├── diff_sfc_snapshots.py              diff helper (markdown report)
-│   └── find_email_via_search.py           SerpAPI aggregator email-pattern finder
+│   ├── publish_triggers_to_github.py      #4 (calls deep-scrape + Hunter inline)
+│   ├── deep_scrape_contact_pages.py       cascade Layer 2 (merge-preserving writes)
+│   ├── hunter_io.py                       cascade Layer 4 (quota-guarded, typed status)
+│   ├── find_email_via_search.py           SerpAPI aggregator helper
+│   ├── llm_router.py                      LLM provider router
+│   └── diff_sfc_snapshots.py              diff helper (markdown report)
 │
-└── workflows/
-    ├── sfc_register_diff.md               THIS FILE — the master flow
-    └── overrides_howto.md                 how to fix wrong website matches
+├── workflows/
+│   ├── sfc_register_diff.md               THIS FILE — master flow
+│   ├── enrichment_cascade.md              cascade design, gates, cost ledger
+│   └── overrides_howto.md                 manual overrides + skip_enrichment flag
+│
+├── outreach_log.csv                       appended via GH Action on "Mark as reached out"
+└── index.html + *.js + style.css          dashboard (served from / by GH Pages)
 ```
 
 ## Snapshot rotation
@@ -103,8 +115,10 @@ For each new trigger (C1=new corp, C2=retirement, R1=new RO, C5=rebrand):
    - aggregator-declared pattern via SerpAPI → apply to RO's name
    - pattern guesses (first.last, firstlast, flast, etc.) against verified domain
    - generic inbox guesses (info@, compliance@, ir@)
-4. Hunter.io key in .env (not yet wired into publisher — TODO)
-5. writes meta file to `data/issue_meta/{trigger_id}.json` in krollBD-triggers repo
+4. on-trigger enrichment cascade: deep-scrape + Hunter.io fire automatically
+   for illiq=high|medium firms (see workflows/enrichment_cascade.md Layer 2);
+   Hunter hits land as `hunter_verified` candidates at the top of the list
+5. writes meta file to `data/issue_meta/{trigger_id}.json` in this repo
 6. creates GH issue with minimal body + META_FILE reference
 7. dashboard reads issue, fetches meta file, renders card with confidence-colored chips
 
@@ -122,7 +136,7 @@ For each new trigger (C1=new corp, C2=retirement, R1=new RO, C5=rebrand):
 
 ## Dashboard
 
-https://fengelh2.github.io/krollBD-triggers/
+https://fengelh2.github.io/krollBD/
 
 PAT-authenticated (private repo). Pulls open issues, fetches each meta file
 from the repo via Contents API.

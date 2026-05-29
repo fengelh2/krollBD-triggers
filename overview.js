@@ -190,6 +190,7 @@
         desc: "BD-relevant · verified or probable site · no email on site",
         action: "Run Hunter.io domain-search per CEREF (50/mo free)",
         impact: "high", rows: rank(hunter),
+        href: "#/corps?illiq=bd&wa=site&email=no",
       },
       {
         id: "no-site", title: "Website discovery — SerpAPI rerun",
@@ -197,6 +198,7 @@
         desc: "BD-relevant · no website found at all",
         action: "Add `website_overrides.csv` row or rerun classifier",
         impact: "high", rows: rank(noSite),
+        href: "#/corps?illiq=bd&wa=not_found",
       },
       {
         id: "thin", title: "Deeper scrape — suspect / unverified",
@@ -204,6 +206,7 @@
         desc: "BD-relevant · website match flagged suspect or unverified",
         action: "Deep-scrape with JS-wait; re-classify",
         impact: "medium", rows: rank(thin),
+        href: "#/corps?illiq=bd&wa=suspect",
       },
       {
         id: "only-generic", title: "Named-person email — LinkedIn / Hunter",
@@ -211,6 +214,7 @@
         desc: "BD-relevant · only generic inbox (info@, contact@) on site",
         action: "LinkedIn / Hunter person-finder for the primary RO",
         impact: "medium", rows: rank(onlyGeneric),
+        href: "#/corps?illiq=bd&wa=site&email=generic_only",
       },
       {
         id: "no-aum", title: "AUM lookup — Form ADV / press",
@@ -218,20 +222,28 @@
         desc: "BD-relevant · no AUM extracted",
         action: "Hand-check Form ADV / press releases / 13F filings",
         impact: "low", rows: rank(noAum),
+        href: "#/corps?illiq=bd&aum=no",
       },
     ];
 
-    $("#ov-improve").innerHTML = queues.map(q => `
+    $("#ov-improve").innerHTML = queues.map(q => {
+      const aumDisclosed = q.rows.slice(0, 5).filter(r => r.aum_usd_m).length;
+      const sumLabel = aumDisclosed === 0
+        ? "Top 5 (alphabetical — none have AUM disclosed)"
+        : aumDisclosed === 5
+          ? "Top 5 (by AUM)"
+          : "Top 5 (AUM-disclosed first · ties alphabetical)";
+      return `
       <div class="improve-card impact-${q.impact}">
         <div class="improve-head">
-          <h3>${esc(q.title)}</h3>
+          <h3><a href="${q.href}">${esc(q.title)}</a></h3>
           <span class="improve-count">+${q.unlock.toLocaleString()}</span>
         </div>
         <p class="improve-desc">${esc(q.desc)}</p>
-        <p class="improve-unlock"><strong>${q.unlock.toLocaleString()}</strong> firms ${esc(q.unlockLabel)}</p>
+        <p class="improve-unlock"><strong>${q.unlock.toLocaleString()}</strong> firms ${esc(q.unlockLabel)} · <a href="${q.href}">see all</a></p>
         <p class="improve-action"><span class="lbl">Action:</span> ${esc(q.action)}</p>
         <details class="improve-details">
-          <summary>Top 5 (AUM-disclosed first)</summary>
+          <summary>${esc(sumLabel)}</summary>
           <ol class="improve-list">
             ${q.rows.slice(0, 5).map(r => `
               <li>
@@ -242,7 +254,8 @@
           </ol>
         </details>
       </div>
-    `).join("");
+    `;
+    }).join("");
   }
 
   // =====================================================================
@@ -292,7 +305,7 @@
       svg += `<text x="${x + 4}" y="${yTop + barH/2 + 4}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">n=${total}</text>`;
     });
     svg += `<line x1="${PAD_L}" y1="${H - PAD_B}" x2="${W - PAD_R}" y2="${H - PAD_B}" stroke="#e4e6ea"/>`;
-    svg += `<text x="${PAD_L}" y="${H - 8}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">total = 2,814 classified firms · bar width = count</text>`;
+    svg += `<text x="${PAD_L}" y="${H - 8}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">total = ${C.length.toLocaleString()} classified firms · bar width = count</text>`;
     $("#ov-wa-chart").innerHTML = svg;
     $("#ov-wa-legend").innerHTML = buckets.map(b =>
       `<span class="legend-item"><span class="swatch" style="background:${colors[b]}"></span>${b}</span>`
@@ -350,7 +363,7 @@
       const bdays = created ? businessDaysBetween(created, now) : 0;
       const slaCls = bdays > SLA_BUSINESS_DAYS ? "sla-overdue" : bdays > 3 ? "sla-warn" : "sla-ok";
       const firm = m ? m.firm : (i.title || "").replace(/^\[[^\]]+\]\s*/, "");
-      const tType = m ? m.type : ((i.title.match(/^\[([A-Z0-9]+)\]/) || [])[1] || "");
+      const tType = m ? m.type : (((i.title || "").match(/^\[([A-Z0-9]+)\]/) || [])[1] || "");
       return `
         <a class="trigger-chip ${slaCls}" href="#/triggers">
           <span class="t-type">${esc(tType)}</span>
@@ -388,6 +401,9 @@
   // Refresh action panel + triggers strip when issues load
   window.addEventListener("triggers-loaded", () => {
     if (!window.__data) return;
+    // Don't waste cycles re-rendering Overview when the user is on another tab.
+    const overviewEl = document.getElementById("view-overview");
+    if (overviewEl && overviewEl.hidden) return;
     const sets = buildSets(window.__data);
     renderActionPanel(sets);
     renderTriggersStrip();

@@ -61,6 +61,7 @@
     }
     if (f.email === "yes" && !K.hasEmail(r)) return false;
     if (f.email === "no" && K.hasEmail(r)) return false;
+    if (f.email === "generic_only" && !(!K.hasEmail(r) && K.hasGenericEmail(r))) return false;
     if (f.ac && !String(r.asset_classes || "").split(",").map(s => s.trim()).includes(f.ac)) return false;
     if (f.aum === "yes" && !K.hasAum(r)) return false;
     if (f.aum === "no" && K.hasAum(r)) return false;
@@ -135,8 +136,16 @@
     }).join("")}</tbody>`;
     const tbl = $("#corps-table");
     tbl.innerHTML = head + body;
+    // Remove any prior truncation banner, re-add if needed.
+    const prevBanner = document.getElementById("corps-truncation");
+    if (prevBanner) prevBanner.remove();
     if (rows.length > MAX) {
-      tbl.insertAdjacentHTML("afterend", ""); // noop, footer below
+      tbl.insertAdjacentHTML(
+        "afterend",
+        `<div id="corps-truncation" class="muted-text" style="padding:8px 4px;font-size:12px">
+           Showing first ${MAX.toLocaleString()} of ${rows.length.toLocaleString()} matches — narrow the filter to see more.
+         </div>`
+      );
     }
 
     // sort handlers
@@ -253,6 +262,16 @@
           <td>${(pairsByRo[r.ceref] || []).length}</td>
         </tr>`).join("")}</tbody>
     `;
+    const prevBanner = document.getElementById("ind-truncation");
+    if (prevBanner) prevBanner.remove();
+    if (rows.length > MAX) {
+      $("#ind-table").insertAdjacentHTML(
+        "afterend",
+        `<div id="ind-truncation" class="muted-text" style="padding:8px 4px;font-size:12px">
+           Showing first ${MAX.toLocaleString()} of ${rows.length.toLocaleString()} matches — type into the search box to narrow.
+         </div>`
+      );
+    }
     $("#ind-table").querySelectorAll("tbody tr").forEach(tr => tr.addEventListener("click", () => drillInd(tr.dataset.ceref)));
   }
   function drillInd(ceref) {
@@ -305,6 +324,16 @@
           <td>${esc(p.ro_ra_types)}</td>
         </tr>`).join("")}</tbody>
     `;
+    const prevBanner = document.getElementById("pairs-truncation");
+    if (prevBanner) prevBanner.remove();
+    if (rows.length > MAX) {
+      $("#pairs-table").insertAdjacentHTML(
+        "afterend",
+        `<div id="pairs-truncation" class="muted-text" style="padding:8px 4px;font-size:12px">
+           Showing first ${MAX.toLocaleString()} of ${rows.length.toLocaleString()} matches — narrow the corp/RO search.
+         </div>`
+      );
+    }
   }
   function wirePairs() {
     $("#pairs-search-corp").addEventListener("input", e => { PAIRS_STATE.corp = e.target.value; renderPairsTable(); });

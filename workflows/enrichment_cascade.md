@@ -60,13 +60,15 @@ have a specific person to find and outreach is imminent.
 
 ## Layer 1 — Weekly Monday batch (auto, ~30 min)
 
+In CI this runs from `.github/workflows/weekly.yml`. For a local manual run:
+
 ```bash
-cd "c:/Users/asus/Agentic Workflows"
-python projects/krollBD/tools/scrape_sfc_register.py            # ~15 min
-python projects/krollBD/tools/classify_strategy.py              # ~5 min (incremental on new/changed)
-python projects/krollBD/tools/verify_emails_against_disambig.py # ~5 sec
-python projects/krollBD/tools/derive_website_accuracy.py        # ~1 sec
-python projects/krollBD/tools/publish_triggers_to_github.py     # ~1-3 min — triggers on-trigger cascade
+cd <repo-root>          # the krollBD repo clone
+python tools/scrape_sfc_register.py            # ~15 min
+python tools/classify_strategy.py              # ~5 min (incremental on new/changed)
+python tools/verify_emails_against_disambig.py # ~5 sec
+python tools/derive_website_accuracy.py        # ~1 sec
+python tools/publish_triggers_to_github.py     # ~1-3 min — triggers on-trigger cascade
 ```
 
 This run does:
@@ -117,10 +119,13 @@ When Felix wants to sweep a cohort (e.g. all unverified-BD firms):
 
 ```bash
 # Dry-run first to eyeball candidates
-python projects/krollBD/tools/deep_scrape_contact_pages.py --scope unverified-bd --dry-run
+python tools/deep_scrape_contact_pages.py --scope unverified-bd --dry-run
 
 # Then real run if list looks right
-python projects/krollBD/tools/deep_scrape_contact_pages.py --scope unverified-bd
+python tools/deep_scrape_contact_pages.py --scope unverified-bd
+
+# Or trigger from GitHub UI via the ad-hoc.yml workflow:
+gh workflow run ad-hoc.yml --repo fengelh2/krollBD -f task=deep_scrape -f scope=unverified-bd
 ```
 
 Available scopes: `verified | verified-high | verified-bd | probable | probable-high | probable-bd | unverified-bd`

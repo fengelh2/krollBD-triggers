@@ -2,10 +2,15 @@
 
 Used by `publish_triggers_to_github.py` at trigger time. Cap is 50 lookups/mo
 on the free tier, so this module:
-  - Caches every lookup on disk so re-runs are free
-  - Tracks remaining quota (best-effort, via /account endpoint)
-  - Refuses to call if remaining quota < HUNTER_FLOOR
-  - Returns a structured record the publisher can fold into email_candidates()
+  - Caches every lookup on disk (TTL-aware) so re-runs are free
+  - Tracks remaining quota via /account
+  - Refuses to call if remaining quota < QUOTA_FLOOR
+  - FAILS CLOSED on quota probe failure (returns None) — never burns quota
+    when we can't see what's left
+  - Returns a typed status so the publisher can distinguish "no match",
+    "quota exhausted", "rate limited", "error" and persist the right marker
+  - Cache writes use a cross-process file lock; reads merge in fresh on-disk
+    entries before write to avoid concurrent-clobber
 
 Quota policy lives here, not in the publisher. Publisher just calls
 `find_email(domain, first, last)` and trusts the return.
@@ -16,6 +21,7 @@ from __future__ import annotations
 import json
 import os
 import datetime as dt
+import threading
 from pathlib import Path
 
 import requests
@@ -26,9 +32,74 @@ load_dotenv(PROJECT_ROOT / ".env")
 
 API_KEY = os.environ.get("HUNTER_API_KEY")
 CACHE_PATH = PROJECT_ROOT / "data" / "hunter_io_cache.json"
-QUOTA_FLOOR = 5  # never burn the last 5 lookups — reserved for ad-hoc + retries
+LOCK_PATH = PROJECT_ROOT / "data" / ".hunter_io_cache.lock"
+QUOTA_FLOOR = 5     # never burn the last 5 lookups — reserved for ad-hoc + retries
+MISS_TTL_DAYS = 60  # cached "no match" expires after this; hits are permanent
 TIMEOUT = 15
 
+# Typed status enum for find_email() return:
+STATUS_OK = "ok"                       # email found
+STATUS_NO_MATCH = "no_match"           # Hunter explicitly returned no email
+STATUS_QUOTA_EXHAUSTED = "quota_exhausted"  # 402, or remaining < QUOTA_FLOOR
+STATUS_QUOTA_UNKNOWN = "quota_unknown"      # /account probe failed → fail closed
+STATUS_RATE_LIMITED = "rate_limited"   # 429
+STATUS_ERROR = "error"                 # any other failure
+STATUS_NOT_CONFIGURED = "not_configured"    # no API key
+
+_thread_lock = threading.Lock()
+
+
+# ---------------- cross-process file lock ----------------
+
+class _FileLock:
+    """Cross-process advisory lock. Uses msvcrt on Windows, fcntl on POSIX.
+    Falls back to no-op if neither is available (best-effort)."""
+
+    def __init__(self, path: Path):
+        self.path = path
+        self._fh = None
+
+    def __enter__(self):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._fh = open(self.path, "a+b")
+        try:
+            if os.name == "nt":
+                import msvcrt
+                # Block until lock acquired (we accept the small chance of starvation).
+                while True:
+                    try:
+                        msvcrt.locking(self._fh.fileno(), msvcrt.LK_LOCK, 1)
+                        break
+                    except OSError:
+                        continue
+            else:
+                import fcntl
+                fcntl.flock(self._fh.fileno(), fcntl.LOCK_EX)
+        except Exception:
+            pass  # best-effort
+        return self
+
+    def __exit__(self, *_):
+        try:
+            if os.name == "nt":
+                import msvcrt
+                try:
+                    self._fh.seek(0)
+                    msvcrt.locking(self._fh.fileno(), msvcrt.LK_UNLCK, 1)
+                except OSError:
+                    pass
+            else:
+                import fcntl
+                fcntl.flock(self._fh.fileno(), fcntl.LOCK_UN)
+        except Exception:
+            pass
+        try:
+            self._fh.close()
+        except Exception:
+            pass
+
+
+# ---------------- cache I/O ----------------
 
 def _load_cache() -> dict:
     if not CACHE_PATH.exists():
@@ -39,21 +110,50 @@ def _load_cache() -> dict:
         return {}
 
 
-def _save_cache(cache: dict) -> None:
-    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    tmp = CACHE_PATH.with_suffix(".tmp")
-    tmp.write_text(json.dumps(cache, indent=2, ensure_ascii=False), encoding="utf-8")
-    tmp.replace(CACHE_PATH)
+def _save_cache_merged(updates: dict) -> None:
+    """Re-read disk, merge our updates on top, write back atomically under lock.
+    This prevents concurrent processes from clobbering each other's new entries."""
+    with _FileLock(LOCK_PATH):
+        cur = _load_cache()
+        cur.update(updates)
+        CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        tmp = CACHE_PATH.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(cur, indent=2, ensure_ascii=False), encoding="utf-8")
+        try:
+            with open(tmp, "rb+") as f:
+                f.flush()
+                os.fsync(f.fileno())
+        except Exception:
+            pass
+        tmp.replace(CACHE_PATH)
 
 
 def _cache_key(domain: str, first: str, last: str) -> str:
     return f"{(domain or '').lower().strip()}|{(first or '').lower().strip()}|{(last or '').lower().strip()}"
 
 
+def _miss_expired(rec: dict) -> bool:
+    """A cached 'no_match' record is expired after MISS_TTL_DAYS so we re-query.
+    Hits are permanent."""
+    if (rec.get("status") or "") != STATUS_NO_MATCH:
+        return False
+    fetched = rec.get("fetched_at_utc") or ""
+    if not fetched:
+        return True
+    try:
+        when = dt.datetime.fromisoformat(fetched.rstrip("Z"))
+        age = dt.datetime.now(dt.UTC).replace(tzinfo=None) - when.replace(tzinfo=None)
+        return age.days >= MISS_TTL_DAYS
+    except Exception:
+        return True
+
+
+# ---------------- public API ----------------
+
 def remaining_quota() -> int:
-    """Best-effort — Hunter's /account endpoint returns the current monthly
-    usage. Returns -1 if API is unreachable or key missing (callers should
-    treat -1 as 'unknown, skip'). Free tier defaults to 50/mo."""
+    """Returns remaining /email-finder lookups this month.
+    Returns -1 if API is unreachable or key missing.
+    Free tier defaults to 50/mo."""
     if not API_KEY:
         return -1
     try:
@@ -65,8 +165,6 @@ def remaining_quota() -> int:
         if not r.ok:
             return -1
         data = r.json().get("data", {})
-        # Two possible shapes: requests.available - requests.used, or
-        # requests.searches.available - requests.searches.used. Try both.
         rq = data.get("requests", {})
         if isinstance(rq, dict):
             if "searches" in rq:
@@ -80,31 +178,51 @@ def remaining_quota() -> int:
 
 
 def find_email(domain: str, first: str, last: str) -> dict | None:
-    """Return a dict like:
+    """Return a typed record:
       {
-        "email": "kmcgann@hamiltonlane.com",
-        "score": 92,
-        "confidence": "high",   # high|medium|low (derived from score)
-        "verification_status": "valid",  # Hunter's own field
+        "status": "ok" | "no_match" | "quota_exhausted" | "quota_unknown"
+                  | "rate_limited" | "error" | "not_configured",
+        "email": "kmcgann@hamiltonlane.com" | None,
+        "score": int | None,
+        "confidence": "high"|"medium"|"low"|"none",
+        "verification_status": "valid" | "invalid" | "no_match" | "unknown",
         "source": "hunter.io",
         "fetched_at_utc": "...",
-        "quota_remaining_when_fetched": 47,
+        "quota_remaining_when_fetched": int,
       }
-    Returns None if no result, or if quota too low, or domain/name empty.
 
-    Callers MUST treat None as "skip Hunter for this RO this run."
+    Callers should:
+      - status == "ok"               → use email
+      - status == "no_match"         → fall through to pattern guess
+      - status == "quota_exhausted"  → mark for retry next month
+      - status == "quota_unknown"    → mark for retry; could be transient outage
+      - status == "rate_limited"     → mark for retry next run
+      - status == "error"            → mark for retry next run
+      - status == "not_configured"   → silently skip (no key set)
+    Returns None only when domain/first/last is missing — never on API failure.
     """
-    if not (API_KEY and domain and first and last):
+    if not (domain and first and last):
         return None
+    if not API_KEY:
+        return _record(STATUS_NOT_CONFIGURED, qr=-1)
+
     key = _cache_key(domain, first, last)
-    cache = _load_cache()
-    if key in cache:
-        return cache[key]
+    # Thread-local fast-path: dedup same-process duplicate calls.
+    with _thread_lock:
+        cache = _load_cache()
+        if key in cache and not _miss_expired(cache[key]):
+            return cache[key]
 
     qr = remaining_quota()
-    if qr != -1 and qr < QUOTA_FLOOR:
-        # don't burn the floor
-        return None
+    # FAIL CLOSED: if probe failed (qr=-1) OR below floor, do NOT call /email-finder.
+    if qr == -1:
+        rec = _record(STATUS_QUOTA_UNKNOWN, qr=qr)
+        # Don't cache — transient.
+        return rec
+    if qr < QUOTA_FLOOR:
+        rec = _record(STATUS_QUOTA_EXHAUSTED, qr=qr)
+        # Don't cache — quota resets monthly.
+        return rec
 
     try:
         r = requests.get(
@@ -117,44 +235,59 @@ def find_email(domain: str, first: str, last: str) -> dict | None:
             },
             timeout=TIMEOUT,
         )
-    except Exception:
-        return None
+    except Exception as e:
+        return _record(STATUS_ERROR, qr=qr, err=str(e))
 
-    if r.status_code == 402:  # quota exhausted
-        return None
+    if r.status_code == 402:
+        return _record(STATUS_QUOTA_EXHAUSTED, qr=qr)
+    if r.status_code == 429:
+        return _record(STATUS_RATE_LIMITED, qr=qr)
     if not r.ok:
-        return None
+        return _record(STATUS_ERROR, qr=qr, err=f"HTTP {r.status_code}")
 
-    data = (r.json() or {}).get("data") or {}
+    try:
+        data = (r.json() or {}).get("data") or {}
+    except Exception as e:
+        return _record(STATUS_ERROR, qr=qr, err=f"json: {e}")
+
     email = data.get("email")
     if not email:
-        # cache the miss too so we don't re-query
-        miss = {
-            "email": None,
-            "score": None,
-            "confidence": "none",
-            "verification_status": data.get("verification", {}).get("status") or "no_match",
-            "source": "hunter.io",
-            "fetched_at_utc": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
-            "quota_remaining_when_fetched": qr,
-        }
-        cache[key] = miss
-        _save_cache(cache)
-        return miss
+        rec = _record(
+            STATUS_NO_MATCH, qr=qr,
+            email=None,
+            verification_status=(data.get("verification") or {}).get("status") or "no_match",
+        )
+        _save_cache_merged({key: rec})
+        return rec
 
     score = int(data.get("score") or 0)
     conf = "high" if score >= 85 else "medium" if score >= 60 else "low"
+    rec = _record(
+        STATUS_OK, qr=qr,
+        email=email.lower().strip(),
+        score=score,
+        confidence=conf,
+        verification_status=(data.get("verification") or {}).get("status") or "unknown",
+    )
+    _save_cache_merged({key: rec})
+    return rec
+
+
+def _record(status: str, *, qr: int = -1, email=None, score=None,
+            confidence: str = "none", verification_status: str = "unknown",
+            err: str | None = None) -> dict:
     rec = {
-        "email": email.lower().strip(),
+        "status": status,
+        "email": email,
         "score": score,
-        "confidence": conf,
-        "verification_status": (data.get("verification") or {}).get("status") or "unknown",
+        "confidence": confidence,
+        "verification_status": verification_status,
         "source": "hunter.io",
         "fetched_at_utc": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
         "quota_remaining_when_fetched": qr,
     }
-    cache[key] = rec
-    _save_cache(cache)
+    if err:
+        rec["error"] = err
     return rec
 
 

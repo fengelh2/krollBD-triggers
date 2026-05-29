@@ -10,7 +10,15 @@ This tool:
   - Extracts emails (firm-domain-filtered, same logic as classifier)
   - Appends discovered pages to firm_pages/{ceref}.md cache
   - Merges new emails into emails_on_site / generic_emails_on_site
-  - Stamps deep_scrape_attempted_utc (idempotent — re-runs skip done firms)
+  - Stamps deep_scrape_attempted_utc + deep_scrape_status (idempotent)
+
+Concurrency-safety:
+  - Owns only these columns: emails_on_site (union-only), generic_emails_on_site
+    (union-only), deep_scrape_attempted_utc, deep_scrape_status.
+  - Before each checkpoint, re-reads the on-disk CSV and merges only owned columns
+    back into the fresh rows. This prevents clobbering concurrent classify_strategy
+    appends or manual Excel edits to non-owned columns.
+  - Writes are atomic via tmp + os.replace, with fsync before replace.
 
 Usage:
   python deep_scrape_contact_pages.py --scope verified-bd --dry-run
@@ -24,12 +32,13 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime as dt
+import os
 import sys
 import time
 from pathlib import Path
 from urllib.parse import urlparse
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # repo root
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from classify_strategy import (  # noqa: E402
@@ -50,7 +59,21 @@ CONTACT_PATHS = [
     "/leadership",
 ]
 
-NEW_COL = "deep_scrape_attempted_utc"
+STAMP_COL = "deep_scrape_attempted_utc"
+STATUS_COL = "deep_scrape_status"
+# Columns this tool is allowed to update; everything else is read-only.
+OWNED_COLS = {"emails_on_site", "generic_emails_on_site", STAMP_COL, STATUS_COL}
+
+# deep_scrape_status enum:
+#   ok             - emails found
+#   no_emails      - HTML reached but no @ matches
+#   no_pages       - every candidate path was unreachable / robots-disallowed
+#   error          - exception during fetch / parsing
+#   skipped_no_url - row had no website_url
+STATUS_OK = "ok"
+STATUS_NO_EMAILS = "no_emails"
+STATUS_NO_PAGES = "no_pages"
+STATUS_ERROR = "error"
 
 
 def domain_of(url: str) -> str:
@@ -88,7 +111,7 @@ def needs_scrape(row: dict) -> bool:
         (row.get("emails_on_site") or "").strip()
         or (row.get("generic_emails_on_site") or "").strip()
     )
-    already_done = bool((row.get(NEW_COL) or "").strip())
+    already_done = bool((row.get(STAMP_COL) or "").strip())
     return has_site and not has_email and not already_done
 
 
@@ -110,9 +133,13 @@ def fetch_contact_pages(website_url: str) -> tuple[str, list[str]]:
 
 
 def merge_emails(existing_csv: str, new_list: list[str]) -> str:
-    cur = {e.strip().lower() for e in existing_csv.split(",") if e.strip()}
+    """Union the two sources. Guards against malformed tokens (must contain '@')."""
+    cur = {e.strip().lower() for e in (existing_csv or "").split(",")
+           if e.strip() and "@" in e}
     for e in new_list:
-        cur.add(e.lower())
+        e = (e or "").strip().lower()
+        if e and "@" in e:
+            cur.add(e)
     return ",".join(sorted(cur))
 
 
@@ -129,16 +156,17 @@ def main():
     ap.add_argument("--cerefs", default="", help="comma-separated cerefs to target")
     args = ap.parse_args()
 
-    rows = list(csv.DictReader(open(OUT_PATH, encoding="utf-8-sig")))
+    rows = _read_csv()
     if not rows:
         print("no rows in classification CSV", file=sys.stderr)
         sys.exit(1)
 
     fieldnames = list(rows[0].keys())
-    if NEW_COL not in fieldnames:
-        fieldnames.append(NEW_COL)
-        for r in rows:
-            r[NEW_COL] = ""
+    for col in (STAMP_COL, STATUS_COL):
+        if col not in fieldnames:
+            fieldnames.append(col)
+            for r in rows:
+                r[col] = ""
 
     target_cerefs = {c.strip() for c in args.cerefs.split(",") if c.strip()}
 
@@ -173,18 +201,25 @@ def main():
     found_generic = 0
     pages_fetched_total = 0
     fc_calls_est = 0
-    now = dt.datetime.now(dt.UTC).isoformat(timespec="seconds")
+
+    # Track per-firm deltas so we only write the columns we own.
+    # Key: ceref → dict of owned-column updates.
+    deltas: dict[str, dict] = {}
 
     for i, r in enumerate(candidates, 1):
         ceref = r["ceref"]
-        url = r["website_url"].strip()
+        url = (r.get("website_url") or "").strip()
         fd = domain_of(url)
+        now = dt.datetime.now(dt.UTC).isoformat(timespec="seconds")
         print(f"[{i}/{len(candidates)}] {ceref}  {url}")
+
+        delta: dict = {STAMP_COL: now}
         try:
             md, paths = fetch_contact_pages(url)
         except Exception as e:
             print(f"  ERROR: {e}")
-            r[NEW_COL] = now + " (error)"
+            delta[STATUS_COL] = STATUS_ERROR
+            deltas[ceref] = delta
             continue
 
         fc_calls_est += len(CONTACT_PATHS)
@@ -192,10 +227,10 @@ def main():
             pages_fetched_total += len(paths)
             named, generic = extract_emails_from_md(md, fd)
             if named or generic:
-                old_named = r.get("emails_on_site", "")
-                old_generic = r.get("generic_emails_on_site", "")
-                r["emails_on_site"] = merge_emails(old_named, named)
-                r["generic_emails_on_site"] = merge_emails(old_generic, generic)
+                # Merge into the in-memory row; will be reconciled with disk at write time.
+                delta["emails_on_site"] = merge_emails(r.get("emails_on_site", ""), named)
+                delta["generic_emails_on_site"] = merge_emails(r.get("generic_emails_on_site", ""), generic)
+                delta[STATUS_COL] = STATUS_OK
                 found_emails += 1
                 found_named += len(named)
                 found_generic += len(generic)
@@ -206,16 +241,21 @@ def main():
                     f.write(f"\n\n---\n# deep_scrape {now}\n")
                     f.write(md)
             else:
+                delta[STATUS_COL] = STATUS_NO_EMAILS
                 print(f"  - no emails (paths fetched: {paths})")
         else:
+            delta[STATUS_COL] = STATUS_NO_PAGES
             print("  - no contact pages reachable")
 
-        r[NEW_COL] = now
+        # Reflect on in-memory row so subsequent reads (and final write) see it.
+        for k, v in delta.items():
+            r[k] = v
+        deltas[ceref] = delta
 
         if i % 10 == 0:
-            write_csv(rows, fieldnames)
+            _checkpoint(deltas, fieldnames)
 
-    write_csv(rows, fieldnames)
+    _checkpoint(deltas, fieldnames)
 
     print()
     print(f"firms processed:     {len(candidates)}")
@@ -226,14 +266,59 @@ def main():
     print(f"upper-bound fetch calls: {fc_calls_est}  (plain-HTTP first, Firecrawl only on thin)")
 
 
-def write_csv(rows, fieldnames):
+def _read_csv() -> list[dict]:
+    with open(OUT_PATH, encoding="utf-8-sig") as f:
+        return list(csv.DictReader(f))
+
+
+def _checkpoint(deltas: dict[str, dict], fieldnames: list[str]) -> None:
+    """Re-read CSV from disk, apply our owned-column deltas only, atomic-replace.
+
+    This is the merge step that prevents clobbering concurrent writes from
+    classify_strategy or manual edits to non-owned columns.
+    """
+    if not deltas:
+        return
+    fresh_rows = _read_csv()
+    fresh_field = list(fresh_rows[0].keys()) if fresh_rows else fieldnames
+    # Ensure our owned columns exist in the fieldset we're about to write.
+    for col in (STAMP_COL, STATUS_COL):
+        if col not in fresh_field:
+            fresh_field.append(col)
+            for r in fresh_rows:
+                r[col] = ""
+    # Apply deltas: only the owned columns flow through.
+    by_ceref = {r["ceref"]: r for r in fresh_rows}
+    for ceref, delta in deltas.items():
+        target = by_ceref.get(ceref)
+        if target is None:
+            continue
+        for col in OWNED_COLS:
+            if col in delta:
+                if col in ("emails_on_site", "generic_emails_on_site"):
+                    # Union-only: never downgrade. Merge delta with current disk value.
+                    target[col] = merge_emails(target.get(col, ""), [e for e in (delta[col] or "").split(",") if e])
+                else:
+                    target[col] = delta[col]
+    _atomic_write(fresh_rows, fresh_field)
+
+
+def _atomic_write(rows: list[dict], fieldnames: list[str]) -> None:
+    """Write to .tmp, fsync, atomic replace. utf-8 (no BOM) standard."""
     tmp = OUT_PATH.with_suffix(".csv.tmp")
     with open(tmp, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         for r in rows:
             w.writerow({k: r.get(k, "") for k in fieldnames})
+        f.flush()
+        os.fsync(f.fileno())
     tmp.replace(OUT_PATH)
+
+
+# Kept for backwards-compat with any external caller; routes to the new atomic writer.
+def write_csv(rows, fieldnames):
+    _atomic_write(rows, fieldnames)
 
 
 if __name__ == "__main__":

@@ -61,6 +61,25 @@ FIRECRAWL_KEY = os.environ.get("FIRECRAWL_API_KEY")
 CLASSIFIER_VERSION = "v2-2026-05-27"
 UA = "krollBD-classifier/2.0 (contact: fengelh@gmail.com)"
 
+# Fields that downstream tools (deep_scrape, hunter) populate and that
+# classify_strategy must MERGE FORWARD on re-classification, never overwrite.
+# See workflows/enrichment_cascade.md "never downgrade confidence" rule.
+STICKY_FIELDS = (
+    "emails_on_site",          # deep_scrape may augment; merge sets
+    "generic_emails_on_site",  # deep_scrape may augment; merge sets
+    "deep_scrape_attempted_utc",
+    "deep_scrape_status",
+    "ir_email",                # may be hand-corrected by user
+)
+
+# When a website CHANGES (new URL via override or SFC update), these stamps
+# are invalidated and the downstream tools should re-run on the new content.
+STAMPS_CLEARED_ON_WEBSITE_CHANGE = (
+    "deep_scrape_attempted_utc",
+    "deep_scrape_status",
+)
+
+
 FIELDS = [
     "ceref", "name_en", "website_url", "name_disambiguation_status",
     "operational_status",
@@ -569,6 +588,19 @@ def load_existing() -> dict[str, dict]:
         return {r["ceref"]: r for r in csv.DictReader(f)}
 
 
+def _atomic_write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+    """Write CSV via tmp file + fsync + atomic replace. utf-8 (no BOM) standard."""
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with tmp.open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: r.get(k, "") for k in fieldnames})
+        f.flush()
+        os.fsync(f.fileno())
+    tmp.replace(path)
+
+
 def write_row(row: dict) -> None:
     write_header = not OUT_PATH.exists()
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -979,28 +1011,81 @@ def main() -> None:
                 if i % 25 == 0 or i == len(todo):
                     print(f"  progress: {i}/{len(todo)}", file=sys.stderr)
 
-    # Dedup CSV: keep latest row per ceref (newest classified_at_utc wins).
-    # This makes re-classifications replace old rows rather than duplicate them.
+    # Dedup CSV: keep latest row per ceref (newest classified_at_utc wins),
+    # BUT merge STICKY_FIELDS forward from older rows so downstream-discovered
+    # data (e.g. emails added by deep_scrape) survives a re-classification.
+    # See workflows/enrichment_cascade.md "never downgrade confidence".
     if OUT_PATH.exists():
         with OUT_PATH.open(encoding="utf-8-sig") as f:
             rdr = csv.DictReader(f)
-            fieldnames = rdr.fieldnames
+            fieldnames = list(rdr.fieldnames or [])
             all_rows = list(rdr)
-        best: dict[str, dict] = {}
+        # Ensure sticky columns exist on every row so the merge step is safe.
+        for col in STICKY_FIELDS + STAMPS_CLEARED_ON_WEBSITE_CHANGE:
+            if col not in fieldnames:
+                fieldnames.append(col)
+                for r in all_rows:
+                    r.setdefault(col, "")
+
+        # Group rows per-ceref, oldest→newest.
+        by_ceref: dict[str, list[dict]] = {}
         for r in all_rows:
             ce = r.get("ceref")
             if not ce:
                 continue
-            prev = best.get(ce)
-            if prev is None or (r.get("classified_at_utc", "") > prev.get("classified_at_utc", "")):
-                best[ce] = r
-        if len(best) != len(all_rows):
-            print(f"Dedup: {len(all_rows)} rows → {len(best)} unique cerefs.", file=sys.stderr)
-            with OUT_PATH.open("w", encoding="utf-8-sig", newline="") as f:
-                w = csv.DictWriter(f, fieldnames=fieldnames)
-                w.writeheader()
-                for ce in sorted(best.keys()):
-                    w.writerow(best[ce])
+            by_ceref.setdefault(ce, []).append(r)
+        for ce in by_ceref:
+            by_ceref[ce].sort(key=lambda x: x.get("classified_at_utc", ""))
+
+        best: dict[str, dict] = {}
+        merged_count = 0
+        cleared_count = 0
+        for ce, group in by_ceref.items():
+            winner = group[-1]   # newest classified_at_utc
+            # Detect website change vs immediate predecessor — if so, clear stamps.
+            website_changed = False
+            if len(group) >= 2:
+                prev = group[-2]
+                old_url = (prev.get("website_url") or "").strip().rstrip("/").lower()
+                new_url = (winner.get("website_url") or "").strip().rstrip("/").lower()
+                if old_url and new_url and old_url != new_url:
+                    website_changed = True
+            # Merge sticky fields forward from older rows when winner's are empty.
+            for older in group[:-1]:
+                for col in STICKY_FIELDS:
+                    if col in STAMPS_CLEARED_ON_WEBSITE_CHANGE and website_changed:
+                        # Don't carry stale stamps across a website change.
+                        continue
+                    new_val = (winner.get(col) or "").strip()
+                    old_val = (older.get(col) or "").strip()
+                    if not old_val:
+                        continue
+                    if not new_val:
+                        winner[col] = old_val
+                        merged_count += 1
+                    elif col in ("emails_on_site", "generic_emails_on_site"):
+                        # Union the two comma-lists (filter to '@'-bearing tokens).
+                        a = {e.strip().lower() for e in new_val.split(",") if "@" in e}
+                        b = {e.strip().lower() for e in old_val.split(",") if "@" in e}
+                        union = sorted(a | b)
+                        if union != sorted(a):
+                            winner[col] = ",".join(union)
+                            merged_count += 1
+            if website_changed:
+                for col in STAMPS_CLEARED_ON_WEBSITE_CHANGE:
+                    if (winner.get(col) or "").strip():
+                        winner[col] = ""
+                        cleared_count += 1
+            best[ce] = winner
+
+        if len(best) != len(all_rows) or merged_count or cleared_count:
+            print(
+                f"Dedup: {len(all_rows)} rows → {len(best)} unique cerefs "
+                f"(merged {merged_count} sticky fields forward, "
+                f"cleared {cleared_count} stamps on website change).",
+                file=sys.stderr,
+            )
+            _atomic_write_csv(OUT_PATH, fieldnames, [best[ce] for ce in sorted(best.keys())])
 
     print(f"\nDone.", file=sys.stderr)
 

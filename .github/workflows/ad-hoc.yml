@@ -11,10 +11,18 @@ on:
           - deep_scrape
           - reclassify
       scope:
-        description: 'For deep_scrape: verified-bd | verified-high | probable-bd | unverified-bd'
+        description: 'Scope for deep_scrape (ignored for reclassify)'
         required: false
-        type: string
+        type: choice
         default: 'verified-bd'
+        options:
+          - verified
+          - verified-high
+          - verified-bd
+          - probable
+          - probable-high
+          - probable-bd
+          - unverified-bd
       cerefs:
         description: 'For reclassify: comma-separated CE refs (e.g. ASK527,BUY347)'
         required: false
@@ -34,7 +42,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: weekly  # share lock with weekly.yml — never race on data/
+  group: data-writes  # shared with weekly.yml + log_outreach.yml — never race on data/
   cancel-in-progress: false
 
 jobs:
@@ -56,7 +64,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0   # full history so rebase before push works
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
@@ -68,29 +76,58 @@ jobs:
       - name: Install deps
         run: pip install -r requirements.txt
 
+      - name: Validate reclassify inputs
+        if: inputs.task == 'reclassify'
+        env:
+          CEREFS: ${{ inputs.cerefs }}
+        run: |
+          if [ -z "$CEREFS" ]; then
+            echo "::error::reclassify requires the 'cerefs' input"
+            exit 1
+          fi
+
       - name: Deep-scrape
         if: inputs.task == 'deep_scrape'
+        env:
+          SCOPE: ${{ inputs.scope }}
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          ARGS="--scope ${{ inputs.scope }}"
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          python tools/deep_scrape_contact_pages.py $ARGS
+          ARGS=(--scope "$SCOPE")
+          [ "$DRY_RUN" = "true" ] && ARGS+=(--dry-run)
+          python tools/deep_scrape_contact_pages.py "${ARGS[@]}"
 
       - name: Reclassify cerefs
         if: inputs.task == 'reclassify'
+        env:
+          CEREFS: ${{ inputs.cerefs }}
+          FORCE: ${{ inputs.force }}
         run: |
-          ARGS="--cerefs ${{ inputs.cerefs }}"
-          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
-          python tools/classify_strategy.py $ARGS
+          ARGS=(--cerefs "$CEREFS")
+          [ "$FORCE" = "true" ] && ARGS+=(--force)
+          python tools/classify_strategy.py "${ARGS[@]}"
 
       - name: Commit + push data updates
         if: ${{ !inputs.dry_run }}
+        env:
+          TASK: ${{ inputs.task }}
+          SCOPE: ${{ inputs.scope }}
+          CEREFS: ${{ inputs.cerefs }}
         run: |
+          set -euo pipefail
           git config user.email "fengelh@gmail.com"
           git config user.name "krollBD-bot"
           git add data/
           if git diff --cached --quiet; then
             echo "No data changes this run."
-          else
-            git commit -m "${{ inputs.task }}: $(date -u +%Y-%m-%d) ${{ inputs.scope }}${{ inputs.cerefs }}"
-            git push
+            exit 0
           fi
+          DATE_STR="$(date -u +%Y-%m-%d)"
+          if [ "$TASK" = "deep_scrape" ]; then
+            MSG="deep_scrape: $DATE_STR scope=$SCOPE"
+          else
+            MSG="reclassify: $DATE_STR cerefs=$CEREFS"
+          fi
+          git commit -m "$MSG"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin main && git push && break || sleep 5
+          done

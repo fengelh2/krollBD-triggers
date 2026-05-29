@@ -14,10 +14,24 @@ Idempotent — re-running just recomputes the column.
 from __future__ import annotations
 
 import csv
+import os
 import sys
 from pathlib import Path
 
 CSV_PATH = Path(__file__).resolve().parents[1] / "data" / "strategy_classification.csv"
+
+
+def _atomic_write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+    """Tmp + fsync + atomic replace. Prevents partial-write data loss on Ctrl+C / OOM."""
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with tmp.open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: r.get(k, "") for k in fieldnames})
+        f.flush()
+        os.fsync(f.fileno())
+    tmp.replace(path)
 
 
 STRONG_EVIDENCE = {"multiple_pages_corroborate", "one_clear_statement"}
@@ -70,11 +84,7 @@ def main() -> None:
         v = cnt.get(k, 0)
         print(f"  {k:12s} {v:5d}  ({v*100//len(rows):>3}%)", file=sys.stderr)
 
-    with CSV_PATH.open("w", encoding="utf-8-sig", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
-        w.writeheader()
-        for r in rows:
-            w.writerow({k: r.get(k, "") for k in fieldnames})
+    _atomic_write_csv(CSV_PATH, fieldnames, rows)
     print(f"\n→ wrote {CSV_PATH}", file=sys.stderr)
 
 

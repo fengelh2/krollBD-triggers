@@ -5,7 +5,7 @@ Compares the two most recent dated snapshots (or two explicit dates) for each of
   - individuals  (added / removed)
   - corp_ros     (RO joined firm / RO left firm)
 
-Output: projects/krollBD/.tmp/sfc_diff_<NEW>_vs_<OLD>.md
+Output: .tmp/sfc_diff_<NEW>_vs_<OLD>.md (relative to repo root)
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ import re
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]  # projects/krollBD/
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # repo root
 SNAP_DIR = PROJECT_ROOT / "data" / "snapshots"
 OUT_DIR = PROJECT_ROOT / ".tmp"
 
@@ -68,7 +68,7 @@ def fmt_md(new_date: str, old_date: str, sections: dict) -> str:
     lines = [
         f"# SFC Type 9 register diff — {new_date} vs {old_date}",
         "",
-        "Source: SFC public register snapshots in `projects/krollBD/data/snapshots/`.",
+        "Source: SFC public register snapshots in `data/snapshots/`.",
         "",
     ]
 

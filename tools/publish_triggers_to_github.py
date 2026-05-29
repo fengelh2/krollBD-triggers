@@ -3,15 +3,17 @@
 Idempotent: each trigger has a stable trigger_id; if an issue with that
 id-tag in the title already exists (open OR closed), it is skipped.
 
-v1 triggers handled: C1 (new corp), C2 (license retirement / active->inactive flip).
+v1 triggers handled: C1 (new corp), C2 (license retirement / active->inactive
+flip), C5 (rebrand), R1 (new RO appointment).
 
 Email body templates are based on Felix Engelhardt's working drafts.
 The "To:" line is intentionally left blank — SFC does not publish emails;
-look up via LinkedIn / Lusha / Apollo before sending.
+look up via Hunter.io (auto), LinkedIn, or aggregators before sending.
 
 Usage:
-  python projects/krollBD/tools/publish_triggers_to_github.py            # use latest 2 snapshots
-  python projects/krollBD/tools/publish_triggers_to_github.py --dry-run  # print what would be created
+  python tools/publish_triggers_to_github.py            # use latest 2 snapshots
+  python tools/publish_triggers_to_github.py --dry-run  # print what would be created
+  python tools/publish_triggers_to_github.py --no-push  # for CI; writes meta only
 """
 
 from __future__ import annotations
@@ -25,12 +27,14 @@ import subprocess
 import sys
 from pathlib import Path
 
+import requests
+
 
 def short_hash(s: str) -> str:
     return hashlib.sha256(s.encode("utf-8")).hexdigest()[:10]
 
 REPO = "fengelh2/krollBD"
-PROJECT_ROOT = Path(__file__).resolve().parents[1]  # projects/krollBD/
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # repo root
 SNAP_DIR = PROJECT_ROOT / "data" / "snapshots"
 DATE_RE = re.compile(r"_(\d{4}-\d{2}-\d{2})\.csv$")
 
@@ -344,7 +348,7 @@ def _enrich_at_trigger_time(ceref: str, ctx: dict, ros: list[dict]) -> dict:
 
     Mutates ctx in place. Never downgrades existing emails (merge only).
 
-    See projects/krollBD/workflows/enrichment_cascade.md.
+    See workflows/enrichment_cascade.md.
     """
     if ctx.get("skip_enrichment"):
         return ctx
@@ -360,56 +364,77 @@ def _enrich_at_trigger_time(ceref: str, ctx: dict, ros: list[dict]) -> dict:
     has_email = bool(ctx.get("observed_named") or ctx.get("observed_generics"))
     wa = (ctx.get("website_accuracy") or "").lower()
 
+    # Track per-firm enrichment status. Bubble in meta so the dashboard can
+    # warn the operator (and the publisher can choose to defer issue creation).
+    errors: list[str] = []
+
     # ---- Step 1: deep-scrape if site is verified-or-probable but no email ----
     if (not has_email) and wa in ("verified", "probable"):
+        from deep_scrape_contact_pages import fetch_contact_pages, domain_of  # type: ignore
+        from classify_strategy import extract_emails_from_md  # type: ignore
         try:
-            from deep_scrape_contact_pages import fetch_contact_pages, domain_of  # type: ignore
-            from classify_strategy import extract_emails_from_md  # type: ignore
             md, paths = fetch_contact_pages(domain)
-            if md:
-                named, generic = extract_emails_from_md(md, domain_of(domain))
-                if named:
-                    cur = {e.lower() for e in (ctx.get("observed_named") or [])}
-                    cur.update(e.lower() for e in named)
-                    ctx["observed_named"] = sorted(cur)
-                if generic:
-                    cur = {e.lower() for e in (ctx.get("observed_generics") or [])}
-                    cur.update(e.lower() for e in generic)
-                    ctx["observed_generics"] = sorted(cur)
-                if named or generic:
-                    print(f"  [enrich:{ceref}] deep-scrape: +{len(named)} named, +{len(generic)} generic (paths={paths})", file=sys.stderr)
-                else:
-                    print(f"  [enrich:{ceref}] deep-scrape: 0 emails (paths={paths})", file=sys.stderr)
-        except Exception as e:
-            print(f"  [enrich:{ceref}] deep-scrape error: {e}", file=sys.stderr)
+        except (requests.RequestException, OSError) as e:
+            print(f"  [enrich:{ceref}] deep-scrape network error: {e}", file=sys.stderr)
+            errors.append(f"deep_scrape:{type(e).__name__}")
+            md, paths = "", []
+        if md:
+            named, generic = extract_emails_from_md(md, domain_of(domain))
+            if named:
+                cur = {e.lower() for e in (ctx.get("observed_named") or [])}
+                cur.update(e.lower() for e in named)
+                ctx["observed_named"] = sorted(cur)
+            if generic:
+                cur = {e.lower() for e in (ctx.get("observed_generics") or [])}
+                cur.update(e.lower() for e in generic)
+                ctx["observed_generics"] = sorted(cur)
+            if named or generic:
+                print(f"  [enrich:{ceref}] deep-scrape: +{len(named)} named, +{len(generic)} generic (paths={paths})", file=sys.stderr)
+            else:
+                print(f"  [enrich:{ceref}] deep-scrape: 0 emails (paths={paths})", file=sys.stderr)
 
-    # ---- Step 2: Hunter.io for top 2 named ROs ----
-    try:
-        from urllib.parse import urlparse
-        import hunter_io  # type: ignore
-        host = urlparse(domain if "://" in domain else "https://" + domain).netloc
-        host = re.sub(r"^www\.", "", host or "")
-        hits = []
-        for r in ros[:2]:
-            first = (r.get("ro_first_full") or r.get("ro_first_short") or "").strip()
-            last = (r.get("ro_last") or "").strip()
-            if not (first and last and host):
-                continue
+    # ---- Step 2: Hunter.io for the primary RO ----
+    # Workflow doc cost-ledger calibrates against ros[:1]; bump to [:2] only if
+    # the primary RO returns no_match AND quota is healthy. See enrichment_cascade.md.
+    from urllib.parse import urlparse
+    import hunter_io  # type: ignore
+    host = urlparse(domain if "://" in domain else "https://" + domain).netloc
+    host = re.sub(r"^www\.", "", host or "")
+    hits = []
+    hunter_status_seen: set[str] = set()
+    for r in ros[:1]:
+        first = (r.get("ro_first_full") or r.get("ro_first_short") or "").strip()
+        last = (r.get("ro_last") or "").strip()
+        if not (first and last and host):
+            continue
+        try:
             rec = hunter_io.find_email(host, first, last)
-            if rec and rec.get("email"):
-                hits.append({
-                    "email": rec["email"],
-                    "ro": r.get("ro_full_name"),
-                    "score": rec.get("score"),
-                    "confidence": rec.get("confidence", "high"),
-                    "verification_status": rec.get("verification_status"),
-                })
-                print(f"  [enrich:{ceref}] hunter: {rec['email']} (score={rec.get('score')})", file=sys.stderr)
-        if hits:
-            ctx["hunter_hits"] = hits
-    except Exception as e:
-        print(f"  [enrich:{ceref}] hunter error: {e}", file=sys.stderr)
+        except (requests.RequestException, OSError) as e:
+            print(f"  [enrich:{ceref}] hunter network error: {e}", file=sys.stderr)
+            errors.append(f"hunter:{type(e).__name__}")
+            rec = None
+        if not rec:
+            continue
+        hunter_status_seen.add(rec.get("status") or "unknown")
+        if rec.get("status") in (hunter_io.STATUS_QUOTA_EXHAUSTED,
+                                 hunter_io.STATUS_QUOTA_UNKNOWN,
+                                 hunter_io.STATUS_RATE_LIMITED,
+                                 hunter_io.STATUS_ERROR):
+            errors.append(f"hunter:{rec['status']}")
+        if rec.get("email"):
+            hits.append({
+                "email": rec["email"],
+                "ro": r.get("ro_full_name"),
+                "score": rec.get("score"),
+                "confidence": rec.get("confidence", "high"),
+                "verification_status": rec.get("verification_status"),
+            })
+            print(f"  [enrich:{ceref}] hunter: {rec['email']} (score={rec.get('score')})", file=sys.stderr)
+    if hits:
+        ctx["hunter_hits"] = hits
 
+    ctx["enrichment_errors"] = errors
+    ctx["enrichment_complete"] = not errors
     return ctx
 
 
@@ -1008,7 +1033,7 @@ def main() -> None:
 
     # On-trigger enrichment cascade: for every firm that will fire a trigger,
     # run deep-scrape + Hunter.io BEFORE building the trigger meta. Lazy / per-firm.
-    # See projects/krollBD/workflows/enrichment_cascade.md for design.
+    # See workflows/enrichment_cascade.md for design.
     firing_cerefs: set[str] = set()
     firing_cerefs.update(c["ceref"] for c in brand_new)
     firing_cerefs.update(c["key"] for c in changed)

@@ -7,11 +7,18 @@ permissions:
   contents: write
   issues: write
 
+concurrency:
+  group: data-writes  # shared with weekly.yml + ad-hoc.yml — never race on data/ + outreach_log.csv
+  cancel-in-progress: false
+
 jobs:
   log:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Append CSV row, close issue, commit
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,7 +56,7 @@ jobs:
               )
               subprocess.run(
                   ['gh', 'issue', 'close', str(issue),
-                   '--repo', 'fengelh2/krollBD-triggers',
+                   '--repo', 'fengelh2/krollBD',
                    '--comment', comment],
                   check=True,
               )
@@ -57,5 +64,11 @@ jobs:
           git config user.name "krollbd-bot"
           git config user.email "krollbd-bot@users.noreply.github.com"
           git add outreach_log.csv
-          git diff --quiet --cached || git commit -m "log: outreach $(date -u +%FT%TZ)"
-          git push
+          if git diff --quiet --cached; then
+            echo "nothing to commit"
+            exit 0
+          fi
+          git commit -m "log: outreach $(date -u +%FT%TZ)"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin main && git push && break || sleep 5
+          done

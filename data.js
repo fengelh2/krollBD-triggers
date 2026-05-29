@@ -5,7 +5,7 @@
 // Data is cached in-memory per-page-load. window.K.* exposes everything.
 
 (function () {
-  const REPO = "fengelh2/krollBD-triggers";
+  const REPO = "fengelh2/krollBD";
   const PAT_KEY = "krollbd_pat";
 
   // ---- PAT (shared with triggers.js) ----

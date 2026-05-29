@@ -1,6 +1,6 @@
 """Snapshot the SFC public register for Type 9 (Asset Management).
 
-Writes three CSVs per run under projects/krollBD/data/snapshots/:
+Writes three CSVs per run under data/snapshots/ (relative to repo root):
   sfc_t9_corps_<DATE>.csv         — one row per active Type 9 corporation
   sfc_t9_corp_ros_<DATE>.csv      — one row per (corp, RO) pair
   sfc_t9_individuals_<DATE>.csv   — one row per active Type 9 licensed individual
@@ -39,7 +39,7 @@ CORP_RO_URL = f"{BASE}/corp/{{ceref}}/ro"
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 UA = "Mozilla/5.0 (krollBD SFC snapshot; contact fengelh@gmail.com)"
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]  # projects/krollBD/
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # repo root
 SNAP_DIR = PROJECT_ROOT / "data" / "snapshots"
 
 

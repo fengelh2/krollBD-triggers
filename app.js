@@ -9,7 +9,7 @@
 //
 // Data layer: see data.js — fetches the four CSVs via the GitHub Contents API
 // with PAT auth (same pattern as triggers.js fetchMetaFile). The CSVs MUST be
-// committed under `data/` in the krollBD-triggers repo. See DESIGN_NOTES.md
+// committed under `data/` in this repo by weekly.yml. See DESIGN_NOTES.md
 // for the README change Felix needs to push.
 
 (function () {
@@ -56,6 +56,11 @@
   }
   $("#pat-btn").addEventListener("click", promptForPat);
   refreshPatStatus();
+
+  // Expose so triggers.js (and any other module) can call the shared modal
+  // instead of native window.prompt().
+  window.K = window.K || {};
+  window.K.promptForPat = promptForPat;
 
   // ---- route ----
   const ROUTES = ["overview", "corps", "individuals", "pairs", "triggers"];
