@@ -363,10 +363,8 @@
       if (firmAnyNamedEmail.has(p.corp_ceref)) rosWithAnyNamed.add(p.ro_ceref);
     }
 
+    const multiAffil = totalAssignments - uniqueRos;
     $("#ov-people").innerHTML = `
-      <div class="cov-connector" title="The 2,814 corps employ these ROs">
-        <div class="cov-connector-label">${totalAssignments.toLocaleString()} corp&harr;RO assignments&nbsp;&darr;</div>
-      </div>
       <div class="cov-row">
         <div class="cov-step">
           <div class="cov-n">${inds.length.toLocaleString()}</div>
@@ -376,12 +374,14 @@
         <div class="cov-arrow">&rarr;</div>
         <div class="cov-step">
           <div class="cov-n">${activeInds.toLocaleString()}</div>
-          <div class="cov-l">Currently active</div>
+          <div class="cov-l">Currently active license-holders</div>
         </div>
         <div class="cov-arrow">&rarr;</div>
-        <div class="cov-step">
+        <div class="cov-step cov-step-linked">
+          <div class="cov-connector-tag">&uarr; employed by the 2,814 corps above</div>
           <div class="cov-n">${uniqueRos.toLocaleString()}</div>
           <div class="cov-l">Serve as RO on an active T9 corp</div>
+          <div class="cov-sub">${totalAssignments.toLocaleString()} assignments &middot; ${multiAffil.toLocaleString()} ROs serve &gt;1 firm</div>
         </div>
         <div class="cov-arrow">&rarr;</div>
         <div class="cov-step">
