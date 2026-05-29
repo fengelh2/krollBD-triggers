@@ -104,50 +104,68 @@
   // =====================================================================
   function renderBdFunnel(sets) {
     const stages = [
-      {
-        n: sets.bd.length,
-        l: "BD-relevant",
-        d: "book type = illiquids or mixed",
-        href: "#/corps?illiq=bd",
-      },
-      {
-        n: sets.bdSite.length,
-        l: "+ website found",
-        d: "verified or probable",
-        href: "#/corps?illiq=bd&wa=site",
-      },
-      {
-        n: sets.bdEmail.length,
-        l: "+ email captured",
-        d: "any verified email on site",
-        href: "#/corps?illiq=bd&wa=site&email=yes",
-      },
-      {
-        n: sets.bdAum.length,
-        l: "+ AUM disclosed",
-        d: "any AUM extracted from website",
-        href: "#/corps?illiq=bd&wa=site&email=yes&aum=yes",
-      },
+      { n: sets.bd.length,      l: "BD-relevant",       d: "book type = illiquids or mixed", href: "#/corps?illiq=bd" },
+      { n: sets.bdSite.length,  l: "+ website found",   d: "verified or probable",            href: "#/corps?illiq=bd&wa=site" },
+      { n: sets.bdEmail.length, l: "+ email captured",  d: "any named email on site",         href: "#/corps?illiq=bd&wa=site&email=yes" },
+      { n: sets.bdAum.length,   l: "+ AUM disclosed",   d: "any AUM extracted",               href: "#/corps?illiq=bd&wa=site&email=yes&aum=yes" },
     ];
     const base = stages[0].n || 1;
-    const html = stages.map((s, i) => {
-      const pct = Math.round(100 * s.n / base);
-      const dropFromPrev = i > 0 ? (stages[i-1].n - s.n) : 0;
-      const dropFromBd = base - s.n;
-      const widthPct = Math.max(20, 100 * s.n / base);
-      const dropLine = i > 0
-        ? `<div class="funnel-drop">↓ <strong>${dropFromPrev.toLocaleString()}</strong> firms dropped here · <strong>${dropFromBd.toLocaleString()}</strong> total still missing this</div>`
-        : "";
-      return `
-        ${dropLine}
-        <a class="funnel-stage" href="${s.href}" style="width:${widthPct}%">
-          <span class="stage-n">${s.n.toLocaleString()}</span>
-          <span class="stage-l">${esc(s.l)}</span>
-          <span class="stage-d">${esc(s.d)} · ${pct}% of BD-relevant</span>
-        </a>
-      `;
-    }).join("");
-    $("#ov-funnel").innerHTML = html;
+
+    // ---- SVG funnel: alternating rectangles + sloped trapezoids ----
+    // The trapezoids ARE the drop-offs (you can see the cliff), no separate
+    // text divider needed. Drops annotated inside the trapezoid in muted text.
+    const W = 720, BAR_H = 38, TRANS_H = 26;
+    const totalH = 4 * BAR_H + 3 * TRANS_H;
+    const PAL = ["#1f2937", "#374151", "#4b5563", "#6b7280"];   // charcoal → gray
+
+    const widthFor = n => Math.max(80, W * (n / base));   // floor at 80px so tiny stages still readable
+    const bars = stages.map((s, i) => {
+      const w = widthFor(s.n);
+      const x = (W - w) / 2;
+      const y = i * (BAR_H + TRANS_H);
+      return { ...s, w, x, y, fill: PAL[i] };
+    });
+
+    let svg = `<svg viewBox="0 0 ${W} ${totalH}" preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;max-width:760px;margin:0 auto;height:auto;aspect-ratio:${W}/${totalH}">`;
+
+    // Transitions (drop-off trapezoids) between bars
+    bars.forEach((b, i) => {
+      if (i === 0) return;
+      const prev = bars[i-1];
+      const topY = prev.y + BAR_H;
+      const botY = b.y;
+      const topL = prev.x, topR = prev.x + prev.w;
+      const botL = b.x, botR = b.x + b.w;
+      const dropN = prev.n - b.n;
+      const dropPct = prev.n > 0 ? Math.round(100 * dropN / prev.n) : 0;
+      svg += `<polygon points="${topL},${topY} ${topR},${topY} ${botR},${botY} ${botL},${botY}" fill="#e5e7eb" opacity="0.55"/>`;
+      svg += `<text x="${W/2}" y="${(topY+botY)/2 + 4}" font-size="11" text-anchor="middle" fill="#374151" font-family="Inter,sans-serif">↓ ${dropN.toLocaleString()} dropped (${dropPct}%)</text>`;
+    });
+
+    // Bars
+    bars.forEach((b, i) => {
+      const pct = Math.round(100 * b.n / base);
+      svg += `<a href="${b.href}">`;
+      svg += `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${BAR_H}" fill="${b.fill}" rx="2" ry="2"/>`;
+      // Number on left, label centered-ish, percentage on right
+      const cy = b.y + BAR_H/2 + 4;
+      svg += `<text x="${b.x + 14}" y="${cy}" font-size="18" font-weight="600" fill="#fff" font-family="Inter,sans-serif">${b.n.toLocaleString()}</text>`;
+      // Label only fits if bar is wide enough
+      if (b.w > 240) {
+        svg += `<text x="${b.x + b.w/2}" y="${cy}" font-size="12" text-anchor="middle" fill="#fff" opacity="0.95" font-family="Inter,sans-serif">${esc(b.l)}</text>`;
+      }
+      svg += `<text x="${b.x + b.w - 12}" y="${cy}" font-size="11" text-anchor="end" fill="#fff" opacity="0.7" font-family="Inter,sans-serif">${pct}%</text>`;
+      svg += `</a>`;
+      // External label to the right of the bar for stages where label doesn't fit inside
+      if (b.w <= 240) {
+        svg += `<text x="${b.x + b.w + 10}" y="${cy}" font-size="12" fill="#374151" font-family="Inter,sans-serif">${esc(b.l)} · <tspan fill="#6b7280">${esc(b.d)}</tspan></text>`;
+      } else {
+        svg += `<text x="${b.x + b.w + 10}" y="${cy}" font-size="11" fill="#6b7280" font-family="Inter,sans-serif">${esc(b.d)}</text>`;
+      }
+    });
+
+    svg += `</svg>`;
+    $("#ov-funnel").innerHTML = svg;
 
     // call-out: biggest drop-off
     const drops = stages.slice(1).map((s, i) => ({ idx: i+1, lost: stages[i].n - s.n, from: stages[i].l, to: s.l }));
@@ -339,12 +357,16 @@
       </div>
     `).join("<div class='cov-arrow'>→</div>");
 
-    // Wire the 2,814 anchor into the subhead + chart caption so the number
-    // appears as the shared spine of the Database Strength section.
+    // Wire the 2,814 anchor in three spots so it reads as the shared spine
+    // of the Database Strength section:
+    //   - "Corporate coverage · 2,814 active · 100% baseline" subhead chip
+    //   - The thick-bordered first box in the row (already visually anchored)
+    //   - Prominent number above the WA chart
+    const n = sets.corps.length;
     const anchor = $("#ov-anchor-corps");
-    if (anchor) anchor.innerHTML = `<strong>${sets.corps.length.toLocaleString()}</strong> active corps · 100% baseline`;
-    const chartAnchor = $("#ov-chart-anchor");
-    if (chartAnchor) chartAnchor.innerHTML = `<strong>${sets.corps.length.toLocaleString()}</strong> classified firms`;
+    if (anchor) anchor.innerHTML = `· <span class="anchor-num">${n.toLocaleString()}</span> active corps · 100% baseline`;
+    const chartAnchorNum = $("#ov-chart-anchor-num");
+    if (chartAnchorNum) chartAnchorNum.textContent = n.toLocaleString();
   }
 
   function renderPeopleRow(data) {
