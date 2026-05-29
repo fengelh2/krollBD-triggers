@@ -171,14 +171,22 @@
     svg += `</svg>`;
     $("#ov-funnel").innerHTML = svg;
 
-    // call-out: biggest drop-off
+    // call-out: biggest drop-off, rendered as a prominent INSIGHT banner.
     const drops = stages.slice(1).map((s, i) => ({ idx: i+1, lost: stages[i].n - s.n, from: stages[i].l, to: s.l }));
     const worst = drops.sort((a,b) => b.lost - a.lost)[0];
     if (worst) {
       $("#ov-funnel-callout").innerHTML = `
-        <strong>Biggest unlock:</strong> ${worst.lost.toLocaleString()} BD-relevant firms
-        sit at <em>${esc(worst.from)}</em> but fail to reach <em>${esc(worst.to)}</em>.
-        Close that gap and ${worst.lost.toLocaleString()} more become actionable.
+        <span class="callout-tag">Biggest unlock</span>
+        <div class="callout-body">
+          <div class="callout-headline">
+            <span class="anchor-num">${worst.lost.toLocaleString()}</span>
+            <span class="callout-headline-label">firms become actionable</span>
+          </div>
+          <div class="callout-detail">
+            They sit at <em>${esc(worst.from)}</em> but don't reach <em>${esc(worst.to)}</em>.
+            See the <a href="#ov-improve">Unlocks queue</a> for the playbook.
+          </div>
+        </div>
       `;
     }
   }
@@ -501,8 +509,18 @@
       renderActionPanel(sets);  // last because depends on triggers
       renderTriggersStrip();
     } catch (e) {
-      const target = $("#ov-action") || $("#ov-funnel");
-      if (target) target.innerHTML = `<p class="loading">Failed to load: ${esc(e.message)}<br><br>Set a GitHub PAT (top right) with <code>repo</code> scope if the data lives in a private repo.</p>`;
+      // Consolidated empty-state: blank out every Overview section so the
+      // 'Loading…' placeholders don't sit there indefinitely.
+      const msg = `<p class="loading">Failed to load: ${esc(e.message)}<br><br>` +
+        `Set a GitHub PAT (top right) with <code>repo</code> scope, then refresh.</p>`;
+      for (const id of ["ov-action", "ov-funnel", "ov-funnel-callout",
+                        "ov-improve", "ov-coverage", "ov-people",
+                        "ov-wa-chart", "ov-wa-legend", "ov-triggers-strip",
+                        "ov-anchor-corps", "ov-chart-anchor-num"]) {
+        const el = document.getElementById(id);
+        if (el && id === "ov-action") el.innerHTML = msg;
+        else if (el) el.innerHTML = "";
+      }
       console.error(e);
     }
   }

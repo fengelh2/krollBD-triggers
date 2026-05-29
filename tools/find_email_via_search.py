@@ -45,6 +45,63 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]  # repo root
 load_dotenv(PROJECT_ROOT / ".env")
 SERPAPI_KEY = os.environ.get("SERPAPI_KEY")
 
+
+# ---- SerpAPI retry wrapper -------------------------------------------------
+# Retries 429 (rate limit) and 5xx with exponential backoff + jitter. Returns
+# (data_dict, status). Status is one of: "ok" | "rate_limited" | "server_error"
+# | "client_error" | "network_error" | "no_key" — so callers can distinguish
+# "empty results" from "couldn't reach SerpAPI" and surface a useful warning.
+
+import random as _random
+import time as _time
+
+_SERPAPI_URL = "https://serpapi.com/search.json"
+_SERPAPI_MAX_RETRIES = 2
+_SERPAPI_BASE_BACKOFF = 1.5  # seconds, then ×2 with jitter
+
+
+def _serpapi_get(params: dict, *, timeout: int = 20) -> tuple[dict, str]:
+    if not SERPAPI_KEY:
+        return {}, "no_key"
+    params = {**params, "api_key": SERPAPI_KEY}
+    last_status = "network_error"
+    for attempt in range(_SERPAPI_MAX_RETRIES + 1):
+        try:
+            r = requests.get(_SERPAPI_URL, params=params, timeout=timeout)
+        except requests.RequestException as e:
+            last_status = "network_error"
+            if attempt >= _SERPAPI_MAX_RETRIES:
+                print(f"  [serpapi] network error after {attempt+1} attempts: {e}", file=sys.stderr)
+                return {}, last_status
+            backoff = _SERPAPI_BASE_BACKOFF * (2 ** attempt) + _random.uniform(0, 0.5)
+            _time.sleep(backoff)
+            continue
+        if r.status_code == 429:
+            last_status = "rate_limited"
+            if attempt >= _SERPAPI_MAX_RETRIES:
+                print(f"  [serpapi] 429 rate-limited after {attempt+1} attempts; giving up", file=sys.stderr)
+                return {}, last_status
+            backoff = _SERPAPI_BASE_BACKOFF * (2 ** attempt) + _random.uniform(0, 0.5)
+            _time.sleep(backoff)
+            continue
+        if 500 <= r.status_code < 600:
+            last_status = "server_error"
+            if attempt >= _SERPAPI_MAX_RETRIES:
+                print(f"  [serpapi] HTTP {r.status_code} after {attempt+1} attempts; giving up", file=sys.stderr)
+                return {}, last_status
+            backoff = _SERPAPI_BASE_BACKOFF * (2 ** attempt) + _random.uniform(0, 0.5)
+            _time.sleep(backoff)
+            continue
+        if not r.ok:
+            print(f"  [serpapi] HTTP {r.status_code}: {r.text[:200]}", file=sys.stderr)
+            return {}, "client_error"
+        try:
+            return r.json(), "ok"
+        except ValueError as e:
+            print(f"  [serpapi] JSON parse error: {e}", file=sys.stderr)
+            return {}, "client_error"
+    return {}, last_status
+
 # Matches masked-email patterns inside Google snippets.
 # Examples we want to catch:
 #   f***.n***@amundi.com
@@ -175,14 +232,11 @@ def query_firm_pattern(firm_domain: str, serpapi_key: Optional[str] = None) -> t
     key = serpapi_key or SERPAPI_KEY
     if not key or not firm_domain:
         return None, "", []
-    try:
-        r = requests.get("https://serpapi.com/search.json",
-                         params={"q": f'"{firm_domain}" email format',
-                                 "api_key": key, "num": 8, "hl": "en", "gl": "us"},
-                         timeout=20)
-        r.raise_for_status()
-        data = r.json()
-    except Exception:
+    data, status = _serpapi_get({
+        "q": f'"{firm_domain}" email format',
+        "num": 8, "hl": "en", "gl": "us",
+    })
+    if status != "ok":
         return None, "", []
     snippets = []
     for item in data.get("organic_results", []):
@@ -240,17 +294,10 @@ def find_email_pattern(
     # aggregator-friendly terms. Aggregators surface "<firm> email format on
     # <domain>" pages even when we don't know the domain yet.
     if not verified_domain:
-        try:
-            r = requests.get(
-                "https://serpapi.com/search.json",
-                params={"q": f'"{firm}" email format site:rocketreach.co OR site:hunter.io OR site:signalhire.com OR site:prospeo.io OR site:contactout.com',
-                        "api_key": key, "num": 8, "hl": "en", "gl": "us"},
-                timeout=20,
-            )
-            r.raise_for_status()
-            data2 = r.json()
-        except Exception:
-            data2 = {"organic_results": []}
+        data2, _status2 = _serpapi_get({
+            "q": f'"{firm}" email format site:rocketreach.co OR site:hunter.io OR site:signalhire.com OR site:prospeo.io OR site:contactout.com',
+            "num": 8, "hl": "en", "gl": "us",
+        })
         snippets2: list[str] = []
         aggregator_domains: list[str] = []  # domains seen in aggregator URLs / snippets
         for item in data2.get("organic_results", []):

@@ -18,6 +18,9 @@ import os
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from classify_strategy import canonical_fieldnames  # noqa: E402
+
 CSV_PATH = Path(__file__).resolve().parents[1] / "data" / "strategy_classification.csv"
 
 
@@ -84,7 +87,7 @@ def main() -> None:
         v = cnt.get(k, 0)
         print(f"  {k:12s} {v:5d}  ({v*100//len(rows):>3}%)", file=sys.stderr)
 
-    _atomic_write_csv(CSV_PATH, fieldnames, rows)
+    _atomic_write_csv(CSV_PATH, canonical_fieldnames(fieldnames), rows)
     print(f"\n→ wrote {CSV_PATH}", file=sys.stderr)
 
 

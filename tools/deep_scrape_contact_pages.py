@@ -44,6 +44,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from classify_strategy import (  # noqa: E402
     OUT_PATH,
     PAGES_DIR,
+    canonical_fieldnames,
     extract_emails_from_md,
     robots_allowed,
     scrape_firecrawl,
@@ -304,13 +305,16 @@ def _checkpoint(deltas: dict[str, dict], fieldnames: list[str]) -> None:
 
 
 def _atomic_write(rows: list[dict], fieldnames: list[str]) -> None:
-    """Write to .tmp, fsync, atomic replace. utf-8 (no BOM) standard."""
+    """Write to .tmp, fsync, atomic replace. utf-8 (no BOM) standard.
+    Column order is canonicalized so layout stays stable regardless of which
+    tool ran last."""
+    ordered = canonical_fieldnames(fieldnames)
     tmp = OUT_PATH.with_suffix(".csv.tmp")
     with open(tmp, "w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w = csv.DictWriter(f, fieldnames=ordered)
         w.writeheader()
         for r in rows:
-            w.writerow({k: r.get(k, "") for k in fieldnames})
+            w.writerow({k: r.get(k, "") for k in ordered})
         f.flush()
         os.fsync(f.fileno())
     tmp.replace(OUT_PATH)

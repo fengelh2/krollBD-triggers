@@ -323,8 +323,19 @@ footer p{margin:2px 0}
 .funnel-stage .stage-d{font-size:11px;opacity:0.7;margin-left:auto;font-variant-numeric:tabular-nums}
 .funnel-drop{text-align:center;color:var(--muted);font-size:11px;padding:2px 0;font-variant-numeric:tabular-nums}
 .funnel-drop strong{color:var(--fg)}
-.funnel-callout{margin-top:14px;padding:10px 14px;background:#f9fafb;
-  border-left:3px solid #6b7280;border-radius:2px;font-size:12px;color:var(--fg);letter-spacing:0.005em}
+/* Biggest-unlock insight banner — the most strategic readout on the page */
+.funnel-callout{margin-top:16px;padding:14px 18px;background:#fafafa;
+  border:1px solid #e5e7eb;border-left:4px solid #991b1b;border-radius:3px;
+  display:flex;align-items:flex-start;gap:18px;color:var(--fg)}
+.callout-tag{font-size:10px;font-weight:700;color:#991b1b;
+  text-transform:uppercase;letter-spacing:0.12em;padding-top:4px;flex:0 0 auto}
+.callout-body{flex:1 1 auto}
+.callout-headline{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.callout-headline .anchor-num{font-size:24px;line-height:1;letter-spacing:-0.01em}
+.callout-headline-label{font-size:13px;color:var(--fg);font-weight:500}
+.callout-detail{font-size:12px;color:var(--fg-soft);line-height:1.5}
+.callout-detail em{color:var(--fg);font-style:normal;font-weight:500}
+.callout-detail a{color:#991b1b;text-decoration:underline}
 
 .improve-unlock{font-size:13px;color:var(--fg);margin:4px 0 6px}
 .improve-unlock strong{color:#1b6e3a}
@@ -369,6 +380,10 @@ footer p{margin:2px 0}
   .kpis{grid-template-columns:repeat(2,1fr)}
   .modal-grid{grid-template-columns:1fr}
   .summary{grid-template-columns:repeat(3,1fr)}
+  .action-row{grid-template-columns:1fr}
+  /* On narrow widths the callout tag wraps to its own line above the body */
+  .funnel-callout{flex-direction:column;gap:8px}
+  .callout-tag{padding-top:0}
 }
 @media (max-width: 700px){
   .topbar h1{font-size:16px}
@@ -376,4 +391,7 @@ footer p{margin:2px 0}
   .email-body-text{max-height:140px}
   .cand-row{flex-wrap:wrap}
   .cand-email{flex-basis:100%}
+  /* People+coverage rows: stack steps instead of wrapping into messy 2-col */
+  .cov-row .cov-arrow{display:none}
+  .cov-step{flex-basis:100%}
 }

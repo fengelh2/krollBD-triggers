@@ -39,6 +39,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]  # repo root
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import hunter_io  # noqa: E402
+from classify_strategy import canonical_fieldnames  # noqa: E402
 
 CSV_PATH = PROJECT_ROOT / "data" / "strategy_classification.csv"
 PAIRS_PATH = PROJECT_ROOT / "data" / "snapshots" / "sfc_t9_corp_ros_latest.csv"
@@ -97,12 +98,13 @@ def primary_ro_for_corp(pairs: list[dict], ceref: str) -> dict | None:
 
 
 def _atomic_write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+    ordered = canonical_fieldnames(fieldnames)
     tmp = path.with_suffix(path.suffix + ".tmp")
     with tmp.open("w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w = csv.DictWriter(f, fieldnames=ordered)
         w.writeheader()
         for r in rows:
-            w.writerow({k: r.get(k, "") for k in fieldnames})
+            w.writerow({k: r.get(k, "") for k in ordered})
         f.flush()
         os.fsync(f.fileno())
     tmp.replace(path)

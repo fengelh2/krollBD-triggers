@@ -39,10 +39,33 @@ def llm_call(system: str, user_content: str, max_tokens: int = 1000,
     raise ValueError(f"Unknown LLM_PROVIDER: {p!r}")
 
 
+# ---- Unified retry policy ---------------------------------------------------
+# Backoff: 5 attempts, exponential with jitter, total cap ~120s. Same set of
+# retryable HTTP status codes across both providers (429 included for Anthropic
+# — previously only 529 was retried, which let burst 429s fail immediately).
+import random as _random
+
+_RETRYABLE_STATUS = {429, 500, 502, 503, 504, 529}
+_MAX_ATTEMPTS = 5
+_BASE_BACKOFF = 2.0   # seconds, doubles per attempt, plus jitter
+_TOTAL_TIME_CAP = 120  # seconds — bail out if cumulative sleep would exceed this
+
+
+def _backoff_sleep(attempt: int, elapsed: float) -> float:
+    """Compute next sleep duration with jitter. Returns 0 if it would exceed the cap."""
+    base = _BASE_BACKOFF * (2 ** attempt)
+    jitter = _random.uniform(0, base * 0.25)
+    delay = base + jitter
+    if elapsed + delay > _TOTAL_TIME_CAP:
+        return 0
+    return delay
+
+
 def _anthropic_call(system, user_content, max_tokens, model):
-    from anthropic import Anthropic, APIStatusError
+    from anthropic import Anthropic, APIStatusError, APIConnectionError, APITimeoutError
     client = Anthropic(api_key=ANTHROPIC_KEY)
-    for attempt in range(5):
+    elapsed = 0.0
+    for attempt in range(_MAX_ATTEMPTS):
         try:
             msg = client.messages.create(
                 model=model,
@@ -51,9 +74,20 @@ def _anthropic_call(system, user_content, max_tokens, model):
                 messages=[{"role": "user", "content": user_content}],
             )
             return msg.content[0].text.strip()
+        except (APIConnectionError, APITimeoutError):
+            if attempt >= _MAX_ATTEMPTS - 1:
+                raise
+            d = _backoff_sleep(attempt, elapsed)
+            if d == 0:
+                raise
+            time.sleep(d); elapsed += d
         except APIStatusError as e:
-            if e.status_code == 529 and attempt < 4:
-                time.sleep(10 * (attempt + 1))
+            status = getattr(e, "status_code", None)
+            if status in _RETRYABLE_STATUS and attempt < _MAX_ATTEMPTS - 1:
+                d = _backoff_sleep(attempt, elapsed)
+                if d == 0:
+                    raise
+                time.sleep(d); elapsed += d
             else:
                 raise
 
@@ -61,8 +95,8 @@ def _anthropic_call(system, user_content, max_tokens, model):
 def _deepseek_call(system, user_content, max_tokens, model):
     from openai import OpenAI, RateLimitError, APIStatusError, APITimeoutError, APIConnectionError
     client = OpenAI(api_key=DEEPSEEK_KEY, base_url=DEEPSEEK_BASE_URL)
-    retryable_status = {429, 500, 502, 503, 504, 529}
-    for attempt in range(5):
+    elapsed = 0.0
+    for attempt in range(_MAX_ATTEMPTS):
         try:
             resp = client.chat.completions.create(
                 model=model,
@@ -73,16 +107,22 @@ def _deepseek_call(system, user_content, max_tokens, model):
                 ],
             )
             return resp.choices[0].message.content.strip()
-        except (RateLimitError, APITimeoutError, APIConnectionError) as e:
-            if attempt < 4:
-                time.sleep(10 * (attempt + 1))
-                continue
-            raise
+        except (RateLimitError, APITimeoutError, APIConnectionError):
+            if attempt >= _MAX_ATTEMPTS - 1:
+                raise
+            d = _backoff_sleep(attempt, elapsed)
+            if d == 0:
+                raise
+            time.sleep(d); elapsed += d
         except APIStatusError as e:
-            if getattr(e, "status_code", None) in retryable_status and attempt < 4:
-                time.sleep(10 * (attempt + 1))
-                continue
-            raise
+            status = getattr(e, "status_code", None)
+            if status in _RETRYABLE_STATUS and attempt < _MAX_ATTEMPTS - 1:
+                d = _backoff_sleep(attempt, elapsed)
+                if d == 0:
+                    raise
+                time.sleep(d); elapsed += d
+            else:
+                raise
 
 
 if __name__ == "__main__":

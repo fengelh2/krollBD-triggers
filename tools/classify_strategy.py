@@ -101,6 +101,36 @@ FIELDS = [
     "classified_at_utc", "classifier_version",
 ]
 
+# Canonical ORDER for columns added by downstream tools after the core FIELDS.
+# Any new derived column should be added here in append-order so column
+# layout stays stable regardless of which tool ran last.
+EXTRA_FIELDS_ORDER = [
+    "email_extraction_cleared",         # verify_emails_against_disambig
+    "website_accuracy",                 # derive_website_accuracy
+    "deep_scrape_attempted_utc",        # deep_scrape_contact_pages
+    "deep_scrape_status",               # deep_scrape_contact_pages
+    "hunter_email",                     # hunter_for_cohort / publisher
+    "hunter_score",
+    "hunter_status",
+    "hunter_attempted_utc",
+]
+
+
+def canonical_fieldnames(seen: list[str]) -> list[str]:
+    """Return seen fieldnames reordered into canonical layout:
+       1. FIELDS (core, in declared order, only ones actually present)
+       2. EXTRA_FIELDS_ORDER (derived, in declared order, only ones present)
+       3. Any remaining unknown columns, in their original seen order
+    Any column declared in EXTRA_FIELDS_ORDER but not present in `seen` is
+    silently dropped so writers don't accidentally add empty columns.
+    """
+    seen_set = set(seen)
+    out = [c for c in FIELDS if c in seen_set]
+    out += [c for c in EXTRA_FIELDS_ORDER if c in seen_set]
+    known = set(out)
+    out += [c for c in seen if c not in known]
+    return out
+
 
 # ---------------- email extraction from scraped markdown ----------------
 
@@ -387,9 +417,26 @@ def _scrape_plain(url: str) -> str:
         return ""
 
 
+# Session-level Firecrawl failure counters. Persistently >50% failure rate
+# usually means a billing / quota issue, not a transient blip.
+_FIRECRAWL_STATS = {"ok": 0, "fail_quota": 0, "fail_rate": 0, "fail_other": 0, "network": 0}
+
+
+def _firecrawl_warn(reason: str) -> None:
+    """Bump the failure counter and print once every 10 failures so the operator
+    can spot a degraded-Firecrawl situation in long classify runs."""
+    _FIRECRAWL_STATS[reason] = _FIRECRAWL_STATS.get(reason, 0) + 1
+    total_fail = sum(v for k, v in _FIRECRAWL_STATS.items() if k != "ok")
+    if total_fail % 10 == 0:
+        print(f"  [firecrawl] cumulative stats: {dict(_FIRECRAWL_STATS)}", file=sys.stderr)
+
+
 def _scrape_firecrawl_only(url: str, wait_ms: int = 1500) -> str:
     """Firecrawl scrape with a small JS-render wait so SPA pages get a chance
-    to populate. wait_ms=0 disables the wait (cheaper, no JS wait)."""
+    to populate. wait_ms=0 disables the wait (cheaper, no JS wait).
+
+    Returns empty string on failure but distinguishes the reason in
+    _FIRECRAWL_STATS so degraded runs are diagnosable."""
     if not FIRECRAWL_KEY:
         return ""
     body = {
@@ -407,11 +454,28 @@ def _scrape_firecrawl_only(url: str, wait_ms: int = 1500) -> str:
             json=body,
             timeout=25,
         )
-        if r.ok:
+    except requests.RequestException as e:
+        print(f"  [firecrawl] network error for {url}: {e}", file=sys.stderr)
+        _firecrawl_warn("network")
+        return ""
+    if r.ok:
+        _FIRECRAWL_STATS["ok"] += 1
+        try:
             md = (r.json().get("data", {}).get("markdown") or "")
             return md[:12000]
-    except Exception:
-        pass
+        except ValueError:
+            _firecrawl_warn("fail_other")
+            return ""
+    # Diagnose non-OK responses
+    if r.status_code in (402,):
+        print(f"  [firecrawl] HTTP 402 quota/billing — check firecrawl.dev dashboard", file=sys.stderr)
+        _firecrawl_warn("fail_quota")
+    elif r.status_code == 429:
+        print(f"  [firecrawl] HTTP 429 rate-limited on {url}", file=sys.stderr)
+        _firecrawl_warn("fail_rate")
+    else:
+        print(f"  [firecrawl] HTTP {r.status_code} on {url}: {r.text[:160]}", file=sys.stderr)
+        _firecrawl_warn("fail_other")
     return ""
 
 
@@ -1085,7 +1149,8 @@ def main() -> None:
                 f"cleared {cleared_count} stamps on website change).",
                 file=sys.stderr,
             )
-            _atomic_write_csv(OUT_PATH, fieldnames, [best[ce] for ce in sorted(best.keys())])
+            _atomic_write_csv(OUT_PATH, canonical_fieldnames(fieldnames),
+                              [best[ce] for ce in sorted(best.keys())])
 
     print(f"\nDone.", file=sys.stderr)
 

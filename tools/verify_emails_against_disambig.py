@@ -29,6 +29,9 @@ import os
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from classify_strategy import canonical_fieldnames  # noqa: E402
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CSV_PATH = PROJECT_ROOT / "data" / "strategy_classification.csv"
 
@@ -149,7 +152,7 @@ def main() -> None:
     if args.dry_run:
         return
 
-    _atomic_write_csv(CSV_PATH, fieldnames, rows)
+    _atomic_write_csv(CSV_PATH, canonical_fieldnames(fieldnames), rows)
     print(f"Updated {CSV_PATH}", file=sys.stderr)
 
 
