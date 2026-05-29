@@ -43,6 +43,10 @@ button{font-family:inherit}
 }
 .tabs a:hover{color:var(--fg);text-decoration:none}
 .tabs a.active{color:var(--fg);border-bottom-color:var(--fg)}
+.nav-badge{display:inline-block;margin-left:6px;padding:1px 7px;
+  background:#dc2626;color:#fff;font-size:10px;font-weight:600;border-radius:10px;
+  line-height:1.4;vertical-align:middle;font-variant-numeric:tabular-nums}
+.nav-badge[hidden]{display:none}
 
 /* ---- Views ---- */
 .view{max-width:1180px;margin:0 auto;padding:18px 20px 60px}
@@ -305,25 +309,34 @@ footer p{margin:2px 0}
 .action-chip.chip-action{border-left:4px solid #3b82f6}
 .action-chip.chip-action .num{color:#1d4ed8}
 
-.funnel{display:flex;flex-direction:column;gap:6px;margin-top:6px}
-.funnel-stage{display:flex;align-items:baseline;gap:14px;padding:12px 18px;
-  border-radius:6px;background:linear-gradient(90deg,#1a3554,#2c5282);color:#fff;
-  text-decoration:none;transition:filter 0.05s;align-self:center}
-.funnel-stage:hover{filter:brightness(1.1);text-decoration:none}
-.funnel-stage:nth-child(3){background:linear-gradient(90deg,#1d4ed8,#3b82f6)}
-.funnel-stage:nth-child(5){background:linear-gradient(90deg,#0e7c43,#1b9b56)}
-.funnel-stage:nth-child(7){background:linear-gradient(90deg,#155e3e,#1b6e3a)}
-.funnel-stage .stage-n{font-size:26px;font-weight:700}
-.funnel-stage .stage-l{font-size:14px;font-weight:500}
-.funnel-stage .stage-d{font-size:11px;opacity:0.85;margin-left:auto}
-.funnel-drop{text-align:center;color:var(--muted);font-size:11px;padding:2px 0}
+/* Funnel — corporate monochrome (charcoal/navy palette, no gradients) */
+.funnel{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.funnel-stage{display:flex;align-items:baseline;gap:18px;padding:14px 22px;
+  border-radius:2px;background:#1f2937;color:#fff;border-left:3px solid #0f172a;
+  text-decoration:none;transition:background 0.08s, transform 0.05s;align-self:center}
+.funnel-stage:hover{background:#111827;text-decoration:none;transform:translateX(2px)}
+.funnel-stage:nth-child(3){background:#374151}
+.funnel-stage:nth-child(5){background:#4b5563}
+.funnel-stage:nth-child(7){background:#6b7280}
+.funnel-stage .stage-n{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-0.01em}
+.funnel-stage .stage-l{font-size:13px;font-weight:500;opacity:0.95}
+.funnel-stage .stage-d{font-size:11px;opacity:0.7;margin-left:auto;font-variant-numeric:tabular-nums}
+.funnel-drop{text-align:center;color:var(--muted);font-size:11px;padding:2px 0;font-variant-numeric:tabular-nums}
 .funnel-drop strong{color:var(--fg)}
-.funnel-callout{margin-top:14px;padding:10px 14px;background:#fff7e6;
-  border-left:4px solid #f59e0b;border-radius:4px;font-size:13px;color:var(--fg)}
+.funnel-callout{margin-top:14px;padding:10px 14px;background:#f9fafb;
+  border-left:3px solid #6b7280;border-radius:2px;font-size:12px;color:var(--fg);letter-spacing:0.005em}
 
 .improve-unlock{font-size:13px;color:var(--fg);margin:4px 0 6px}
 .improve-unlock strong{color:#1b6e3a}
 
+.cov-subblock{padding:14px 16px 14px;background:#fafbfc;border:1px solid #e5e7eb;border-radius:3px}
+.cov-subhead{margin:0 0 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#374151;display:flex;align-items:baseline;gap:8px}
+.cov-subhead-anchor{font-size:11px;font-weight:400;letter-spacing:0.02em;color:var(--muted);text-transform:none}
+.cov-subhead-anchor strong{color:#1f2937;font-weight:600;font-variant-numeric:tabular-nums}
+.chart-anchor{font-size:11px;color:var(--muted);font-weight:400;letter-spacing:0.02em;text-transform:none}
+.chart-anchor strong{color:#1f2937;font-weight:600;font-variant-numeric:tabular-nums}
+.cov-step-anchor{border:2px solid #1f2937;background:#f9fafb}
+.cov-step-anchor .cov-n{color:#1f2937}
 .cov-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cov-step-linked{border-top:2px dashed #9ca3af;position:relative}
 .cov-connector-tag{font-size:10px;color:var(--muted);font-style:italic;

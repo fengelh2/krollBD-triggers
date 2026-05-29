@@ -270,9 +270,15 @@
     const tiers = ["high", "medium", "low", ""];
     const tierLabels = { "high": "illiquids", "medium": "mixed", "low": "liquids only", "": "unclassified" };
     const buckets = ["verified", "probable", "unverified", "suspect", "not_found", "unknown"];
+    // Corporate monochrome: dark navy → light gray, plus a single warm accent
+    // for not_found (which is the meaningful "gap" the eye should pick up).
     const colors = {
-      verified: "#1b6e3a", probable: "#3b82f6", unverified: "#cdd1d6",
-      suspect: "#f59e0b", not_found: "#9b1d23", unknown: "#7a818b",
+      verified: "#1f2937",   // charcoal
+      probable: "#4b5563",   // dark gray
+      unverified: "#9ca3af", // mid gray
+      suspect: "#d1d5db",    // light gray
+      not_found: "#b45309",  // burnt amber accent (the only colored bar)
+      unknown: "#e5e7eb",    // very light gray
     };
     const counts = {};
     for (const t of tiers) {
@@ -309,7 +315,7 @@
       svg += `<text x="${x + 4}" y="${yTop + barH/2 + 4}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">n=${total}</text>`;
     });
     svg += `<line x1="${PAD_L}" y1="${H - PAD_B}" x2="${W - PAD_R}" y2="${H - PAD_B}" stroke="#e4e6ea"/>`;
-    svg += `<text x="${PAD_L}" y="${H - 8}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">total = ${C.length.toLocaleString()} classified firms · bar width = count</text>`;
+    svg += `<text x="${PAD_L}" y="${H - 8}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">bar width = count · total = ${C.length.toLocaleString()}</text>`;
     $("#ov-wa-chart").innerHTML = svg;
     $("#ov-wa-legend").innerHTML = buckets.map(b =>
       `<span class="legend-item"><span class="swatch" style="background:${colors[b]}"></span>${b}</span>`
@@ -318,20 +324,27 @@
 
   function renderCoverageFunnel(sets) {
     const stages = [
-      { n: sets.corps.length, l: "Active T9-licensed corps", retiredSub: `+${sets.corpsRetired.toLocaleString()} retired` },
+      { n: sets.corps.length, l: "Active T9-licensed corps", retiredSub: `+${sets.corpsRetired.toLocaleString()} retired`, anchor: true },
       { n: sets.allSite.length, l: "Website found" },
       { n: sets.allEmail.length, l: "Email captured" },
       { n: sets.allAum.length, l: "AUM disclosed" },
     ];
     const base = stages[0].n || 1;
     $("#ov-coverage").innerHTML = stages.map(s => `
-      <div class="cov-step">
+      <div class="cov-step${s.anchor ? " cov-step-anchor" : ""}">
         <div class="cov-n">${s.n.toLocaleString()}</div>
         <div class="cov-l">${esc(s.l)}</div>
         <div class="cov-pct">${Math.round(100 * s.n / base)}% of active</div>
         ${s.retiredSub ? `<div class="cov-sub">${esc(s.retiredSub)}</div>` : ""}
       </div>
     `).join("<div class='cov-arrow'>→</div>");
+
+    // Wire the 2,814 anchor into the subhead + chart caption so the number
+    // appears as the shared spine of the Database Strength section.
+    const anchor = $("#ov-anchor-corps");
+    if (anchor) anchor.innerHTML = `<strong>${sets.corps.length.toLocaleString()}</strong> active corps · 100% baseline`;
+    const chartAnchor = $("#ov-chart-anchor");
+    if (chartAnchor) chartAnchor.innerHTML = `<strong>${sets.corps.length.toLocaleString()}</strong> classified firms`;
   }
 
   function renderPeopleRow(data) {
@@ -394,6 +407,29 @@
   }
 
   // =====================================================================
+  // Nav badge — show count of "new" triggers (created in last 7 days).
+  // Lives on the Triggers tab regardless of which view is active.
+  // =====================================================================
+  function updateNavBadge() {
+    const badge = document.getElementById("nav-triggers-badge");
+    if (!badge) return;
+    const issues = (window.K.Triggers && window.K.Triggers.getOpenIssues()) || [];
+    const now = Date.now();
+    const sevenDays = 7 * 24 * 3600 * 1000;
+    const newCount = issues.filter(i => {
+      const c = i.created_at ? new Date(i.created_at).getTime() : 0;
+      return c && (now - c) < sevenDays;
+    }).length;
+    if (newCount > 0) {
+      badge.hidden = false;
+      badge.textContent = String(newCount);
+      badge.setAttribute("title", `${newCount} trigger${newCount === 1 ? "" : "s"} created in the last 7 days`);
+    } else {
+      badge.hidden = true;
+    }
+  }
+
+  // =====================================================================
   // 5. RECENT TRIGGERS — age-sorted, SLA-colored
   // =====================================================================
   function renderTriggersStrip() {
@@ -448,7 +484,9 @@
   window.K = window.K || {};
   window.K.Overview = { render };
   // Refresh action panel + triggers strip when issues load
+  // The nav badge is global — always update on triggers-loaded regardless of tab.
   window.addEventListener("triggers-loaded", () => {
+    updateNavBadge();
     if (!window.__data) return;
     // Don't waste cycles re-rendering Overview when the user is on another tab.
     const overviewEl = document.getElementById("view-overview");

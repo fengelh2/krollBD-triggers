@@ -6,7 +6,7 @@
 <title>Kroll PortVal · BD Command Center</title>
 <link rel="preconnect" href="https://api.github.com">
 <link rel="preconnect" href="https://raw.githubusercontent.com">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 <header class="topbar">
@@ -25,7 +25,7 @@
     <a href="#/corps" data-tab="corps">Corps</a>
     <a href="#/individuals" data-tab="individuals">Individuals</a>
     <a href="#/pairs" data-tab="pairs">Corp &harr; RO pairs</a>
-    <a href="#/triggers" data-tab="triggers">Triggers</a>
+    <a href="#/triggers" data-tab="triggers">Triggers<span class="nav-badge" id="nav-triggers-badge" hidden></span></a>
   </nav>
 </header>
 
@@ -49,23 +49,27 @@
     <p class="funnel-callout" id="ov-funnel-callout"></p>
   </div>
 
-  <!-- 3. Improvement queue (unlocks) -->
-  <div class="section-block">
-    <h2 class="section-title">Unlocks <span class="section-hint">close one gap → widen the funnel</span></h2>
-    <div class="improve-grid" id="ov-improve">
-      <p class="loading">Computing unlocks…</p>
-    </div>
-  </div>
-
-  <!-- 4. Database strength -->
+  <!-- 3. Database strength -->
   <div class="section-block">
     <h2 class="section-title">Database strength <span class="section-hint">context across the full register</span></h2>
-    <div class="cov-row" id="ov-coverage">
-      <p class="loading">Loading coverage…</p>
+
+    <div class="cov-subblock">
+      <h3 class="cov-subhead">Corporate coverage <span class="cov-subhead-anchor" id="ov-anchor-corps"></span></h3>
+      <div class="cov-row" id="ov-coverage">
+        <p class="loading">Loading coverage…</p>
+      </div>
     </div>
-    <div id="ov-people" style="margin-top:8px"></div>
+
+    <div class="cov-subblock" style="margin-top:14px">
+      <h3 class="cov-subhead">People coverage <span class="cov-subhead-anchor">(the responsible officers behind the corps above)</span></h3>
+      <div id="ov-people"></div>
+    </div>
+
     <div class="chart-card" style="margin-top:18px">
-      <div class="chart-title"><h2>Website status across book types</h2></div>
+      <div class="chart-title">
+        <h2>Website status across book types</h2>
+        <span class="chart-anchor" id="ov-chart-anchor"></span>
+      </div>
       <svg class="chart big" id="ov-wa-chart" viewBox="0 0 600 220" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="chart-legend" id="ov-wa-legend"></div>
     </div>
@@ -77,6 +81,14 @@
     <p class="muted-text">Jump to the <a href="#/triggers">full trigger queue</a> &rarr;</p>
     <div id="ov-triggers-strip" class="trigger-strip">
       <p class="loading">Loading recent triggers…</p>
+    </div>
+  </div>
+
+  <!-- 5. Unlocks (improvement queue) — bottom of overview -->
+  <div class="section-block">
+    <h2 class="section-title">Unlocks <span class="section-hint">close one gap → widen the funnel</span></h2>
+    <div class="improve-grid" id="ov-improve">
+      <p class="loading">Computing unlocks…</p>
     </div>
   </div>
 </section>
@@ -208,10 +220,10 @@
   <p>Data CSVs (snapshots + classification) are read from the triggers repo under <code>data/</code>. See <a href="DESIGN_NOTES.md">DESIGN_NOTES.md</a>.</p>
 </footer>
 
-<script src="data.js?v=11"></script>
-<script src="triggers.js?v=11"></script>
-<script src="overview.js?v=11"></script>
-<script src="tables.js?v=11"></script>
-<script src="app.js?v=11"></script>
+<script src="data.js?v=12"></script>
+<script src="triggers.js?v=12"></script>
+<script src="overview.js?v=12"></script>
+<script src="tables.js?v=12"></script>
+<script src="app.js?v=12"></script>
 </body>
 </html>
