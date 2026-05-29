@@ -1,0 +1,574 @@
+ceref,firm,domain,ro_name,ro_ceref,pattern,inferred_email
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,BANFIELD Colin Dennis,ADW089,{first}.{last},colin.banfield@citigroup.com
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,BARNES William Wesley,BWZ086,{first}.{last},william.barnes@citigroup.com
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,BESSON Guillaume Gerard Marie,ALI003,{first}.{last},guillaume.besson@citigroup.com
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,BISWAS Shubhomoy,ATJ132,{first}.{last},shubhomoy.biswas@citigroup.com
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,CHAUHAN Suninder Singh,BFG548,{first}.{last},suninder.chauhan@citigroup.com
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,CHEN Yuyuan,BDV095,{first}.{last},yuyuan.chen@citigroup.com
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,CHEUNG Koon Nam,APW340,{first}.{last},koonnam.cheung@citigroup.com
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,CHOW Wai Ming,ACT729,{first}.{last},waiming.chow@citigroup.com
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,"CHOY Chak Kwan, Eric",AOV938,{first}.{last},eric.choy@citigroup.com
+AAA137,Citigroup Global Markets Asia Limited,citigroup.com,DAGA Ashish Kumar,APN583,{first}.{last},ashish.daga@citigroup.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,ACKERMANN Thorsten Oliver,BQE746,{first}.{last},thorsten.ackermann@jpmorgan.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,ANG Xiao Yun,AQU426,{first}.{last},xiaoyun.ang@jpmorgan.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,CHENG Chun Ning,AQJ204,{first}.{last},chunning.cheng@jpmorgan.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,DHUPELIA Sunil,AUW922,{first}.{last},sunil.dhupelia@jpmorgan.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,HUANG Peihao,ALB745,{first}.{last},peihao.huang@jpmorgan.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,KAM Kwok Hung,AOL528,{first}.{last},kwokhung.kam@jpmorgan.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,LAU Pak Wai,ACQ669,{first}.{last},pakwai.lau@jpmorgan.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,LAU Raymond Wai Cheuk,AYQ814,{first}.{last},raymond.lau@jpmorgan.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,LEENART Sjoerd,BVF307,{first}.{last},sjoerd.leenart@jpmorgan.com
+AAB026,J.P. Morgan Securities (Far East) Limited,jpmorgan.com,MALKANI Sanjeev Lalchand,AGO384,{first}.{last},sanjeev.malkani@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,ACKERMANN Thorsten Oliver,BQE746,{first}.{last},thorsten.ackermann@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,"CHAN Chi Ho, Ron",ADR493,{first}.{last},ron.chan@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,CHEAH Sim Ee,ANM987,{first}.{last},simee.cheah@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,"CHU Pak Ning, Patrick",AEN687,{first}.{last},patrick.chu@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,IP Vincent Wai Chung,AMF381,{first}.{last},vincent.ip@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,IYER Bhasker,BHF956,{first}.{last},bhasker.iyer@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,LAU Joseph Han Wai,AGH168,{first}.{last},joseph.lau@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,"LAU On Ching, Desmond",AMP291,{first}.{last},desmond.lau@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,LEE Tony Sai Kuen,AJH983,{first}.{last},tony.lee@jpmorgan.com
+AAB027,J.P. Morgan Broking (Hong Kong) Limited,jpmorgan.com,LI Yu-yun,BJK904,{first}.{last},yuyun.li@jpmorgan.com
+AAB947,Credit Agricole Securities (Asia) Limited,ca-cib.com,BLANCHARD Dominique Jean Rene,AUX224,{first}.{last},dominique.blanchard@ca-cib.com
+AAB947,Credit Agricole Securities (Asia) Limited,ca-cib.com,"LAM Yuen Kai, Leon",AJD640,{first}.{last},leon.lam@ca-cib.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,BARSHA Thomas,APS977,{first}.{last},thomas.barsha@bankofamerica.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,BASLER Matthew Howard,BPY590,{first}.{last},matthew.basler@bankofamerica.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,BATRA Nitin,BBU298,{first}.{last},nitin.batra@bankofamerica.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,BROADFIELD David John,BBT521,{first}.{last},davidjohn.broadfield@bankofamerica.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,"CHENG Kin Lung, David",ABR710,{first}.{last},david.cheng@bankofamerica.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,"DAVID Gregory, Ralph",ATF071,{first}.{last},ralph.david@bankofamerica.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,"FESCHET Xavier, Boris",AMK015,{first}.{last},boris.feschet@bankofamerica.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,GAO Meng,AQN969,{first}.{last},meng.gao@bankofamerica.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,GUENTHARDT Peter Konrad,BEG331,{first}.{last},peter.guenthardt@bankofamerica.com
+AAC198,Merrill Lynch (Asia Pacific) Limited,bankofamerica.com,LEE Joseph B,ACJ181,{first}.{last},josephb.lee@bankofamerica.com
+AAC534,Macquarie Capital Limited,macquarie.com,HERBERT Dean Ryan,BVO598,{first}.{last},deanryan.herbert@macquarie.com
+AAC534,Macquarie Capital Limited,macquarie.com,HUANG Shiau-Ling,AWM151,{first}.{last},shiauling.huang@macquarie.com
+AAC534,Macquarie Capital Limited,macquarie.com,"KO Yui Chit, Janice",AFL110,{first}.{last},janice.ko@macquarie.com
+AAC534,Macquarie Capital Limited,macquarie.com,LEE Jeok,ANH621,{first}.{last},jeok.lee@macquarie.com
+AAC534,Macquarie Capital Limited,macquarie.com,LI Honggui,AYS098,{first}.{last},honggui.li@macquarie.com
+AAC534,Macquarie Capital Limited,macquarie.com,LI Ling,AOQ539,{first}.{last},ling.li@macquarie.com
+AAC534,Macquarie Capital Limited,macquarie.com,MILES Ashley James,ARD708,{first}.{last},ashley.miles@macquarie.com
+AAC534,Macquarie Capital Limited,macquarie.com,MORRISON Justin David Christopher,AVO760,{first}.{last},justin.morrison@macquarie.com
+AAC534,Macquarie Capital Limited,macquarie.com,MYOUNG Cholong,BCF603,{first}.{last},cholong.myoung@macquarie.com
+AAC534,Macquarie Capital Limited,macquarie.com,RAKE Brendan Thomas,AJD854,{first}.{last},brendan.rake@macquarie.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,ALMEIDA Niall John,APO154,{first}.{last},nialljohn.almeida@morganstanley.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,ARONOVITCH David Bradly,AOE475,{first}.{last},david.aronovitch@morganstanley.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,ATAMER Murat,APF056,{first}.{last},murat.atamer@morganstanley.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,BOPPANA Venkatadri,ARW861,{first}.{last},venkatadri.boppana@morganstanley.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,CAO Chunan,BAC321,{first}.{last},chunan.cao@morganstanley.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,CHAPMAN Daniel John,ARB931,{first}.{last},danieljohn.chapman@morganstanley.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,"CHENG Kong Miu, Mille",AFY161,{first}.{last},mille.cheng@morganstanley.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,CHEUNG Chi Ming,BLK546,{first}.{last},chiming.cheung@morganstanley.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,"CHUI Yik Chiu, Vincent",AAD601,{first}.{last},vincent.chui@morganstanley.com
+AAD291,Morgan Stanley Asia Limited,morganstanley.com,CLEIN Jonathan Robert,BQV767,{first}.{last},jonathan.clein@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,ALMEIDA Niall John,APO154,{first}.{last},nialljohn.almeida@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,ATAMER Murat,APF056,{first}.{last},murat.atamer@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,BOPPANA Venkatadri,ARW861,{first}.{last},venkatadri.boppana@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,CAO Chunan,BAC321,{first}.{last},chunan.cao@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,"CHUI Yik Chiu, Vincent",AAD601,{first}.{last},vincent.chui@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,CLEIN Jonathan Robert,BQV767,{first}.{last},jonathan.clein@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,DA COSTA MONTEIRO Paulo Jorge,BLA832,{first}.{last},costa.da@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,FOLLOROUX Yann Michel Richard,AMO540,{first}.{last},yann.folloroux@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,FORTE Francesco,BIE652,{first}.{last},francesco.forte@morganstanley.com
+AAD401,Morgan Stanley Hong Kong Securities Limited,morganstanley.com,FOSTER Duncan John,BCN540,{first}.{last},duncanjohn.foster@morganstanley.com
+AAF778,Brown Brothers Harriman (Hong Kong) Limited,bbh.com,GOTHARD Christopher Neil Averill,AVU837,{first}.{last},christopher.gothard@bbh.com
+AAF778,Brown Brothers Harriman (Hong Kong) Limited,bbh.com,PIGOTT Christopher Charles,BIH451,{first}.{last},christopher.pigott@bbh.com
+AAF778,Brown Brothers Harriman (Hong Kong) Limited,bbh.com,YOSHIHARA Munenori,BMT395,{first}.{last},munenori.yoshihara@bbh.com
+AAF778,Brown Brothers Harriman (Hong Kong) Limited,bbh.com,ZHAO Hai Hua,AYG618,{first}.{last},haihua.zhao@bbh.com
+AAG380,Hamon Asset Management Limited,hamon.com.hk,LAM Chiu Ming,BAR191,{first}{last},chiuminglam@hamon.com.hk
+AAG380,Hamon Asset Management Limited,hamon.com.hk,SIMON Hugh Adam,AAG417,{first}{last},hughadamsimon@hamon.com.hk
+AAI957,Lombard Odier (Hong Kong) Limited,lombardodier.com,ADLER Philippe David,AVQ966,{f}.{last},p.adler@lombardodier.com
+AAI957,Lombard Odier (Hong Kong) Limited,lombardodier.com,LOO David Tin Cheung,AGG551,{f}.{last},d.loo@lombardodier.com
+AAI957,Lombard Odier (Hong Kong) Limited,lombardodier.com,LOW Alfred Chun-Jin,BWU879,{f}.{last},a.low@lombardodier.com
+AAI957,Lombard Odier (Hong Kong) Limited,lombardodier.com,MAGNENAT Vincent Marcel,BLI472,{f}.{last},v.magnenat@lombardodier.com
+AAI957,Lombard Odier (Hong Kong) Limited,lombardodier.com,MENDOZA BEGGIATO Juan Manuel,AXK855,{f}.{last},b.mendoza@lombardodier.com
+AAI957,Lombard Odier (Hong Kong) Limited,lombardodier.com,WOODS John William Huia,BGQ356,{f}.{last},j.woods@lombardodier.com
+AAI957,Lombard Odier (Hong Kong) Limited,lombardodier.com,ZURCHER Philippe Alain,AOV239,{f}.{last},p.zurcher@lombardodier.com
+AAJ693,First Sentier Investors (Hong Kong) Limited,firstsentierinvestors.com,FOO Sung Way Nigel,AVY265,{f}{last},sfoo@firstsentierinvestors.com
+AAJ693,First Sentier Investors (Hong Kong) Limited,firstsentierinvestors.com,KWOK Kit Ying,AXZ904,{f}{last},kkwok@firstsentierinvestors.com
+AAJ693,First Sentier Investors (Hong Kong) Limited,firstsentierinvestors.com,"LAU Kwok Kit, Martin",ADR107,{f}{last},mlau@firstsentierinvestors.com
+AAJ693,First Sentier Investors (Hong Kong) Limited,firstsentierinvestors.com,PRENDIVILLE Lauren,BSB941,{f}{last},lprendiville@firstsentierinvestors.com
+AAJ693,First Sentier Investors (Hong Kong) Limited,firstsentierinvestors.com,STAPLETON Michael David,ATW713,{f}{last},mstapleton@firstsentierinvestors.com
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,CHEUNG Kai Lim,APC144,{first}.{last},kailim.cheung@invesco.com.hk
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,CHOU Calvin,AFW616,{first}.{last},calvin.chou@invesco.com.hk
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,"CHOW Wai Tat, Richard",AJB550,{first}.{last},richard.chow@invesco.com.hk
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,DIGBY Thomas Geoffrey,BOK886,{first}.{last},thomas.digby@invesco.com.hk
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,FRANC Martin Peter,BVE130,{first}.{last},martin.franc@invesco.com.hk
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,HSIAO Kuang-Yi,AOD096,{first}.{last},kuangyi.hsiao@invesco.com.hk
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,"HUANG Wan Chun, Christine",ANU106,{first}.{last},christine.huang@invesco.com.hk
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,LIN Ken,BGC483,{first}.{last},ken.lin@invesco.com.hk
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,"LING Chun Hui, Norbert",BSD224,{first}.{last},norbert.ling@invesco.com.hk
+AAJ770,Invesco Hong Kong Limited (trading as Invesco Asia Pacific),invesco.com.hk,"LO Tak Shing, Andrew",AAW957,{first}.{last},andrew.lo@invesco.com.hk
+ABD082,Oriental Patron Asia Limited,oriental-patron.com.hk,"CHAN Lap Tak, Jeffrey",ABH691,{first}.{last},jeffrey.chan@oriental-patron.com.hk
+ABD082,Oriental Patron Asia Limited,oriental-patron.com.hk,"CHAN Nap Kee, Joseph",ABT746,{first}.{last},joseph.chan@oriental-patron.com.hk
+ABD082,Oriental Patron Asia Limited,oriental-patron.com.hk,CHAN Po Man,APG471,{first}.{last},poman.chan@oriental-patron.com.hk
+ABG072,Welkin Links Asset Management Limited,elkinlinks.com,WONG Pik Man,BJR272,{first}.{last},pikman.wong@elkinlinks.com
+ABG072,Welkin Links Asset Management Limited,elkinlinks.com,YEUNG Gabriel Ronald,AWT373,{first}.{last},gabriel.yeung@elkinlinks.com
+ABM970,China Merchants China Investment Management Limited,cmcdi.com.hk,"CHU Lap Lik, Victor",AAC382,{first}.{last},victor.chu@cmcdi.com.hk
+ABM970,China Merchants China Investment Management Limited,cmcdi.com.hk,"KAN Ka Yee, Elizabeth",ABP976,{first}.{last},elizabeth.kan@cmcdi.com.hk
+ABM970,China Merchants China Investment Management Limited,cmcdi.com.hk,NG Chi Keung,AEC494,{first}.{last},chikeung.ng@cmcdi.com.hk
+ABM970,China Merchants China Investment Management Limited,cmcdi.com.hk,WANG Xiaoding,AXI801,{first}.{last},xiaoding.wang@cmcdi.com.hk
+ABP316,ALPS Capital Management Limited,alpshk.com,AU Vincent Wing Yiu,BMT432,{f}{last},vau@alpshk.com
+ABP316,ALPS Capital Management Limited,alpshk.com,"IP Sau Mai, Amy",ALA835,{f}{last},aip@alpshk.com
+ABP316,ALPS Capital Management Limited,alpshk.com,LO Jonathan Ka Yan,AQY025,{f}{last},jlo@alpshk.com
+ABP316,ALPS Capital Management Limited,alpshk.com,WANG Audrey,ABW094,{f}{last},awang@alpshk.com
+ACB092,Centurion Corporate Finance Limited,centurion.ca,"LEE Kiu Sang, Baldwin",AAZ328,{f}{last},blee@centurion.ca
+ACB092,Centurion Corporate Finance Limited,centurion.ca,SAE SHEE Sheila,ALV355,{f}{last},ssae@centurion.ca
+ACO807,"Northern Trust Company of Hong Kong Limited, The",northerntrust.com,CHAU Ching Ha,APF193,{f}.{last},c.chau@northerntrust.com
+ACO807,"Northern Trust Company of Hong Kong Limited, The",northerntrust.com,COYLE Jeffery,AOX763,{f}.{last},j.coyle@northerntrust.com
+ACO807,"Northern Trust Company of Hong Kong Limited, The",northerntrust.com,ENG Bun Sieng,AYD550,{f}.{last},b.eng@northerntrust.com
+ACO807,"Northern Trust Company of Hong Kong Limited, The",northerntrust.com,FANNIN Dane Gower,AQG777,{f}.{last},d.fannin@northerntrust.com
+ACO807,"Northern Trust Company of Hong Kong Limited, The",northerntrust.com,LAM Chi Ping,AOY505,{f}.{last},c.lam@northerntrust.com
+ACO807,"Northern Trust Company of Hong Kong Limited, The",northerntrust.com,TAN Thuan Shiah Michael,BFY806,{f}.{last},t.tan@northerntrust.com
+ACO807,"Northern Trust Company of Hong Kong Limited, The",northerntrust.com,"WONG Man Chun, Manfred",ASD075,{f}.{last},m.wong@northerntrust.com
+ADY079,MetLife Investments Asia Limited,metlife.com,FU Bei,AHF184,{f}{last},bfu@metlife.com
+ADY079,MetLife Investments Asia Limited,metlife.com,LEE Jeremy Chai Yuen,BHJ188,{f}{last},jlee@metlife.com
+ADY079,MetLife Investments Asia Limited,metlife.com,SWEENEY Kirk Chester,AAN604,{f}{last},ksweeney@metlife.com
+ADZ820,"Huizhi International Capital Holdings Co., Limited",huizhicapital.com,WANG Wenhui,AOL182,{first}.{last},wenhui.wang@huizhicapital.com
+ADZ820,"Huizhi International Capital Holdings Co., Limited",huizhicapital.com,ZHU Shaopeng,BGO816,{first}.{last},shaopeng.zhu@huizhicapital.com
+ADZ820,"Huizhi International Capital Holdings Co., Limited",huizhicapital.com,ZHU Yong,AJD985,{first}.{last},yong.zhu@huizhicapital.com
+AEI057,CITIC CLSA Capital Partners HK Limited,clsacapital.com,FENG Shu,BOO677,{first}.{last},shu.feng@clsacapital.com
+AEI057,CITIC CLSA Capital Partners HK Limited,clsacapital.com,HU Baifeng,BOO676,{first}.{last},baifeng.hu@clsacapital.com
+AEI057,CITIC CLSA Capital Partners HK Limited,clsacapital.com,JIA Wei,BOT047,{first}.{last},wei.jia@clsacapital.com
+AEI057,CITIC CLSA Capital Partners HK Limited,clsacapital.com,SHEN Chen,BSJ308,{first}.{last},chen.shen@clsacapital.com
+AEI057,CITIC CLSA Capital Partners HK Limited,clsacapital.com,WANG Rui,BRC008,{first}.{last},rui.wang@clsacapital.com
+AEI343,State Street Global Advisors Asia Limited,ssga.com,ANDERSON Kevin David,BBT978,{first}{last},kevinanderson@ssga.com
+AEI343,State Street Global Advisors Asia Limited,ssga.com,CHEUNG Wai Fai,AFD181,{first}{last},waifaicheung@ssga.com
+AEI343,State Street Global Advisors Asia Limited,ssga.com,"CHU Wai Tak, Victor",ARK830,{first}{last},victorchu@ssga.com
+AEI343,State Street Global Advisors Asia Limited,ssga.com,HUI Hoi Pan,AIQ973,{first}{last},hoipanhui@ssga.com
+AEI343,State Street Global Advisors Asia Limited,ssga.com,LO Ka Ying,AVK938,{first}{last},kayinglo@ssga.com
+AEI343,State Street Global Advisors Asia Limited,ssga.com,SIU Hiu Ting,AXJ725,{first}{last},hiutingsiu@ssga.com
+AEI343,State Street Global Advisors Asia Limited,ssga.com,SORRELL Graham Alan Roger,BTM294,{first}{last},grahamsorrell@ssga.com
+AEI343,State Street Global Advisors Asia Limited,ssga.com,YOUNG HERRIES Flora Elizabeth Margaret,BRR765,{first}{last},herriesyoung@ssga.com
+AFJ002,Value Partners Hong Kong Limited,valuepartners-group.com,CHING Wing Tat,AQM113,{first}{last},wingtatching@valuepartners-group.com
+AFJ002,Value Partners Hong Kong Limited,valuepartners-group.com,CHUNG Wai Yan,ALB466,{first}{last},waiyanchung@valuepartners-group.com
+AFJ002,Value Partners Hong Kong Limited,valuepartners-group.com,HO Man Kei,AAZ906,{first}{last},mankeiho@valuepartners-group.com
+AFJ002,Value Partners Hong Kong Limited,valuepartners-group.com,"IP Ho Wah, Gordon",ATN989,{first}{last},gordonip@valuepartners-group.com
+AFJ002,Value Partners Hong Kong Limited,valuepartners-group.com,LIN Xianghong,AOB167,{first}{last},xianghonglin@valuepartners-group.com
+AFJ002,Value Partners Hong Kong Limited,valuepartners-group.com,LUO Jing,ANK801,{first}{last},jingluo@valuepartners-group.com
+AFJ002,Value Partners Hong Kong Limited,valuepartners-group.com,YU Xiao,ALU918,{first}{last},xiaoyu@valuepartners-group.com
+AFJ002,Value Partners Hong Kong Limited,valuepartners-group.com,ZHAO Zhao,AWY586,{first}{last},zhaozhao@valuepartners-group.com
+AGC028,China Everbright Assets Management Limited,everbright.com,KUMARGURU Girish,AZV666,{first}.{last},girish.kumarguru@everbright.com
+AGC028,China Everbright Assets Management Limited,everbright.com,"LAW Chung Hang, Albert",AEI015,{first}.{last},albert.law@everbright.com
+AGC028,China Everbright Assets Management Limited,everbright.com,SI Jia,BGE553,{first}.{last},jia.si@everbright.com
+AGC028,China Everbright Assets Management Limited,everbright.com,ZUO Shaojie,BEL258,{first}.{last},shaojie.zuo@everbright.com
+AGH102,Altus Capital Limited,altus.com.hk,CHANG Sean Pey,AGC368,{first}.{last},seanpey.chang@altus.com.hk
+AGH102,Altus Capital Limited,altus.com.hk,"HO Shuk Yee, Samantha",AAA935,{first}.{last},samantha.ho@altus.com.hk
+AGH102,Altus Capital Limited,altus.com.hk,"IP Tin Chee, Arnold",ABX240,{first}.{last},arnold.ip@altus.com.hk
+AGH102,Altus Capital Limited,altus.com.hk,"KHOO Wing Pui, Charlotte",AYE286,{first}.{last},charlotte.khoo@altus.com.hk
+AGH102,Altus Capital Limited,altus.com.hk,"LEE Lok Hin, Clement",BHZ872,{first}.{last},clement.lee@altus.com.hk
+AGH102,Altus Capital Limited,altus.com.hk,"LEUNG Churk Yin, Jeanny",ACA326,{first}.{last},jeanny.leung@altus.com.hk
+AGH102,Altus Capital Limited,altus.com.hk,NG Meng Hua,ABF972,{first}.{last},menghua.ng@altus.com.hk
+AGH102,Altus Capital Limited,altus.com.hk,TAM Leo Ho Kei,BEK751,{first}.{last},leo.tam@altus.com.hk
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,FU Yu,BOE212,{first}.{last},yu.fu@ubs.com
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,GUI Lin,ANE043,{first}.{last},lin.gui@ubs.com
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,GUO Qingkun,BQR815,{first}.{last},qingkun.guo@ubs.com
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,HO David Patrick,AXM023,{first}.{last},david.ho@ubs.com
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,HSU Li Fei,AVA787,{first}.{last},lifei.hsu@ubs.com
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,SHI Bin,AMX414,{first}.{last},bin.shi@ubs.com
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,WU Yuan,BFM561,{first}.{last},yuan.wu@ubs.com
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,YAGI Akiko,BBR219,{first}.{last},akiko.yagi@ubs.com
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,YEUNG Chung Kit,AST684,{first}.{last},chungkit.yeung@ubs.com
+AGP568,UBS Asset Management (Hong Kong) Limited,ubs.com,YIU Wai Ho,APR883,{first}.{last},waiho.yiu@ubs.com
+AGZ772,Macquarie Funds Management Hong Kong Limited,macquarie.com,CHANG David Da-Wei,BBH818,{first}.{last},david.chang@macquarie.com
+AGZ772,Macquarie Funds Management Hong Kong Limited,macquarie.com,HUANG Danyi,BAF173,{first}.{last},danyi.huang@macquarie.com
+AGZ772,Macquarie Funds Management Hong Kong Limited,macquarie.com,WENG Yimin,AXU883,{first}.{last},yimin.weng@macquarie.com
+AGZ772,Macquarie Funds Management Hong Kong Limited,macquarie.com,WONG Chun Yu,AOV040,{first}.{last},chunyu.wong@macquarie.com
+AIP439,LGT Capital Partners (Asia-Pacific) Limited,lgtcp.com,COULTER Douglas Andrew,ADX170,{first}.{last},douglas.coulter@lgtcp.com
+AIP439,LGT Capital Partners (Asia-Pacific) Limited,lgtcp.com,FERRER Antonio,BMT493,{first}.{last},antonio.ferrer@lgtcp.com
+AIP439,LGT Capital Partners (Asia-Pacific) Limited,lgtcp.com,RAUTI Daniel,AGH133,{first}.{last},daniel.rauti@lgtcp.com
+AJB478,Wellington Management Hong Kong Limited,ellington.com,BERGER Joshua Michael,BWV147,{f}{last},jberger@ellington.com
+AJB478,Wellington Management Hong Kong Limited,ellington.com,CHANG Jae Won,BDC792,{f}{last},jchang@ellington.com
+AJB478,Wellington Management Hong Kong Limited,ellington.com,"FAN Fei Fei, Philip",BGJ235,{f}{last},pfan@ellington.com
+AJB478,Wellington Management Hong Kong Limited,ellington.com,HUI Ming Kei,ANR562,{f}{last},mhui@ellington.com
+AJB478,Wellington Management Hong Kong Limited,ellington.com,KWOK Ping,ADO003,{f}{last},pkwok@ellington.com
+AJB478,Wellington Management Hong Kong Limited,ellington.com,PERUMAL Janet Anandhi,BDH781,{f}{last},jperumal@ellington.com
+AJB478,Wellington Management Hong Kong Limited,ellington.com,POUILLART Cedric Roger Armand Jean-Yves,BAU771,{f}{last},cpouillart@ellington.com
+AJB931,Potomac Capital Limited,potomaccapitalltd.com,CHEN Elinor Jui-Hung,AJB940,{f}{last},echen@potomaccapitalltd.com
+AJB931,Potomac Capital Limited,potomaccapitalltd.com,LIU Shao Li,ABV412,{f}{last},sliu@potomaccapitalltd.com
+AJC738,Vision Capital Investment Management Limited,citiccapital.com,HE Lin,BUV323,{first}{last},linhe@citiccapital.com
+AJC738,Vision Capital Investment Management Limited,citiccapital.com,LIU Jiang,BUS176,{first}{last},jiangliu@citiccapital.com
+AJC738,Vision Capital Investment Management Limited,citiccapital.com,LUO Min,BWC330,{first}{last},minluo@citiccapital.com
+AJC738,Vision Capital Investment Management Limited,citiccapital.com,ZHANG Haitao,AEA632,{first}{last},haitaozhang@citiccapital.com
+AJE027,Aktis Capital Advisory Limited,aktiscapital.com,LI Wai Lum,AVP920,{first}.{last},wailum.li@aktiscapital.com
+AJE027,Aktis Capital Advisory Limited,aktiscapital.com,YEE Danny Ong,ABW440,{first}.{last},dannyong.yee@aktiscapital.com
+AJF298,AlTi Wealth Management (Hong Kong) Limited,alti-global.com,GREEN Joshua Michael,AEZ188,{first}.{last},joshua.green@alti-global.com
+AJF298,AlTi Wealth Management (Hong Kong) Limited,alti-global.com,KONG Gideon Tsz Chung,AEI058,{first}.{last},gideon.kong@alti-global.com
+AJH044,OP Investment Management Limited,opim.com.hk,"CHAN Lap Tak, Jeffrey",ABH691,{f}{last},jchan@opim.com.hk
+AJH044,OP Investment Management Limited,opim.com.hk,CHEN Shuo Steve,BDJ257,{f}{last},schen@opim.com.hk
+AJH044,OP Investment Management Limited,opim.com.hk,CHU Li Yu,BLC328,{f}{last},lchu@opim.com.hk
+AJH044,OP Investment Management Limited,opim.com.hk,DESCOURTIEUX Benoit Jacques B. M.,ADG052,{f}{last},bdescourtieux@opim.com.hk
+AJH044,OP Investment Management Limited,opim.com.hk,FAN Alvin Makay,BFT556,{f}{last},afan@opim.com.hk
+AJH044,OP Investment Management Limited,opim.com.hk,LA Yixin,BMV228,{f}{last},yla@opim.com.hk
+AJH044,OP Investment Management Limited,opim.com.hk,LEE Ming Keung,ADJ352,{f}{last},mlee@opim.com.hk
+AJH044,OP Investment Management Limited,opim.com.hk,LEE Wai Hang,BNF990,{f}{last},wlee@opim.com.hk
+AJH044,OP Investment Management Limited,opim.com.hk,LU Yunye,AXE227,{f}{last},ylu@opim.com.hk
+AJH044,OP Investment Management Limited,opim.com.hk,WOO Kai Wing Ray,AVM639,{f}{last},kwoo@opim.com.hk
+AKO483,Brevan Howard (Hong Kong) Limited,brevanhoward.com,KIM Sungryul,AVL431,{first}.{last},sungryul.kim@brevanhoward.com
+AKO483,Brevan Howard (Hong Kong) Limited,brevanhoward.com,SAXTON Andrew Keith,BBL053,{first}.{last},andrew.saxton@brevanhoward.com
+AKV333,OCP Asia (Hong Kong) Limited,ocpasia.com,JUNG Il Yong,ANW199,{first}.{last},ilyong.jung@ocpasia.com
+AKV333,OCP Asia (Hong Kong) Limited,ocpasia.com,SIMMONS Daniel Ross,AHP770,{first}.{last},danielross.simmons@ocpasia.com
+AKY982,Peak Capital Limited,peak.hk,BROTHERS Patrick Francis J.,ADG699,{f}{last},pbrothers@peak.hk
+AKY982,Peak Capital Limited,peak.hk,"KO Miu Shan, Katherine",AFZ537,{f}{last},kko@peak.hk
+AKY982,Peak Capital Limited,peak.hk,POWELL Simon,ACS886,{f}{last},spowell@peak.hk
+ALK083,Mirae Asset Global Investments (Hong Kong) Limited,miraeasset.com,AN Joo Hee,ASG213,{first}.{last},joohee.an@miraeasset.com
+ALK083,Mirae Asset Global Investments (Hong Kong) Limited,miraeasset.com,FOK Ho Wah,AVQ212,{first}.{last},howah.fok@miraeasset.com
+ALK083,Mirae Asset Global Investments (Hong Kong) Limited,miraeasset.com,KIM Byung Ha,AMV363,{first}.{last},byungha.kim@miraeasset.com
+ALK083,Mirae Asset Global Investments (Hong Kong) Limited,miraeasset.com,LEE Pilsang,AUZ621,{first}.{last},pilsang.lee@miraeasset.com
+ALK083,Mirae Asset Global Investments (Hong Kong) Limited,miraeasset.com,WANG Jinyin,APB790,{first}.{last},jinyin.wang@miraeasset.com
+ALK083,Mirae Asset Global Investments (Hong Kong) Limited,miraeasset.com,ZHU Lili,BWP222,{first}.{last},lili.zhu@miraeasset.com
+ALR969,Mercer Investments (HK) Limited,mercer.com,CHEN Rupeng,BNZ819,{first}.{last},rupeng.chen@mercer.com
+ALR969,Mercer Investments (HK) Limited,mercer.com,ELLIOT Graham,BJG894,{first}.{last},graham.elliot@mercer.com
+ALR969,Mercer Investments (HK) Limited,mercer.com,JEFFREY Kevin Alan,BFX287,{first}.{last},kevinalan.jeffrey@mercer.com
+ALR969,Mercer Investments (HK) Limited,mercer.com,LIU Tsz Chung,BNG625,{first}.{last},tszchung.liu@mercer.com
+ALR969,Mercer Investments (HK) Limited,mercer.com,TAN Hui Yeng,BCP982,{first}.{last},huiyeng.tan@mercer.com
+ALR969,Mercer Investments (HK) Limited,mercer.com,YU Nga Ching,AFC514,{first}.{last},ngaching.yu@mercer.com
+ALW590,State Street Global Advisors Singapore Limited,ssga.com,ANDERSON Kevin David,BBT978,{first}{last},kevinanderson@ssga.com
+ALW590,State Street Global Advisors Singapore Limited,ssga.com,HUI Hoi Pan,AIQ973,{first}{last},hoipanhui@ssga.com
+AMP603,ESR Asset Management (Prosperity) Limited,prosperityreit.com,"CHUNG Meng Him, Vicho",AYI534,{first}.{last},vicho.chung@prosperityreit.com
+AMP603,ESR Asset Management (Prosperity) Limited,prosperityreit.com,NG Chi Wah,ARQ146,{first}.{last},chiwah.ng@prosperityreit.com
+AMP603,ESR Asset Management (Prosperity) Limited,prosperityreit.com,WONG Lai Hung,ANH601,{first}.{last},laihung.wong@prosperityreit.com
+AMV287,Oaktree Capital (Hong Kong) Limited,oaktreecapital.com,CARROLL III Francis Joseph,BQB535,{f}{last},icarroll@oaktreecapital.com
+AMV287,Oaktree Capital (Hong Kong) Limited,oaktreecapital.com,LI Zhengyi,APJ994,{f}{last},zli@oaktreecapital.com
+AMV287,Oaktree Capital (Hong Kong) Limited,oaktreecapital.com,WARDROP-SZILAGYI Allan Clement Simpson,BPX565,{f}{last},wsimpson@oaktreecapital.com
+AOB278,UBP Asset Management Asia Limited,ubp.com,DU Yiping,BOA881,{first}.{last},yiping.du@ubp.com
+AOB278,UBP Asset Management Asia Limited,ubp.com,LEE Moo Bong,AQH629,{first}.{last},moobong.lee@ubp.com
+AOB278,UBP Asset Management Asia Limited,ubp.com,NAH Wee Ping,ADU947,{first}.{last},weeping.nah@ubp.com
+AOB278,UBP Asset Management Asia Limited,ubp.com,WONG Chun Wai,AJJ806,{first}.{last},chunwai.wong@ubp.com
+AOH421,China Everbright Investment Management Limited,everbright.com,FAN Wenhan,BST366,{first}.{last},wenhan.fan@everbright.com
+AOH421,China Everbright Investment Management Limited,everbright.com,HU Jiangdong,ALB225,{first}.{last},jiangdong.hu@everbright.com
+AOH421,China Everbright Investment Management Limited,everbright.com,"POON Sze Wai, Kelvin",ANU253,{first}.{last},kelvin.poon@everbright.com
+AOH421,China Everbright Investment Management Limited,everbright.com,ZHAO Xiaohan,BOF377,{first}.{last},xiaohan.zhao@everbright.com
+AOR149,Abax Global Capital (Hong Kong) Limited,abaxcap.com,LIN Shen,ARV902,{first}.{last},shen.lin@abaxcap.com
+AOR149,Abax Global Capital (Hong Kong) Limited,abaxcap.com,WANG Michael Chou,BDA087,{first}.{last},michaelchou.wang@abaxcap.com
+AOR149,Abax Global Capital (Hong Kong) Limited,abaxcap.com,YANG Xiang Dong,AFS530,{first}.{last},xiangdong.yang@abaxcap.com
+APD391,"Pacific Harbor Holdings, Limited",pacificharborgroup.com,ALLDERIGE Warren Dudley,ABF511,{first}.{last},warren.allderige@pacificharborgroup.com
+APD391,"Pacific Harbor Holdings, Limited",pacificharborgroup.com,LIN Yuri Yee-Lee,AMG021,{first}.{last},yuriyeelee.lin@pacificharborgroup.com
+AQL991,Balyasny Asset Management (Hong Kong) Limited (trading as Corbets Capital),bamfunds.com,"CHOI Chi Tsung, Eric",ANX201,{f}{last},echoi@bamfunds.com
+AQL991,Balyasny Asset Management (Hong Kong) Limited (trading as Corbets Capital),bamfunds.com,HEW Jian Yi,BRR472,{f}{last},jhew@bamfunds.com
+AQN831,Neuberger Berman Asia Limited,nb.com,BOON Yan Taw,AXQ380,{first}.{last},yantaw.boon@nb.com
+AQN831,Neuberger Berman Asia Limited,nb.com,CHENG Pui Yan,AEQ438,{first}.{last},puiyan.cheng@nb.com
+AQN831,Neuberger Berman Asia Limited,nb.com,HUI Alvin Joyue,BUI011,{first}.{last},alvin.hui@nb.com
+AQN831,Neuberger Berman Asia Limited,nb.com,LIU Patrick Song,ANQ638,{first}.{last},patricksong.liu@nb.com
+AQR870,Hong Kong Mingdao Asset Management Limited,mingdaocapital.com,"LAU Sai Kit, Dennis",AUV774,{f}{last},dlau@mingdaocapital.com
+AQR870,Hong Kong Mingdao Asset Management Limited,mingdaocapital.com,YAM Kam Shing,AGE094,{f}{last},kyam@mingdaocapital.com
+ARE947,CITIC Securities Asset Management (HK) Limited,citics.com.hk,CAO Xia,BDE572,{first}{last},xiacao@citics.com.hk
+ARE947,CITIC Securities Asset Management (HK) Limited,citics.com.hk,COLLARD Jeremy David,AJC639,{first}{last},jeremycollard@citics.com.hk
+ARE947,CITIC Securities Asset Management (HK) Limited,citics.com.hk,LI En Tzu,BNC713,{first}{last},entzuli@citics.com.hk
+ARE947,CITIC Securities Asset Management (HK) Limited,citics.com.hk,LIU Jing,BWN287,{first}{last},jingliu@citics.com.hk
+ARE947,CITIC Securities Asset Management (HK) Limited,citics.com.hk,XU Jianqiang,BAJ277,{first}{last},jianqiangxu@citics.com.hk
+ARE947,CITIC Securities Asset Management (HK) Limited,citics.com.hk,ZHANG Zheng,AOL699,{first}{last},zhengzhang@citics.com.hk
+ARQ101,Davidson Kempner Asia Limited,dkpartners.com,CHA Sang Youn,AQM175,{f}{last},scha@dkpartners.com
+ARQ101,Davidson Kempner Asia Limited,dkpartners.com,KRISHANTHAN Jogeesvaran,BQP762,{f}{last},jkrishanthan@dkpartners.com
+ARQ101,Davidson Kempner Asia Limited,dkpartners.com,PATEL Punit Nayan,ARI633,{f}{last},ppatel@dkpartners.com
+ARW223,ARCH Capital Management Co. Limited,archcapital.net,UMALI Jonathan Espinili,AYA900,{f}{last},jumali@archcapital.net
+ARW223,ARCH Capital Management Co. Limited,archcapital.net,WONG King Yan Ignatius,BLY785,{f}{last},kwong@archcapital.net
+ARW223,ARCH Capital Management Co. Limited,archcapital.net,"YUE Wah Chuk, Richard",AID233,{f}{last},ryue@archcapital.net
+ASU465,Environmental Investment Services Asia Limited,eisal.com,CHU Kar Son,AUZ444,{first}_{last},karson_chu@eisal.com
+ASU465,Environmental Investment Services Asia Limited,eisal.com,HESSE Jakob Fabian,AYC692,{first}_{last},jakob_hesse@eisal.com
+ASU465,Environmental Investment Services Asia Limited,eisal.com,WONG Ming Wai,BHQ215,{first}_{last},mingwai_wong@eisal.com
+ATW997,Silver Spring Capital Management Limited,silverspringfund.com,DAYAL Prasoon,AEH431,{first}.{last},prasoon.dayal@silverspringfund.com
+ATW997,Silver Spring Capital Management Limited,silverspringfund.com,KHANDURI Sanjay,ATX001,{first}.{last},sanjay.khanduri@silverspringfund.com
+AUK151,StormHarbour Securities (Hong Kong) Limited,stormharbour.com.hk,"CHEUNG Chung Wing, Water",AJC331,{first}.{last},water.cheung@stormharbour.com.hk
+AUK151,StormHarbour Securities (Hong Kong) Limited,stormharbour.com.hk,CHEUNG Hei,APG437,{first}.{last},hei.cheung@stormharbour.com.hk
+AUK151,StormHarbour Securities (Hong Kong) Limited,stormharbour.com.hk,FAN Lei,BFN296,{first}.{last},lei.fan@stormharbour.com.hk
+AUK151,StormHarbour Securities (Hong Kong) Limited,stormharbour.com.hk,LABROUSSE Michel Eric,ALB645,{first}.{last},micheleric.labrousse@stormharbour.com.hk
+AUN967,Hamilton Lane (Hong Kong) Limited,hamiltonlane.com,DELGADO-MOREIRA Juan Manuel,AXX978,{f}{last},dmanuel@hamiltonlane.com
+AUN967,Hamilton Lane (Hong Kong) Limited,hamiltonlane.com,TAN Collwyn Chen,AZG868,{f}{last},ctan@hamiltonlane.com
+AUN967,Hamilton Lane (Hong Kong) Limited,hamiltonlane.com,XIA Mingchen,BDJ561,{f}{last},mxia@hamiltonlane.com
+AUW716,ESR Asset Management (Fortune) Limited,fortunereit.com,"CHIU Yu, Justina",ANI924,{first}.{last},justina.chiu@fortunereit.com
+AUW716,ESR Asset Management (Fortune) Limited,fortunereit.com,HUNG Yuen Chun,AUW719,{first}.{last},yuenchun.hung@fortunereit.com
+AUW716,ESR Asset Management (Fortune) Limited,fortunereit.com,NG Yuk Ting,AVI452,{first}.{last},yukting.ng@fortunereit.com
+AVQ325,Viking Global Hong Kong Limited,vikingglobal.com,REXHEPI Pleurat,BUD418,{f}{last},prexhepi@vikingglobal.com
+AVQ325,Viking Global Hong Kong Limited,vikingglobal.com,TSANG Sai Hong,BHC363,{f}{last},stsang@vikingglobal.com
+AWE828,Silverhorn Investment Advisors Limited,silverhorngroup.com,IMAM Michael Raza,AOL063,{f}{last},mimam@silverhorngroup.com
+AWE828,Silverhorn Investment Advisors Limited,silverhorngroup.com,JIANG Yuanyuan,BTK681,{f}{last},yjiang@silverhorngroup.com
+AWE828,Silverhorn Investment Advisors Limited,silverhorngroup.com,LEUNG Hui Yu Teresa,BQM358,{f}{last},hleung@silverhorngroup.com
+AWJ200,Asia Alternatives Advisor Hong Kong Limited,asiaalt.com,GARG Praneet,AWJ204,{f}{last},pgarg@asiaalt.com
+AWJ200,Asia Alternatives Advisor Hong Kong Limited,asiaalt.com,XU Hongjiang,AWJ202,{f}{last},hxu@asiaalt.com
+AWJ200,Asia Alternatives Advisor Hong Kong Limited,asiaalt.com,YASUDA Akihiko,AGM723,{f}{last},ayasuda@asiaalt.com
+AXB644,Partners Capital Asia Limited,partners-cap.com,BURCKGARD Dominik Rene,AVM701,{first}.{last},dominikrene.burckgard@partners-cap.com
+AXB644,Partners Capital Asia Limited,partners-cap.com,PITSILIS Emmanuel Vassili,BRV311,{first}.{last},emmanuel.pitsilis@partners-cap.com
+AXB644,Partners Capital Asia Limited,partners-cap.com,WATSON Adam James,BCY110,{first}.{last},adamjames.watson@partners-cap.com
+AXF752,Dymon Asia Capital (HK) Limited,dymonasia.com,ENG JASON,BWN156,{first}.{last},jason.eng@dymonasia.com
+AXF752,Dymon Asia Capital (HK) Limited,dymonasia.com,KAN SHUNG KEI KENNETH,BWN157,{first}.{last},shung.kan@dymonasia.com
+AXF752,Dymon Asia Capital (HK) Limited,dymonasia.com,"LEE Yuen Ann, Geoffery",APQ242,{first}.{last},geoffery.lee@dymonasia.com
+AXF752,Dymon Asia Capital (HK) Limited,dymonasia.com,LUO Jiabin,AOB350,{first}.{last},jiabin.luo@dymonasia.com
+AYK525,China Vered Asset Management (Hong Kong) Limited,chinavered.com,LEUNG Man Chak,AMH953,{first}.{last},manchak.leung@chinavered.com
+AYK525,China Vered Asset Management (Hong Kong) Limited,chinavered.com,LIAN Zhe,BMC489,{first}.{last},zhe.lian@chinavered.com
+AYK525,China Vered Asset Management (Hong Kong) Limited,chinavered.com,LIU Kairong,APS899,{first}.{last},kairong.liu@chinavered.com
+AYU347,"Mesirow Financial Hong Kong, Limited",mesirow.com,ALI Mujtaba Syed,AOE776,{first}.{last},mujtabasyed.ali@mesirow.com
+AYU347,"Mesirow Financial Hong Kong, Limited",mesirow.com,ZHANG Zhitong,BTT293,{first}.{last},zhitong.zhang@mesirow.com
+AYV367,EIG Global Energy (Asia) Limited,eigpartners.com,LEE Hyun Woo,ANH636,{first}.{last},hyunwoo.lee@eigpartners.com
+AYV367,EIG Global Energy (Asia) Limited,eigpartners.com,LIU Yangyang,AFK697,{first}.{last},yangyang.liu@eigpartners.com
+AYV367,EIG Global Energy (Asia) Limited,eigpartners.com,THIERBACH William Robert,AYV370,{first}.{last},william.thierbach@eigpartners.com
+AYV367,EIG Global Energy (Asia) Limited,eigpartners.com,THOMAS Robert Blair,AYV368,{first}.{last},robert.thomas@eigpartners.com
+AZN139,Verity Capital Limited,verity.capital,"CHEUNG Sze Hon, Heath",AEI046,{f}{last},hcheung@verity.capital
+AZN139,Verity Capital Limited,verity.capital,WONG Man Yuen Michael,BQE208,{f}{last},mwong@verity.capital
+AZQ885,Isola Capital Asset Management Limited,isola-capital.com,CHAN Anthony Jen Haw,AGN913,{f}{last},achan@isola-capital.com
+AZQ885,Isola Capital Asset Management Limited,isola-capital.com,ZHANG David,AFM920,{f}{last},dzhang@isola-capital.com
+AZR590,TransAsia Private Capital Limited,taprivatecapital.com,CHANDRA Jiffriy,ADI556,{f}{last},jchandra@taprivatecapital.com
+AZR590,TransAsia Private Capital Limited,taprivatecapital.com,WONG Joon Kwang,BBF662,{f}{last},jwong@taprivatecapital.com
+AZR590,TransAsia Private Capital Limited,taprivatecapital.com,YANG Aston,AVI899,{f}{last},ayang@taprivatecapital.com
+AZU893,Maso Capital Partners Limited,masocapital.com,JAIN Manoj,AOI829,{first}.{last},manoj.jain@masocapital.com
+AZU893,Maso Capital Partners Limited,masocapital.com,KHURANA Sohit,APB854,{first}.{last},sohit.khurana@masocapital.com
+BAD993,HarbourVest Partners (Asia) Limited,harbourvest.com,CHEN Amanda,AWF103,{f}{last},achen@harbourvest.com
+BAD993,HarbourVest Partners (Asia) Limited,harbourvest.com,THAKORE Hemal,AED178,{f}{last},hthakore@harbourvest.com
+BAD993,HarbourVest Partners (Asia) Limited,harbourvest.com,YAP Hsiang Yang,BBR103,{f}{last},hyap@harbourvest.com
+BAI946,Tor Investment Management (Hong Kong) Limited,torinvestment.com,EDSPARR Patrik Lennart,BAI947,{f}{last},pedsparr@torinvestment.com
+BAI946,Tor Investment Management (Hong Kong) Limited,torinvestment.com,MIKOSH Christopher Louis,AFP976,{f}{last},cmikosh@torinvestment.com
+BAS383,Compagnie d'Investissements et de Gestion Privee (Hong Kong) Limited,cigp.com,LE GOUZ DE SAINT SEINE Hugues Christian Benigne,BAS387,{first}.{last},gouz.le@cigp.com
+BAS383,Compagnie d'Investissements et de Gestion Privee (Hong Kong) Limited,cigp.com,TATTONI Luciano Stefano,BAS390,{first}.{last},luciano.tattoni@cigp.com
+BBH317,Lexington Partners Asia Limited,lexingtonpartners.com,HUANG Timothy C,APJ306,{f}{last},thuang@lexingtonpartners.com
+BBH317,Lexington Partners Asia Limited,lexingtonpartners.com,LEE John Yong Suk,ANR202,{f}{last},jlee@lexingtonpartners.com
+BBH317,Lexington Partners Asia Limited,lexingtonpartners.com,SANG Yunyan,AXN061,{f}{last},ysang@lexingtonpartners.com
+BBL650,Bridgeway Prime Shop Fund Management Limited,bwfund.com,KWOK Chi Wai,ANA838,{f}{last},ckwok@bwfund.com
+BBL650,Bridgeway Prime Shop Fund Management Limited,bwfund.com,LEE Edwin Kan Hing,AEJ673,{f}{last},elee@bwfund.com
+BBS728,Ally Bridge Group (HK) Limited,ally-bridge.com,WONG Chun Lok,BQE761,{first}.{last},chunlok.wong@ally-bridge.com
+BBS728,Ally Bridge Group (HK) Limited,ally-bridge.com,YU Fan,AEE377,{first}.{last},fan.yu@ally-bridge.com
+BBX176,Swiss International Asset Management Limited,siam.hk,ARZNER Cyrill,BBX181,{first}.{last},cyrill.arzner@siam.hk
+BBX176,Swiss International Asset Management Limited,siam.hk,GSCHWEND Marco,BOK759,{first}.{last},marco.gschwend@siam.hk
+BBX176,Swiss International Asset Management Limited,siam.hk,YUNG Wai Sing,ANP500,{first}.{last},waising.yung@siam.hk
+BCE759,Proprium Capital Partners (Hong Kong) Limited,proprium.com,FENG Wen Lu,BER409,{first}.{last},wenlu.feng@proprium.com
+BCE759,Proprium Capital Partners (Hong Kong) Limited,proprium.com,MORRIS John Timothy,AAV675,{first}.{last},johntimothy.morris@proprium.com
+BCE759,Proprium Capital Partners (Hong Kong) Limited,proprium.com,WONG Thomas Chun Kwan,AGW285,{first}.{last},thomas.wong@proprium.com
+BCY137,IP Investment Management (HK) Limited,ip-im.com,HUANG Kai-yu Kenneth,BIO892,{first}.{last},kaiyu.huang@ip-im.com
+BCY137,IP Investment Management (HK) Limited,ip-im.com,SO Chak Ming,BOJ610,{first}.{last},chakming.so@ip-im.com
+BCY137,IP Investment Management (HK) Limited,ip-im.com,WILLIAMS Selina Marie Elizabeth,BCY147,{first}.{last},selina.williams@ip-im.com
+BCY137,IP Investment Management (HK) Limited,ip-im.com,WILLSHER Benjamin Ernest John,BVI019,{first}.{last},benjamin.willsher@ip-im.com
+BDL438,Trilogy Partners Limited,trilogy.com,LI Yunguang,APJ345,{first}.{last},yunguang.li@trilogy.com
+BDL438,Trilogy Partners Limited,trilogy.com,LIN Xiao,AQG721,{first}.{last},xiao.lin@trilogy.com
+BDW170,Anchor Equity Partners (Asia) Limited,anchorpe.com,AHN Sanggyun,AEO327,{first}.{last},sanggyun.ahn@anchorpe.com
+BDW170,Anchor Equity Partners (Asia) Limited,anchorpe.com,CHOI Seong Il,BDW193,{first}.{last},seongil.choi@anchorpe.com
+BDW170,Anchor Equity Partners (Asia) Limited,anchorpe.com,LEE Woojin,AQI793,{first}.{last},woojin.lee@anchorpe.com
+BED953,MizMaa Ventures Limited,mizmaa.com,"LEUNG Kar Cheung, Catherine",AGN568,{first}.{last},catherine.leung@mizmaa.com
+BED953,MizMaa Ventures Limited,mizmaa.com,"LIANG Wei Jen, William",AGU673,{first}.{last},william.liang@mizmaa.com
+BEN880,Boman Capital (Hong Kong) Limited,boman.group,LEE Chun-Ting,BEW769,{first}.{last},chunting.lee@boman.group
+BEN880,Boman Capital (Hong Kong) Limited,boman.group,WEI Ruihao,BRV674,{first}.{last},ruihao.wei@boman.group
+BES440,Solaris Capital Advisors (HK) Limited,solariscapitalhk.com,LIU Jenny Chiao-ping,AWR710,{f}{last},jliu@solariscapitalhk.com
+BES440,Solaris Capital Advisors (HK) Limited,solariscapitalhk.com,SUN Weshiang,AQY832,{f}{last},wsun@solariscapitalhk.com
+BES440,Solaris Capital Advisors (HK) Limited,solariscapitalhk.com,WONG Kwok Wai,AOY613,{f}{last},kwong@solariscapitalhk.com
+BFJ987,DL Family Office (HK) Limited,dl-holdings.com,LAM Siu Hong,ACA526,{first}{last},siuhonglam@dl-holdings.com
+BFJ987,DL Family Office (HK) Limited,dl-holdings.com,WOO Tracy,ACZ396,{first}{last},tracywoo@dl-holdings.com
+BGB564,Dynasty Alliance Investment Management Limited,dynastyalliance-im.com,"LEE Kin Man, Desmond",AFK515,{f}{last},dlee@dynastyalliance-im.com
+BGB564,Dynasty Alliance Investment Management Limited,dynastyalliance-im.com,WANG Yong,AOM636,{f}{last},ywang@dynastyalliance-im.com
+BGB564,Dynasty Alliance Investment Management Limited,dynastyalliance-im.com,WONG Yan Kei Christine,BKD487,{f}{last},ywong@dynastyalliance-im.com
+BGI410,Nova Spectrum Capital Management Limited,nova-spectrum.com,ROMANO Andrea,BBW683,{first}.{last},andrea.romano@nova-spectrum.com
+BGI410,Nova Spectrum Capital Management Limited,nova-spectrum.com,TAO Jin,BCN396,{first}.{last},jin.tao@nova-spectrum.com
+BGT920,Wonder Capital Group Limited,onder-capital.com,CHAN Erving Wenhan,BAP675,{first}.{last},erving.chan@onder-capital.com
+BGT920,Wonder Capital Group Limited,onder-capital.com,"CHAN Wing Chee, Gigi",ARA111,{first}.{last},gigi.chan@onder-capital.com
+BHF112,Kairous Capital (HK) Limited,kairous.com,"CHAN Chung Keung, Jackon",AEH616,{first}.{last},jackon.chan@kairous.com
+BHF112,Kairous Capital (HK) Limited,kairous.com,HIA Yik Yang,BTM561,{first}.{last},yikyang.hia@kairous.com
+BHF112,Kairous Capital (HK) Limited,kairous.com,LEE Joseph Moh Hon,BHF356,{first}.{last},joseph.lee@kairous.com
+BHF112,Kairous Capital (HK) Limited,kairous.com,LEE Teng Hau,BTM560,{first}.{last},tenghau.lee@kairous.com
+BHF153,C.M. Capital Advisors (HK) Limited,cmcapitaladvisors.com,LIANG Xiaoli,ANG867,{f}{last},xliang@cmcapitaladvisors.com
+BHF153,C.M. Capital Advisors (HK) Limited,cmcapitaladvisors.com,MALONE Timothy Joseph,AXV753,{f}{last},tmalone@cmcapitaladvisors.com
+BHF153,C.M. Capital Advisors (HK) Limited,cmcapitaladvisors.com,WU Lici Leon Edward,AJD966,{f}{last},lwu@cmcapitaladvisors.com
+BHO368,Kadensa Capital Limited,kadensacapital.com,CHUNG Derek Leigh,AOD515,{first}.{last},derek.chung@kadensacapital.com
+BHO368,Kadensa Capital Limited,kadensacapital.com,LEUNG Chi Kit,AOB360,{first}.{last},chikit.leung@kadensacapital.com
+BHO368,Kadensa Capital Limited,kadensacapital.com,LIM Ching Yee Julie,ANQ655,{first}.{last},ching.lim@kadensacapital.com
+BHO405,Atta Capital Limited,attacapital.com,CHAN Hing Wang,ABQ698,{first}.{last},hingwang.chan@attacapital.com
+BHO405,Atta Capital Limited,attacapital.com,LIAO Jie,BQH159,{first}.{last},jie.liao@attacapital.com
+BHO405,Atta Capital Limited,attacapital.com,SONG Xin,ANA840,{first}.{last},xin.song@attacapital.com
+BHO405,Atta Capital Limited,attacapital.com,YU Yang,BGB011,{first}.{last},yang.yu@attacapital.com
+BHS283,A.C Asset Management Limited  ,ac.capital,LAM Hay Tak,AXE899,{first}.{last},haytak.lam@ac.capital
+BHS283,A.C Asset Management Limited  ,ac.capital,LUK Ka Wai,BMV708,{first}.{last},kawai.luk@ac.capital
+BHS283,A.C Asset Management Limited  ,ac.capital,"WONG Mang, Peggy",AIU173,{first}.{last},peggy.wong@ac.capital
+BHU903,"HPS Investment Partners (HK), Limited",hpspartners.com,WHITE Nicholas Andrew,BXA039,{first}.{last},nicholas.white@hpspartners.com
+BHU903,"HPS Investment Partners (HK), Limited",hpspartners.com,"WONG Hak Wing, Valerie",ALL103,{first}.{last},valerie.wong@hpspartners.com
+BHY235,Aspenwood Capital Limited,aspenwood-capital.com,CHAN Kin Pan,AZB954,{first}.{last},kinpan.chan@aspenwood-capital.com
+BHY235,Aspenwood Capital Limited,aspenwood-capital.com,LEE Chi Chung,BFU199,{first}.{last},chichung.lee@aspenwood-capital.com
+BHY235,Aspenwood Capital Limited,aspenwood-capital.com,NG Jerry Chi Wai,BRU784,{first}.{last},jerry.ng@aspenwood-capital.com
+BHZ135,Kristal Advisors (HK) Limited,kristal.ai,CHANDA Asheesh,BHZ138,{first}.{last},asheesh.chanda@kristal.ai
+BHZ135,Kristal Advisors (HK) Limited,kristal.ai,MOHINDRA Vivek,ANA721,{first}.{last},vivek.mohindra@kristal.ai
+BHZ135,Kristal Advisors (HK) Limited,kristal.ai,NARASIMHAN Vineeth,BJQ798,{first}.{last},vineeth.narasimhan@kristal.ai
+BIA093,ASPIRE Multi-Family Office Limited,aspiremfo.com,BARRETT Peter Richard Stephen,AUO108,{first}.{last},peter.barrett@aspiremfo.com
+BIA093,ASPIRE Multi-Family Office Limited,aspiremfo.com,BARTLETT David Vernon,APD399,{first}.{last},david.bartlett@aspiremfo.com
+BIA093,ASPIRE Multi-Family Office Limited,aspiremfo.com,WEIR Shane Frederick,AAG321,{first}.{last},shane.weir@aspiremfo.com
+BIJ197,Meta Elephant Capital Limited,metaegh.com,LANG Chunmei,BFS176,{first}{last},chunmeilang@metaegh.com
+BIJ197,Meta Elephant Capital Limited,metaegh.com,"NGUYEN Gia Vinh, Patrick",ALI719,{first}{last},patricknguyen@metaegh.com
+BIJ678,North Oakridge Asset Management Limited,northoakridge.com,HONG Yu,BIK720,{f}{last},yhong@northoakridge.com
+BIJ678,North Oakridge Asset Management Limited,northoakridge.com,WANG Chen,ASY201,{f}{last},cwang@northoakridge.com
+BIJ678,North Oakridge Asset Management Limited,northoakridge.com,XU Zhe,ASU357,{f}{last},zxu@northoakridge.com
+BJB693,RP Asset Management Limited,rp-assetmanagement.com,LI Ye,BTG969,{f}{last},yli@rp-assetmanagement.com
+BJP081,Ishana Capital Limited,ishanacapital.com,CHUA Zheng Yan,BBT847,{first}.{last},zhengyan.chua@ishanacapital.com
+BJP081,Ishana Capital Limited,ishanacapital.com,RAVISANKAR Harishankar,AXZ638,{first}.{last},harishankar.ravisankar@ishanacapital.com
+BJP081,Ishana Capital Limited,ishanacapital.com,UPADHYAYULA Madhukar Srinivas,BKJ280,{first}.{last},madhukar.upadhyayula@ishanacapital.com
+BJP081,Ishana Capital Limited,ishanacapital.com,WITTET Mark James Oakley,AWR862,{first}.{last},mark.wittet@ishanacapital.com
+BJP623,SAIF Everwell Asset Management Hong Kong Limited,saifamchk.com,CHAN Ka Pong,AHX696,{first}{last},kapongchan@saifamchk.com
+BJP623,SAIF Everwell Asset Management Hong Kong Limited,saifamchk.com,LAI Zhihua,BNH418,{first}{last},zhihualai@saifamchk.com
+BKD372,Alaya Capital Limited,alaya-capital.com,"CHEUNG Sze Hon, Heath",AEI046,{first}.{last},heath.cheung@alaya-capital.com
+BKD372,Alaya Capital Limited,alaya-capital.com,WONG Man Yuen Michael,BQE208,{first}.{last},man.wong@alaya-capital.com
+BLM104,Hermitage Capital HK Limited,hermitagecap.com,CHANG Hsun,AXF701,{first}.{last},hsun.chang@hermitagecap.com
+BLM104,Hermitage Capital HK Limited,hermitagecap.com,XIANG Yuqiu,ARF778,{first}.{last},yuqiu.xiang@hermitagecap.com
+BLM104,Hermitage Capital HK Limited,hermitagecap.com,ZHANG Menghan,AYQ805,{first}.{last},menghan.zhang@hermitagecap.com
+BLT167,ZhongYi Investment Managers Limited,zyim.com.hk,GROSPERRIN Christophe Eric Pascal,AME536,{first}.{last},christophe.grosperrin@zyim.com.hk
+BLT167,ZhongYi Investment Managers Limited,zyim.com.hk,"LAW Cheuk Kin, Stephen",AHI655,{first}.{last},stephen.law@zyim.com.hk
+BLT167,ZhongYi Investment Managers Limited,zyim.com.hk,"YUEN Lai Yan, Darius",ACO079,{first}.{last},darius.yuen@zyim.com.hk
+BMH738,SunPlus Capital Limited,sunpluscap.com,CHOW Wing,ALK717,{f}{last},wchow@sunpluscap.com
+BMH738,SunPlus Capital Limited,sunpluscap.com,HUANG Tan,BFK469,{f}{last},thuang@sunpluscap.com
+BMM431,VMS Asset Management Limited,vmsam.com,CHEUNG Man Chor Elton,BRM572,{first}{last},mancheung@vmsam.com
+BMM431,VMS Asset Management Limited,vmsam.com,GONG Biao,BTQ491,{first}{last},biaogong@vmsam.com
+BMM431,VMS Asset Management Limited,vmsam.com,NG Siu Wai,AYD102,{first}{last},siuwaing@vmsam.com
+BMM431,VMS Asset Management Limited,vmsam.com,ZOU Jianming,AFW638,{first}{last},jianmingzou@vmsam.com
+BMP531,Cheung On Securities Limited,cheungonint.com,GUO Dajiang,ATE173,{first}.{last},dajiang.guo@cheungonint.com
+BMP531,Cheung On Securities Limited,cheungonint.com,LEE Kit Sum,ALN682,{first}.{last},kitsum.lee@cheungonint.com
+BMP531,Cheung On Securities Limited,cheungonint.com,SUN Fengqiang,AVS893,{first}.{last},fengqiang.sun@cheungonint.com
+BMQ105,Finex Hong Kong Limited,finexhongkong.com,"CHIN Hin Lik, Eric",AYE644,{first}.{last},eric.chin@finexhongkong.com
+BMQ105,Finex Hong Kong Limited,finexhongkong.com,LAM Chi Lam,AYJ114,{first}.{last},chilam.lam@finexhongkong.com
+BNG026,Grandview Capital Group Limited,grandview-capital.com,CHAN Kwok Dik,AYF149,{f}{last},kchan@grandview-capital.com
+BNG966,GLY CAPITAL MANAGEMENT LIMITED,glycm.com,LIN Ni,BAL766,{first}.{last},ni.lin@glycm.com
+BNG966,GLY CAPITAL MANAGEMENT LIMITED,glycm.com,TAM Lee Yee,BVQ819,{first}.{last},leeyee.tam@glycm.com
+BNK363,Hectoron Global Capital Management Limited,hectoron.com,"CHAN Yuet Hang, Danny",AJJ615,{first}.{last},danny.chan@hectoron.com
+BNK363,Hectoron Global Capital Management Limited,hectoron.com,LU Yuedan,BRF663,{first}.{last},yuedan.lu@hectoron.com
+BNK363,Hectoron Global Capital Management Limited,hectoron.com,PANG Chi Ling,BNZ316,{first}.{last},chiling.pang@hectoron.com
+BNN105,LQ Pacific Partners Limited,lqpacific.com,CHAN Justin Chang Yi,ARL414,{first}.{last},justin.chan@lqpacific.com
+BNN105,LQ Pacific Partners Limited,lqpacific.com,NG Kwok Leung,BDW184,{first}.{last},kwokleung.ng@lqpacific.com
+BNN105,LQ Pacific Partners Limited,lqpacific.com,TANG Kwan Yue,AOV744,{first}.{last},kwanyue.tang@lqpacific.com
+BNR191,EQT Partners Capital Limited,eqtgroup.com,CORDES Patrick John,ANX474,{f}{last},pcordes@eqtgroup.com
+BNR191,EQT Partners Capital Limited,eqtgroup.com,HAM Sehoon,BBR101,{f}{last},sham@eqtgroup.com
+BNR191,EQT Partners Capital Limited,eqtgroup.com,HO Clara,AEM719,{f}{last},cho@eqtgroup.com
+BNR191,EQT Partners Capital Limited,eqtgroup.com,LEE Eu Han,ARJ450,{f}{last},elee@eqtgroup.com
+BNR191,EQT Partners Capital Limited,eqtgroup.com,SHAW Sun Kan Gordon,AIC747,{f}{last},sshaw@eqtgroup.com
+BNR191,EQT Partners Capital Limited,eqtgroup.com,THORN Nicholas Michael Gordon,AYD173,{f}{last},nthorn@eqtgroup.com
+BNS042,Olympus Partners Asia Limited,opalhongkong.com,JO Sang Youl,AEP482,{first}.{last},sangyoul.jo@opalhongkong.com
+BNS042,Olympus Partners Asia Limited,opalhongkong.com,KIM Young Kun,ADH570,{first}.{last},youngkun.kim@opalhongkong.com
+BNS042,Olympus Partners Asia Limited,opalhongkong.com,LEE Wing Yan,AQA911,{first}.{last},wingyan.lee@opalhongkong.com
+BNV266,YWL Asset Management Limited,ywlhk.com,"CHOI Chun Wai, Raymond",ANP615,{first}.{last},raymond.choi@ywlhk.com
+BNV266,YWL Asset Management Limited,ywlhk.com,YEUNG Chun Man,ANP664,{first}.{last},chunman.yeung@ywlhk.com
+BNV367,ARTE Capital Management Limited,artecapital.com,GUO Shihai,BBD499,{first}.{last},shihai.guo@artecapital.com
+BNV367,ARTE Capital Management Limited,artecapital.com,LAU Kin Wang,BMW295,{first}.{last},kinwang.lau@artecapital.com
+BNX059,Zerobridge Partners Asset Management Limited ,zerobridge.com,HULL Stephen Beattie,AZB042,{first}.{last},stephen.hull@zerobridge.com
+BNX059,Zerobridge Partners Asset Management Limited ,zerobridge.com,KOTWAL Rahul,BNO319,{first}.{last},rahul.kotwal@zerobridge.com
+BOB230,Farallon Capital Asia (HK) Limited,faralloncapital.com,CALDWELL Paul Andrew,BOB262,{f}{last},pcaldwell@faralloncapital.com
+BOB230,Farallon Capital Asia (HK) Limited,faralloncapital.com,"WONG Ka Ho, Andy",AQS311,{f}{last},awong@faralloncapital.com
+BOC542,Olive Asset Management (Hong Kong) Limited,oliveam.com,LIU Tengfei,BVY539,{first}.{last},tengfei.liu@oliveam.com
+BOC542,Olive Asset Management (Hong Kong) Limited,oliveam.com,MAO Qifeng,BUK921,{first}.{last},qifeng.mao@oliveam.com
+BOC542,Olive Asset Management (Hong Kong) Limited,oliveam.com,TANG Sherlock Tze Lok,BSM499,{first}.{last},sherlock.tang@oliveam.com
+BOC542,Olive Asset Management (Hong Kong) Limited,oliveam.com,WONG Wai Kar,AJE109,{first}.{last},waikar.wong@oliveam.com
+BOC542,Olive Asset Management (Hong Kong) Limited,oliveam.com,YIN Hao,BUN757,{first}.{last},hao.yin@oliveam.com
+BOF598,Gateway Private Markets (HK) Limited,gatewayprivatemarkets.com,LAU Arthur Nicholas Tsz-him,BFZ391,{first}.{last},arthur.lau@gatewayprivatemarkets.com
+BOF598,Gateway Private Markets (HK) Limited,gatewayprivatemarkets.com,TROUBLAIEWITCH  Rachel,BOF677,{first}.{last},rachel.troublaiewitch@gatewayprivatemarkets.com
+BOF598,Gateway Private Markets (HK) Limited,gatewayprivatemarkets.com,TROUBLAIEWITCH Cyrille Dimitri,AOR530,{first}.{last},cyrille.troublaiewitch@gatewayprivatemarkets.com
+BOP567,XCap Partners Limited,xcap-partners.com,KUNG Man,BQS929,{first}.{last},man.kung@xcap-partners.com
+BOP567,XCap Partners Limited,xcap-partners.com,POON Cho Fai,ADH524,{first}.{last},chofai.poon@xcap-partners.com
+BOP567,XCap Partners Limited,xcap-partners.com,VALIENTE Maria Nancy,ACB486,{first}.{last},maria.valiente@xcap-partners.com
+BOP567,XCap Partners Limited,xcap-partners.com,YIP Emerson Yee Shun,ACS891,{first}.{last},emerson.yip@xcap-partners.com
+BOR158,Cambium Grove Partners Limited,cambiumgrove.com,LAN Willy Yu-wei,AFT617,{first}.{last},willy.lan@cambiumgrove.com
+BOR158,Cambium Grove Partners Limited,cambiumgrove.com,WONG Hin Lam,ALA802,{first}.{last},hinlam.wong@cambiumgrove.com
+BOX307,GLP HK Investment Management Limited,glp.com,TSE Ching Ping,AMC976,{first}.{last},chingping.tse@glp.com
+BOX307,GLP HK Investment Management Limited,glp.com,WANG Tianbing,AWO087,{first}.{last},tianbing.wang@glp.com
+BOZ202,Basel Capital Limited,baselpe.com,LIN Wai Yi,BHA453,{first}{last},waiyilin@baselpe.com
+BOZ202,Basel Capital Limited,baselpe.com,YIU Pok Man,ATW867,{first}{last},pokmanyiu@baselpe.com
+BPB919,Sparc Capital Management Limited,sparccapital.com,NG Fung Nga,AHE261,{first}.{last},fungnga.ng@sparccapital.com
+BPN457,Celadon Partners (Asia Pacific) Limited ,celadonpartners.com,CHEN Wen,BPS697,{first}.{last},wen.chen@celadonpartners.com
+BPN457,Celadon Partners (Asia Pacific) Limited ,celadonpartners.com,SHI Yunhan,BLA252,{first}.{last},yunhan.shi@celadonpartners.com
+BPN457,Celadon Partners (Asia Pacific) Limited ,celadonpartners.com,TANG Donald,APE833,{first}.{last},donald.tang@celadonpartners.com
+BPU803,Vectr Ventures Advisors Limited,vectr.co,"CHAN Yiu Lun, Alan",ANX937,{first}.{last},alan.chan@vectr.co
+BPU803,Vectr Ventures Advisors Limited,vectr.co,LAW Arthur Cheuk Fung,BPV229,{first}.{last},arthur.law@vectr.co
+BPU803,Vectr Ventures Advisors Limited,vectr.co,SHUM Jimmy,BPV231,{first}.{last},jimmy.shum@vectr.co
+BPV723,Aqua Capital Strategy Limited,aqua-csl.com,ALI Jamilah,AEI556,{first}.{last},jamilah.ali@aqua-csl.com
+BPV723,Aqua Capital Strategy Limited,aqua-csl.com,LI Hu,AJG540,{first}.{last},hu.li@aqua-csl.com
+BPV723,Aqua Capital Strategy Limited,aqua-csl.com,LO Chi Wai,ARO380,{first}.{last},chiwai.lo@aqua-csl.com
+BPV723,Aqua Capital Strategy Limited,aqua-csl.com,LU Chaohua,BNB594,{first}.{last},chaohua.lu@aqua-csl.com
+BPV723,Aqua Capital Strategy Limited,aqua-csl.com,QIU Zhong Wei,BER061,{first}.{last},zhongwei.qiu@aqua-csl.com
+BPY497,Fides Capital Group Limited,fidescg.com,HUANG Jie,BBD156,{first}.{last},jie.huang@fidescg.com
+BPY497,Fides Capital Group Limited,fidescg.com,TAN Kai,AVJ582,{first}.{last},kai.tan@fidescg.com
+BQB745,Regal Partners (Hong Kong) Limited,regalfm.com,CORONES Zachary Alexander,BCA233,{first}.{last},zachary.corones@regalfm.com
+BQB745,Regal Partners (Hong Kong) Limited,regalfm.com,YU Ka Kong,AXL635,{first}.{last},kakong.yu@regalfm.com
+BQC985,Albamen Capital Partners (Hong Kong) Limited,albamencapital.com,LI Kei,BQS074,{first}.{last},kei.li@albamencapital.com
+BQC985,Albamen Capital Partners (Hong Kong) Limited,albamencapital.com,WONG Elvin Yiu-wai,AIJ339,{first}.{last},elvin.wong@albamencapital.com
+BQP051,Immensus Capital Investment Management (HK) Limited,immensus-capital.squarespace.com,TAO Ye,BWI668,{f}{last},ytao@immensus-capital.squarespace.com
+BQP051,Immensus Capital Investment Management (HK) Limited,immensus-capital.squarespace.com,YAO Zhengye,AOC708,{f}{last},zyao@immensus-capital.squarespace.com
+BQP051,Immensus Capital Investment Management (HK) Limited,immensus-capital.squarespace.com,ZHANG Wenning,BWN499,{f}{last},wzhang@immensus-capital.squarespace.com
+BQP453,Lux Aeterna Capital Limited,la-capital.com,CHUNG Chun Yin,BEM830,{first}.{last},chunyin.chung@la-capital.com
+BQP453,Lux Aeterna Capital Limited,la-capital.com,LIU Siyuan,AXZ979,{first}.{last},siyuan.liu@la-capital.com
+BQP453,Lux Aeterna Capital Limited,la-capital.com,PENG Yuhan,BLS882,{first}.{last},yuhan.peng@la-capital.com
+BQP846,Flow Capital Partners Limited,flowcp.com,CHEN Yu,BLN446,{first}.{last},yu.chen@flowcp.com
+BQP846,Flow Capital Partners Limited,flowcp.com,LU Liyan,BGI430,{first}.{last},liyan.lu@flowcp.com
+BQP846,Flow Capital Partners Limited,flowcp.com,TIAN Hanlin,BDZ941,{first}.{last},hanlin.tian@flowcp.com
+BQP846,Flow Capital Partners Limited,flowcp.com,YEUNG Ka Lap,BVG865,{first}.{last},kalap.yeung@flowcp.com
+BQV434,GCCVest Partners Limited,gccvest.com,CHEUNG Tin Wai,BRW649,{first}.{last},tinwai.cheung@gccvest.com
+BQV434,GCCVest Partners Limited,gccvest.com,TAM Marco,AXV875,{first}.{last},marco.tam@gccvest.com
+BQZ842,Nan Fung Trinity (HK) Limited,nftrinity.com,"CHAN Yan Kit, Kenny",AOT666,{first}.{last},kenny.chan@nftrinity.com
+BQZ842,Nan Fung Trinity (HK) Limited,nftrinity.com,ZHOU Meng,AUO120,{first}.{last},meng.zhou@nftrinity.com
+BQZ842,Nan Fung Trinity (HK) Limited,nftrinity.com,ZHU Helen Yue,AFK424,{first}.{last},helenyue.zhu@nftrinity.com
+BRG182,Hendale Capital Limited,hendale.com,CHANG Chechung,AVH886,{f}{last},cchang@hendale.com
+BRG182,Hendale Capital Limited,hendale.com,KHOO Terence Boo Kheng,ACZ723,{f}{last},tkhoo@hendale.com
+BRG182,Hendale Capital Limited,hendale.com,LEE Henry Da-Cheng,ACS621,{f}{last},hlee@hendale.com
+BRI450,CDIB Capital International (Hong Kong) Corporation Limited,cdibcapitalgroup.com,CHOU David Tse Young,AEU433,{first}.{last},david.chou@cdibcapitalgroup.com
+BRI450,CDIB Capital International (Hong Kong) Corporation Limited,cdibcapitalgroup.com,YING Long Shang Alex,BLV213,{first}.{last},long.ying@cdibcapitalgroup.com
+BRI641,"PristineView Capital Advisers, Limited",pristineviewcap.com,WEI Keqing,BAV558,{f}{last},kwei@pristineviewcap.com
+BRI641,"PristineView Capital Advisers, Limited",pristineviewcap.com,YANG Jian,AVN518,{f}{last},jyang@pristineviewcap.com
+BRM403,Gate3 Capital Limited,gate3capital.com,LAU Tak Yan,APF933,{f}{last},tlau@gate3capital.com
+BRM403,Gate3 Capital Limited,gate3capital.com,LAU Wai Kin,AWW395,{f}{last},wlau@gate3capital.com
+BRQ741,Syfe Hong Kong Limited,syfe.com,GANERIWAL Ritesh,BRR729,{first}.{last},ritesh.ganeriwal@syfe.com
+BRQ741,Syfe Hong Kong Limited,syfe.com,PARAKH Archit,BBT705,{first}.{last},archit.parakh@syfe.com
+BRS535,Pryme Capital Limited,prymecapital.hk,WANG Yu,APZ458,{f}{last},ywang@prymecapital.hk
+BRS535,Pryme Capital Limited,prymecapital.hk,ZHANG Junyong,ALL467,{f}{last},jzhang@prymecapital.hk
+BRV669,River Delta Wealth Management Company Limited,riverdeltawm.com,LANG Zhen,ATY003,{first}.{last},zhen.lang@riverdeltawm.com
+BRV669,River Delta Wealth Management Company Limited,riverdeltawm.com,WU Yi-Ping,BFN192,{first}.{last},yiping.wu@riverdeltawm.com
+BRV669,River Delta Wealth Management Company Limited,riverdeltawm.com,YANG Jian,BRV884,{first}.{last},jian.yang@riverdeltawm.com
+BRZ335,Prestige Global Capital Management Limited,pwgglobal.com,KO Wing Tong,BHX142,{first}.{last},wingtong.ko@pwgglobal.com
+BRZ335,Prestige Global Capital Management Limited,pwgglobal.com,"TAI Yuen Fai, Patricia",BJE911,{first}.{last},patricia.tai@pwgglobal.com
+BRZ740,WRise Wealth Management (Hong Kong) Limited,rise.hk,KWOK Ka Ho,BSR216,{first}.{last},kaho.kwok@rise.hk
+BRZ740,WRise Wealth Management (Hong Kong) Limited,rise.hk,LIANG Junyao,BQI440,{first}.{last},junyao.liang@rise.hk
+BRZ740,WRise Wealth Management (Hong Kong) Limited,rise.hk,POON Kar Kin,BWR135,{first}.{last},karkin.poon@rise.hk
+BRZ740,WRise Wealth Management (Hong Kong) Limited,rise.hk,ZHANG Di,BSD691,{first}.{last},di.zhang@rise.hk
+BSH171,ESR Hong Kong Asset Management Limited,esr.com,CHANG Rui Hua,BAQ174,{first}.{last},ruihua.chang@esr.com
+BSH171,ESR Hong Kong Asset Management Limited,esr.com,POON Koon Chung Gary,BSH220,{first}.{last},koon.poon@esr.com
+BSL435,Harmony Wealth Management Limited,harmonywml.com,NIEM Philip,AAE608,{first}.{last},philip.niem@harmonywml.com
+BSL435,Harmony Wealth Management Limited,harmonywml.com,YAU Ching Yee,BAA826,{first}.{last},chingyee.yau@harmonywml.com
+BSR416,FountainVest Capital Limited,fountainvest.com,CHEN Evan Wai Man,ALP918,{first}{last},evanchen@fountainvest.com
+BSR416,FountainVest Capital Limited,fountainvest.com,HUANG Andrew Chih-Chun,APQ270,{first}{last},andrewhuang@fountainvest.com
+BSR416,FountainVest Capital Limited,fountainvest.com,TANG Kui,ADI676,{first}{last},kuitang@fountainvest.com
+BTI054,Landmark Family Office Limited,landmarkfo.com,GAO Ying,BHF149,{f}{last},ygao@landmarkfo.com
+BTI054,Landmark Family Office Limited,landmarkfo.com,HARVEY Cameron Philip,BOC215,{f}{last},charvey@landmarkfo.com
+BTP222,Acuity Capital Partners (HK) Limited,acuitycapital.ca,"CHEN Chung Nin, Rock",AIE121,{f}{last},rchen@acuitycapital.ca
+BTP222,Acuity Capital Partners (HK) Limited,acuitycapital.ca,LEE Shu Chung Adolf,ADC201,{f}{last},slee@acuitycapital.ca
+BTP222,Acuity Capital Partners (HK) Limited,acuitycapital.ca,TOONG Darrel See-jeun,ANH431,{f}{last},dtoong@acuitycapital.ca
+BTQ852,Beyond Ventures Asset Management Limited,beyondventures.hk,LAM Yuk Shing,BNO273,{first}{last},yukshinglam@beyondventures.hk
+BTQ852,Beyond Ventures Asset Management Limited,beyondventures.hk,MA Hok Wang,BFN864,{first}{last},hokwangma@beyondventures.hk
+BTQ852,Beyond Ventures Asset Management Limited,beyondventures.hk,MAN Lap,BKJ434,{first}{last},lapman@beyondventures.hk
+BTR656,Spectrum Finance Limited,spectrum-capital.net,DAI Guanying,BVL489,{f}{last},gdai@spectrum-capital.net
+BTY381,Blue Ribbon Capital Limited,blueribboncapital.hk,LI Ping,BTY385,{f}{last},pli@blueribboncapital.hk
+BTY381,Blue Ribbon Capital Limited,blueribboncapital.hk,MA Kai Ho,BTY382,{f}{last},kma@blueribboncapital.hk
+BTY381,Blue Ribbon Capital Limited,blueribboncapital.hk,SHI Jin,BTY384,{f}{last},jshi@blueribboncapital.hk
+BUI779,Primavera Investment Management Limited,primavera-capital.com,CHEN Xueqian,AWP698,{first}.{last},xueqian.chen@primavera-capital.com
+BUI779,Primavera Investment Management Limited,primavera-capital.com,LAU Jeffrey Chun Hung,AFC954,{first}.{last},jeffrey.lau@primavera-capital.com
+BUJ035,Goldstate Capital Group Limited,goldstatecapitalgroup.com,CHANG Ho Wan,AUH451,{first}.{last},howan.chang@goldstatecapitalgroup.com
+BUJ035,Goldstate Capital Group Limited,goldstatecapitalgroup.com,LEE Geng Rong,ACB022,{first}.{last},gengrong.lee@goldstatecapitalgroup.com
+BUK568,Sino Cornerstone Capital Limited,sinocapital.com.hk,WANG Jie,BGE556,{first}.{last},jie.wang@sinocapital.com.hk
+BUK568,Sino Cornerstone Capital Limited,sinocapital.com.hk,YAO Sheng,ALL051,{first}.{last},sheng.yao@sinocapital.com.hk
+BUK941,Deca Capital Limited,deca-capital.com,GUO Jing,BIU928,{first}.{last},jing.guo@deca-capital.com
+BUK941,Deca Capital Limited,deca-capital.com,HUANG Shuyun,BQZ749,{first}.{last},shuyun.huang@deca-capital.com
+BUK941,Deca Capital Limited,deca-capital.com,WANG CHAO,BWK962,{first}.{last},chao.wang@deca-capital.com
+BUK941,Deca Capital Limited,deca-capital.com,ZHANG Yeshuang,BHD212,{first}.{last},yeshuang.zhang@deca-capital.com
+BUS898,Hamilton Lane Asset Management (HK) Limited,hamiltonlane.com,DELGADO-MOREIRA Juan Manuel,AXX978,{f}{last},dmanuel@hamiltonlane.com
+BUS898,Hamilton Lane Asset Management (HK) Limited,hamiltonlane.com,TAN Collwyn Chen,AZG868,{f}{last},ctan@hamiltonlane.com
+BUS898,Hamilton Lane Asset Management (HK) Limited,hamiltonlane.com,XIA Mingchen,BDJ561,{f}{last},mxia@hamiltonlane.com
+BUU151,MindWorks Capital Advisors Hong Kong Limited,mindworks.vc,CHANG David Shui Kei,APP192,{first}.{last},david.chang@mindworks.vc
+BUU151,MindWorks Capital Advisors Hong Kong Limited,mindworks.vc,HONG Wong,BFP356,{first}.{last},wong.hong@mindworks.vc
+BUX553,Full Vision Asset Management Limited,fullvisioncapital.com,CHAN Ying Lung,AJL622,{first}{last},yinglungchan@fullvisioncapital.com
+BUX553,Full Vision Asset Management Limited,fullvisioncapital.com,HU Yong,AXW176,{first}{last},yonghu@fullvisioncapital.com
+BUX553,Full Vision Asset Management Limited,fullvisioncapital.com,LEUNG Po Lam,BBN848,{first}{last},polamleung@fullvisioncapital.com
+BUY638,Qoo Asset Management Limited,qooam.com,"LO Chi Ho, William",ACO135,{f}{last},wlo@qooam.com
+BUY638,Qoo Asset Management Limited,qooam.com,"WAN Chuen Hing, Alexander",AHG382,{f}{last},awan@qooam.com
+BVD250,Hidden Hill HK Investment Management Limited,hiddenhillcap.com,CAO Jin,ATO442,{f}{last},jcao@hiddenhillcap.com
+BVD250,Hidden Hill HK Investment Management Limited,hiddenhillcap.com,WANG Li,BVD259,{f}{last},lwang@hiddenhillcap.com
+BVH934,Victoria Sight Capital Limited,vsightcapital.com,XIE Xiaoxin,BVH936,{f}{last},xxie@vsightcapital.com
+BVH934,Victoria Sight Capital Limited,vsightcapital.com,ZHANG Zhang,BJI580,{f}{last},zzhang@vsightcapital.com
+BVL048,GrandBridge Partners Limited,grandbridgepartners.com,BAO Shijie,BNN323,{first}.{last},shijie.bao@grandbridgepartners.com
+BVL048,GrandBridge Partners Limited,grandbridgepartners.com,MA Zhong,BMW894,{first}.{last},zhong.ma@grandbridgepartners.com
+BVL452,Sona Asset Management (HK) Limited,sona-am.com,GRIFFITHS Owain Benjamin,BVL456,{f}{last},ogriffiths@sona-am.com
+BVL452,Sona Asset Management (HK) Limited,sona-am.com,HOLDENER Steve,BHH536,{f}{last},sholdener@sona-am.com
+BVL452,Sona Asset Management (HK) Limited,sona-am.com,JOSHI Niteesh,AOV763,{f}{last},njoshi@sona-am.com
+BVL452,Sona Asset Management (HK) Limited,sona-am.com,KIM Hyeon Joon,BVL453,{f}{last},hkim@sona-am.com
+BWH383,Kainos Investment Limited,kainosinvestment.com,KIM David Jung,BBS218,{first}.{last},davidjung.kim@kainosinvestment.com
+BWH383,Kainos Investment Limited,kainosinvestment.com,LEE Young Tack,BWH384,{first}.{last},youngtack.lee@kainosinvestment.com
+BWI773,DEFTA International Limited,deftapartners.com,GAO Yuanwei,BWI774,{f}{last},ygao@deftapartners.com
+BWI773,DEFTA International Limited,deftapartners.com,LI Ji,BWI776,{f}{last},jli@deftapartners.com
+BWL082,SIMCo Credit Asia-Pacific Limited,simcap.hk,DIMOND Matthew David,ADJ828,{first}.{last},matthew.dimond@simcap.hk
+BWL082,SIMCo Credit Asia-Pacific Limited,simcap.hk,YEUNG Chi Yuen,BCS456,{first}.{last},chiyuen.yeung@simcap.hk
+BWS134,FH Asset Management Limited,fh-asset.site,CHOI Tsan Wan,AFG523,{first}.{last},tsanwan.choi@fh-asset.site
+BWS134,FH Asset Management Limited,fh-asset.site,HE Fang,APC740,{first}.{last},fang.he@fh-asset.site
