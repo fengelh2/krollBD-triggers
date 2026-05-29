@@ -3,68 +3,197 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kroll PortVal · BD Triggers</title>
+<title>Kroll PortVal · BD Command Center</title>
 <link rel="preconnect" href="https://api.github.com">
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="preconnect" href="https://raw.githubusercontent.com">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 <header class="topbar">
   <div class="title-row">
     <div>
-      <h1>Kroll PortVal · Business Development Triggers</h1>
-      <p class="sub">SFC Type 9 register diffs · Hong Kong · refreshed weekly</p>
+      <h1>Kroll PortVal · BD Command Center</h1>
+      <p class="sub">SFC Type 9 register · Hong Kong · weekly refresh</p>
     </div>
     <div class="pat-box">
       <span class="pat-status" id="pat-status">no token</span>
       <button class="btn" id="pat-btn">GitHub token</button>
     </div>
   </div>
+  <nav class="tabs" id="tabs">
+    <a href="#/overview" data-tab="overview">Overview</a>
+    <a href="#/corps" data-tab="corps">Corps</a>
+    <a href="#/individuals" data-tab="individuals">Individuals</a>
+    <a href="#/pairs" data-tab="pairs">Corp &harr; RO pairs</a>
+    <a href="#/triggers" data-tab="triggers">Triggers</a>
+  </nav>
 </header>
 
-<section class="summary" id="summary">
-  <div class="stat"><span class="num" id="stat-open">—</span><span class="lbl">To action</span></div>
-  <div class="stat"><span class="num" id="stat-done">—</span><span class="lbl">Reached out</span></div>
-  <div class="stat"><span class="num" id="stat-rate">—</span><span class="lbl">Completion</span></div>
-  <div class="stat sub"><span class="num" id="stat-c1">—</span><span class="lbl">C1 sent · new corp</span></div>
-  <div class="stat sub"><span class="num" id="stat-c2">—</span><span class="lbl">C2 sent · retired</span></div>
-  <div class="stat sub"><span class="num" id="stat-r1">—</span><span class="lbl">R1 sent · new RO</span></div>
-  <div class="stat sub"><span class="num" id="stat-c5">—</span><span class="lbl">C5 sent · rebrand</span></div>
-  <div class="stat sub"><span class="num" id="stat-week">—</span><span class="lbl">Sent this week</span></div>
+<!-- ============ OVERVIEW ============ -->
+<section class="view" id="view-overview" hidden>
+  <div class="section-block">
+    <h2 class="section-title">Database strength</h2>
+    <div class="kpis" id="ov-kpis">
+      <p class="loading">Loading classification data…</p>
+    </div>
+  </div>
+
+  <div class="section-block two-col">
+    <div class="chart-card">
+      <div class="chart-title"><h2>Website accuracy &times; illiquid-book tier</h2></div>
+      <svg class="chart big" id="ov-wa-chart" viewBox="0 0 600 220" preserveAspectRatio="none"></svg>
+      <div class="chart-legend" id="ov-wa-legend"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title"><h2>Asset-class mix (BD-relevant only)</h2></div>
+      <svg class="chart big" id="ov-ac-chart" viewBox="0 0 600 220" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h2 class="section-title">Where to improve <span class="section-hint">prioritized by BD payoff</span></h2>
+    <div class="improve-grid" id="ov-improve">
+      <p class="loading">Computing improvement queue…</p>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h2 class="section-title">Recent triggers</h2>
+    <p class="muted-text">Jump to the <a href="#/triggers">full trigger queue</a> &rarr;</p>
+    <div id="ov-triggers-strip" class="trigger-strip">
+      <p class="loading">Loading recent triggers…</p>
+    </div>
+  </div>
 </section>
 
-<div class="chart-wrap">
-  <div class="chart-card">
-    <div class="chart-title">
-      <h2>Reached-out per ISO week (last 12 weeks)</h2>
-      <div class="legend"><span class="g-c1"></span>C1 &nbsp; <span class="g-c2"></span>C2</div>
+<!-- ============ CORPS ============ -->
+<section class="view" id="view-corps" hidden>
+  <div class="section-block">
+    <h2 class="section-title">Corps <span class="section-hint" id="corps-count"></span></h2>
+    <div class="table-filters" id="corps-filters">
+      <input type="search" id="corps-search" placeholder="search firm / parent…" />
+      <select id="corps-illiq">
+        <option value="">illiq: all</option>
+        <option value="high">high</option>
+        <option value="medium">medium</option>
+        <option value="low">low</option>
+        <option value="">(blank)</option>
+      </select>
+      <select id="corps-wa">
+        <option value="">website: all</option>
+        <option value="verified">verified</option>
+        <option value="probable">probable</option>
+        <option value="unverified">unverified</option>
+        <option value="suspect">suspect</option>
+        <option value="not_found">not_found</option>
+      </select>
+      <select id="corps-email">
+        <option value="">email: all</option>
+        <option value="yes">has email</option>
+        <option value="no">no email</option>
+      </select>
+      <select id="corps-ac">
+        <option value="">asset class: all</option>
+      </select>
+      <select id="corps-aum">
+        <option value="">AUM: all</option>
+        <option value="yes">disclosed</option>
+        <option value="no">not disclosed</option>
+      </select>
+      <a class="btn small" id="corps-csv" download="corps_filtered.csv">Download CSV</a>
     </div>
-    <svg class="chart" id="chart" viewBox="0 0 600 100" preserveAspectRatio="none"></svg>
+    <div class="table-wrap"><table class="data-table" id="corps-table"></table></div>
+  </div>
+</section>
+
+<!-- ============ INDIVIDUALS ============ -->
+<section class="view" id="view-individuals" hidden>
+  <div class="section-block">
+    <h2 class="section-title">Individuals <span class="section-hint" id="ind-count"></span></h2>
+    <div class="table-filters">
+      <input type="search" id="ind-search" placeholder="search by name…" />
+      <select id="ind-active">
+        <option value="">licence: all</option>
+        <option value="Y">active</option>
+        <option value="N">inactive</option>
+      </select>
+      <select id="ind-eo">
+        <option value="">role: all</option>
+        <option value="Y">EO (Executive Officer)</option>
+      </select>
+    </div>
+    <div class="table-wrap"><table class="data-table" id="ind-table"></table></div>
+  </div>
+</section>
+
+<!-- ============ PAIRS ============ -->
+<section class="view" id="view-pairs" hidden>
+  <div class="section-block">
+    <h2 class="section-title">Corp &harr; RO pairs <span class="section-hint" id="pairs-count"></span></h2>
+    <div class="table-filters">
+      <input type="search" id="pairs-search-corp" placeholder="search corp…" />
+      <input type="search" id="pairs-search-ro" placeholder="search RO name…" />
+    </div>
+    <div class="table-wrap"><table class="data-table" id="pairs-table"></table></div>
+  </div>
+</section>
+
+<!-- ============ TRIGGERS (legacy view) ============ -->
+<section class="view" id="view-triggers" hidden>
+  <div class="section-block">
+    <div class="summary" id="summary">
+      <div class="stat"><span class="num" id="stat-open">—</span><span class="lbl">To action</span></div>
+      <div class="stat"><span class="num" id="stat-done">—</span><span class="lbl">Reached out</span></div>
+      <div class="stat"><span class="num" id="stat-rate">—</span><span class="lbl">Completion</span></div>
+      <div class="stat sub"><span class="num" id="stat-c1">—</span><span class="lbl">C1 sent · new corp</span></div>
+      <div class="stat sub"><span class="num" id="stat-c2">—</span><span class="lbl">C2 sent · retired</span></div>
+      <div class="stat sub"><span class="num" id="stat-r1">—</span><span class="lbl">R1 sent · new RO</span></div>
+      <div class="stat sub"><span class="num" id="stat-c5">—</span><span class="lbl">C5 sent · rebrand</span></div>
+      <div class="stat sub"><span class="num" id="stat-week">—</span><span class="lbl">Sent this week</span></div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-card">
+        <div class="chart-title">
+          <h2>Reached-out per ISO week (last 12 weeks)</h2>
+          <div class="legend"><span class="g-c1"></span>C1 &nbsp; <span class="g-c2"></span>C2</div>
+        </div>
+        <svg class="chart" id="chart" viewBox="0 0 600 100" preserveAspectRatio="none"></svg>
+      </div>
+    </div>
+
+    <nav class="filters" id="filters">
+      <button data-filter="all" class="active">To action</button>
+      <button data-filter="C1">C1 · new corp</button>
+      <button data-filter="C2">C2 · retired</button>
+      <button data-filter="R1">R1 · new RO</button>
+      <button data-filter="C5">C5 · rebrand</button>
+      <button data-filter="done">Reached out</button>
+    </nav>
+
+    <main id="cards" class="cards">
+      <p class="loading">Loading triggers…</p>
+    </main>
+  </div>
+</section>
+
+<!-- Drill-down modal (shared) -->
+<div class="modal-backdrop" id="modal-backdrop" hidden>
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close" aria-label="close">&times;</button>
+    <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
 
-<nav class="filters" id="filters">
-  <button data-filter="all" class="active">To action</button>
-  <button data-filter="C1">C1 · new corp</button>
-  <button data-filter="C2">C2 · retired</button>
-  <button data-filter="R1">R1 · new RO</button>
-  <button data-filter="C5">C5 · rebrand</button>
-  <span class="filter-sep">·</span>
-  <button data-illiq="high_medium">illiq ≥ medium</button>
-  <button data-illiq="high">illiq high only</button>
-  <button data-asset="private_equity">PE / PD</button>
-  <span class="filter-sep">·</span>
-  <button data-filter="done">Reached out</button>
-</nav>
-
-<main id="cards" class="cards">
-  <p class="loading">Loading triggers…</p>
-</main>
-
 <footer>
   <p>Source: <a href="https://apps.sfc.hk/publicregWeb/">SFC public register</a> · Repo: <a href="https://github.com/fengelh2/krollBD-triggers/issues">github.com/fengelh2/krollBD-triggers</a></p>
-  <p>Outreach log is committed to <a href="https://github.com/fengelh2/krollBD-triggers/blob/main/outreach_log.csv">outreach_log.csv</a> in the repo via a GitHub Action. Clicking "Mark as reached out" fires a <code>repository_dispatch</code> using your PAT, the Action appends the row and closes the issue. Source of truth is the CSV.</p>
+  <p>Data CSVs (snapshots + classification) are read from the triggers repo under <code>data/</code>. See <a href="DESIGN_NOTES.md">DESIGN_NOTES.md</a>.</p>
 </footer>
 
-<script src="app.js?v=7"></script>
+<script src="data.js?v=8"></script>
+<script src="triggers.js?v=8"></script>
+<script src="overview.js?v=8"></script>
+<script src="tables.js?v=8"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>
