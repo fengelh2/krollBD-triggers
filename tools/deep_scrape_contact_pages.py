@@ -50,6 +50,26 @@ from classify_strategy import (  # noqa: E402
     scrape_firecrawl,
 )
 
+OVERRIDES_PATH = PROJECT_ROOT / "data" / "website_overrides.csv"
+
+
+def _load_skip_set() -> set[str]:
+    """Return cerefs flagged skip_enrichment=1 in website_overrides.csv.
+    These are firms (mostly mega-bank HK subsidiaries) where deep-scrape has
+    zero realistic yield and the burnt credits add up — bypass them in any
+    bulk pass."""
+    if not OVERRIDES_PATH.exists():
+        return set()
+    out: set[str] = set()
+    with OVERRIDES_PATH.open(encoding="utf-8-sig") as f:
+        for r in csv.DictReader(f):
+            ce = (r.get("ceref") or "").strip()
+            flag = str(r.get("skip_enrichment", "")).strip().lower()
+            if ce and flag in ("1", "true", "yes", "y"):
+                out.add(ce)
+    return out
+
+
 CONTACT_PATHS = [
     "/contact",
     "/contact-us",
@@ -170,12 +190,19 @@ def main():
                 r[col] = ""
 
     target_cerefs = {c.strip() for c in args.cerefs.split(",") if c.strip()}
+    skip_set = _load_skip_set()
+    if skip_set and not target_cerefs:
+        print(f"loaded {len(skip_set)} skip_enrichment overrides — will exclude from cohort",
+              file=sys.stderr)
 
     candidates = []
     for r in rows:
         if target_cerefs:
+            # Explicit --cerefs always wins, even over skip_enrichment.
             if r["ceref"] in target_cerefs:
                 candidates.append(r)
+            continue
+        if r["ceref"] in skip_set:
             continue
         if not in_scope(r, args.scope):
             continue
