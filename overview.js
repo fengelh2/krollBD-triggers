@@ -171,24 +171,10 @@
     svg += `</svg>`;
     $("#ov-funnel").innerHTML = svg;
 
-    // call-out: biggest drop-off, rendered as a prominent INSIGHT banner.
-    const drops = stages.slice(1).map((s, i) => ({ idx: i+1, lost: stages[i].n - s.n, from: stages[i].l, to: s.l }));
-    const worst = drops.sort((a,b) => b.lost - a.lost)[0];
-    if (worst) {
-      $("#ov-funnel-callout").innerHTML = `
-        <span class="callout-tag">Biggest unlock</span>
-        <div class="callout-body">
-          <div class="callout-headline">
-            <span class="anchor-num">${worst.lost.toLocaleString()}</span>
-            <span class="callout-headline-label">firms become actionable</span>
-          </div>
-          <div class="callout-detail">
-            They sit at <em>${esc(worst.from)}</em> but don't reach <em>${esc(worst.to)}</em>.
-            See the <a href="#ov-improve">Unlocks queue</a> for the playbook.
-          </div>
-        </div>
-      `;
-    }
+    // Biggest-unlock callout hidden per user request 2026-05-29 — the same
+    // info is already in the Unlocks queue at the bottom of the page.
+    const callout = $("#ov-funnel-callout");
+    if (callout) { callout.innerHTML = ""; callout.hidden = true; }
   }
 
   // =====================================================================
