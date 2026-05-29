@@ -329,24 +329,24 @@ footer p{margin:2px 0}
 .improve-unlock{font-size:13px;color:var(--fg);margin:4px 0 6px}
 .improve-unlock strong{color:#1b6e3a}
 
-/* "Anchor" treatment: deep teal #0f766e marks the 2,814 wherever it appears.
+/* "Anchor" treatment: deep teal #991b1b marks the 2,814 wherever it appears.
    The eye picks it up as the shared reference number across 3 spots
    (subhead chip · first-box border · chart header). */
-.anchor-num{color:#0f766e;font-weight:700;font-variant-numeric:tabular-nums}
+.anchor-num{color:#991b1b;font-weight:700;font-variant-numeric:tabular-nums}
 
 .cov-subblock{padding:14px 16px 14px;background:#fafbfc;border:1px solid #e5e7eb;border-radius:3px}
 .cov-subhead{margin:0 0 10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#374151;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .cov-subhead-anchor{font-size:11px;font-weight:400;letter-spacing:0.02em;color:var(--muted);text-transform:none}
-.cov-subhead-anchor strong{color:#0f766e;font-weight:700;font-variant-numeric:tabular-nums}
+.cov-subhead-anchor strong{color:#991b1b;font-weight:700;font-variant-numeric:tabular-nums}
 
 .chart-anchor-header{display:flex;align-items:baseline;gap:10px;padding:6px 10px 10px;
   border-bottom:1px solid #e5e7eb;margin-bottom:8px}
-.chart-anchor-num{font-size:28px;font-weight:700;color:#0f766e;line-height:1;
+.chart-anchor-num{font-size:28px;font-weight:700;color:#991b1b;line-height:1;
   font-variant-numeric:tabular-nums;letter-spacing:-0.01em}
 .chart-anchor-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
 
-.cov-step-anchor{border:2px solid #0f766e;background:#f0fdfa}
-.cov-step-anchor .cov-n{color:#0f766e}
+.cov-step-anchor{border:2px solid #991b1b;background:#fef2f2}
+.cov-step-anchor .cov-n{color:#991b1b}
 .cov-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cov-step-linked{border-top:2px dashed #9ca3af;position:relative}
 .cov-connector-tag{font-size:10px;color:var(--muted);font-style:italic;

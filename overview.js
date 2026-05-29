@@ -126,6 +126,17 @@
       return { ...s, w, x, y, fill: PAL[i] };
     });
 
+    // Cap bar max width so external labels always fit. Reserve ~200px on the
+    // right for the small stage label that sits OUTSIDE the bar.
+    const RIGHT_LABEL_PAD = 210;
+    const inWidth = W - RIGHT_LABEL_PAD - 20;
+    const widthFor2 = n => Math.max(60, inWidth * (n / base));
+    bars.forEach((b, i) => {
+      const w = widthFor2(b.n);
+      b.w = w;
+      b.x = 10; // left-align bars (not centered) so the right label rail is consistent
+    });
+
     let svg = `<svg viewBox="0 0 ${W} ${totalH}" preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;max-width:760px;margin:0 auto;height:auto;aspect-ratio:${W}/${totalH}">`;
 
     // Transitions (drop-off trapezoids) between bars
@@ -139,29 +150,22 @@
       const dropN = prev.n - b.n;
       const dropPct = prev.n > 0 ? Math.round(100 * dropN / prev.n) : 0;
       svg += `<polygon points="${topL},${topY} ${topR},${topY} ${botR},${botY} ${botL},${botY}" fill="#e5e7eb" opacity="0.55"/>`;
-      svg += `<text x="${W/2}" y="${(topY+botY)/2 + 4}" font-size="11" text-anchor="middle" fill="#374151" font-family="Inter,sans-serif">↓ ${dropN.toLocaleString()} dropped (${dropPct}%)</text>`;
+      svg += `<text x="${(topL+topR)/2}" y="${(topY+botY)/2 + 4}" font-size="11" text-anchor="middle" fill="#374151" font-family="Inter,sans-serif">↓ ${dropN.toLocaleString()} dropped (${dropPct}%)</text>`;
     });
 
-    // Bars
+    // Bars + side labels
     bars.forEach((b, i) => {
       const pct = Math.round(100 * b.n / base);
+      const cy = b.y + BAR_H/2 + 5;
       svg += `<a href="${b.href}">`;
       svg += `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${BAR_H}" fill="${b.fill}" rx="2" ry="2"/>`;
-      // Number on left, label centered-ish, percentage on right
-      const cy = b.y + BAR_H/2 + 4;
+      // Number on left, % on right, inside the bar
       svg += `<text x="${b.x + 14}" y="${cy}" font-size="18" font-weight="600" fill="#fff" font-family="Inter,sans-serif">${b.n.toLocaleString()}</text>`;
-      // Label only fits if bar is wide enough
-      if (b.w > 240) {
-        svg += `<text x="${b.x + b.w/2}" y="${cy}" font-size="12" text-anchor="middle" fill="#fff" opacity="0.95" font-family="Inter,sans-serif">${esc(b.l)}</text>`;
-      }
       svg += `<text x="${b.x + b.w - 12}" y="${cy}" font-size="11" text-anchor="end" fill="#fff" opacity="0.7" font-family="Inter,sans-serif">${pct}%</text>`;
       svg += `</a>`;
-      // External label to the right of the bar for stages where label doesn't fit inside
-      if (b.w <= 240) {
-        svg += `<text x="${b.x + b.w + 10}" y="${cy}" font-size="12" fill="#374151" font-family="Inter,sans-serif">${esc(b.l)} · <tspan fill="#6b7280">${esc(b.d)}</tspan></text>`;
-      } else {
-        svg += `<text x="${b.x + b.w + 10}" y="${cy}" font-size="11" fill="#6b7280" font-family="Inter,sans-serif">${esc(b.d)}</text>`;
-      }
+      // Stage label sits to the right of the bar in the dedicated rail.
+      svg += `<text x="${b.x + b.w + 12}" y="${cy - 5}" font-size="13" font-weight="500" fill="#1f2937" font-family="Inter,sans-serif">${esc(b.l)}</text>`;
+      svg += `<text x="${b.x + b.w + 12}" y="${cy + 11}" font-size="11" fill="#6b7280" font-family="Inter,sans-serif">${esc(b.d)}</text>`;
     });
 
     svg += `</svg>`;
