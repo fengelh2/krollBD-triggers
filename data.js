@@ -28,8 +28,14 @@
   // Contents API returns empty content + a `download_url`; we follow that.
   // For files > 100 MB use the git/blobs endpoint (rare here).
   async function fetchCsvText(path) {
-    const url = `https://api.github.com/repos/${REPO}/contents/${encodeURI(path)}`;
-    const r = await fetch(url, { headers: gh() });
+    // Cache-bust so the GitHub edge / browser never serves a stale CSV when
+    // the data has been freshly committed (deep-scrape / weekly run / etc.).
+    const bust = `t=${Date.now()}`;
+    const url = `https://api.github.com/repos/${REPO}/contents/${encodeURI(path)}?${bust}`;
+    const r = await fetch(url, {
+      headers: gh(),
+      cache: "no-store",
+    });
     if (!r.ok) throw new Error(`GH contents ${path}: HTTP ${r.status}`);
     const meta = await r.json();
     if (meta.content) {
@@ -44,7 +50,9 @@
     // Large file: follow download_url which is a short-lived signed S3 URL
     // (no Authorization header allowed, would 400).
     if (meta.download_url) {
-      const r2 = await fetch(meta.download_url);
+      // Cache-bust the download_url too (same reason as the Contents API call).
+      const sep = meta.download_url.includes("?") ? "&" : "?";
+      const r2 = await fetch(`${meta.download_url}${sep}t=${Date.now()}`, { cache: "no-store" });
       if (!r2.ok) throw new Error(`download_url ${path}: HTTP ${r2.status}`);
       return await r2.text();
     }
