@@ -52,12 +52,19 @@ button{font-family:inherit}
 
 /* ---- Views ---- */
 .view{max-width:1180px;margin:0 auto;padding:18px 20px 60px}
-.section-block{margin-bottom:28px}
-.section-title{
-  font-size:13px;font-weight:600;color:var(--fg);text-transform:uppercase;letter-spacing:0.06em;
-  margin:0 0 10px;
+.section-block{
+  margin-bottom:36px;padding:22px 24px;
+  background:#fff;border:1px solid #e5e7eb;border-radius:4px;
 }
-.section-hint{font-size:11px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400;margin-left:8px}
+.section-block + .section-block{margin-top:36px}
+.section-title{
+  font-size:14px;font-weight:700;color:#111827;
+  text-transform:uppercase;letter-spacing:0.08em;
+  margin:0 0 14px;padding-bottom:10px;
+  border-bottom:2px solid #111827;
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;
+}
+.section-hint{font-size:11px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400;font-style:italic}
 
 /* ---- KPI grid (Overview) ---- */
 .kpis{

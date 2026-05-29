@@ -410,35 +410,9 @@
     badge.setAttribute("title", parts.join(" · "));
   }
 
-  // =====================================================================
-  // 5. RECENT TRIGGERS — age-sorted, SLA-colored
-  // =====================================================================
-  function renderTriggersStrip() {
-    const issues = (window.K.Triggers && window.K.Triggers.getOpenIssues()) || [];
-    if (!issues.length) {
-      $("#ov-triggers-strip").innerHTML = `<p class="muted-text">No open triggers, or PAT not yet set. Set token above to load.</p>`;
-      return;
-    }
-    const sorted = issues.slice().sort((a, b) =>
-      new Date(a.created_at) - new Date(b.created_at)); // oldest first (SLA-risky)
-    const now = new Date();
-    const recent = sorted.slice(0, 10);
-    $("#ov-triggers-strip").innerHTML = recent.map(i => {
-      const m = window.K.Triggers && window.K.Triggers.parseMeta ? window.K.Triggers.parseMeta(i) : null;
-      const created = i.created_at ? new Date(i.created_at) : null;
-      const bdays = created ? businessDaysBetween(created, now) : 0;
-      const slaCls = bdays > SLA_BUSINESS_DAYS ? "sla-overdue" : bdays > 3 ? "sla-warn" : "sla-ok";
-      const firm = m ? m.firm : (i.title || "").replace(/^\[[^\]]+\]\s*/, "");
-      const tType = m ? m.type : (((i.title || "").match(/^\[([A-Z0-9]+)\]/) || [])[1] || "");
-      return `
-        <a class="trigger-chip ${slaCls}" href="#/triggers">
-          <span class="t-type">${esc(tType)}</span>
-          <span class="t-firm">${esc(firm)}</span>
-          <span class="t-meta">${bdays} bd old</span>
-        </a>
-      `;
-    }).join("") + `<a class="trigger-chip more" href="#/triggers">+${Math.max(0, issues.length - 10)} more →</a>`;
-  }
+  // (Recent triggers strip removed from Overview 2026-05-29. The Triggers
+  // tab's nav badge carries the equivalent signal — count + red on SLA-overdue.
+  // SLA_BUSINESS_DAYS + businessDaysBetween are still used by updateNavBadge.)
 
   // =====================================================================
   // RENDER
@@ -453,7 +427,6 @@
       renderWaChart(data);
       renderCoverageFunnel(sets);
       renderPeopleRow(data, sets);
-      renderTriggersStrip();
     } catch (e) {
       // Consolidated empty-state: blank out every Overview section so the
       // 'Loading…' placeholders don't sit there indefinitely.
@@ -461,7 +434,7 @@
         `Set a GitHub PAT (top right) with <code>repo</code> scope, then refresh.</p>`;
       for (const id of ["ov-funnel", "ov-funnel-callout",
                         "ov-improve", "ov-coverage", "ov-people",
-                        "ov-wa-chart", "ov-wa-legend", "ov-triggers-strip",
+                        "ov-wa-chart", "ov-wa-legend",
                         "ov-anchor-corps", "ov-chart-anchor-num"]) {
         const el = document.getElementById(id);
         if (el && id === "ov-funnel") el.innerHTML = msg;
@@ -477,10 +450,5 @@
   // The nav badge is global — always update on triggers-loaded regardless of tab.
   window.addEventListener("triggers-loaded", () => {
     updateNavBadge();
-    if (!window.__data) return;
-    // Don't waste cycles re-rendering Overview when the user is on another tab.
-    const overviewEl = document.getElementById("view-overview");
-    if (overviewEl && overviewEl.hidden) return;
-    renderTriggersStrip();
   });
 })();

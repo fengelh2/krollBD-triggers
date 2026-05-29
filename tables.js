@@ -155,8 +155,11 @@
       else { CORPS_STATE.sort.col = k; CORPS_STATE.sort.dir = 1; }
       renderCorpsTable();
     }));
-    // row click → drill
-    tbl.querySelectorAll("tbody tr").forEach(tr => tr.addEventListener("click", () => {
+    // row click → drill. stopPropagation/preventDefault as a defensive guard
+    // in case any ancestor element accidentally routes on bubble.
+    tbl.querySelectorAll("tbody tr").forEach(tr => tr.addEventListener("click", (e) => {
+      e.stopPropagation();
+      e.preventDefault();
       const ceref = tr.dataset.ceref;
       drillCorp(ceref);
     }));
@@ -205,14 +208,35 @@
     `);
   }
 
+  // Sync the current Corps filter state into the URL hash so the filter
+  // survives page refreshes, browser back/forward, and route changes triggered
+  // by the modal drill (focus param). Uses replaceState — doesn't pollute
+  // browser history with every filter keystroke.
+  function syncCorpsHash() {
+    const f = CORPS_STATE.filters;
+    const parts = [];
+    for (const k of ["search", "illiq", "wa", "email", "ac", "aum"]) {
+      if (f[k]) parts.push(`${k}=${encodeURIComponent(f[k])}`);
+    }
+    const newHash = "#/corps" + (parts.length ? "?" + parts.join("&") : "");
+    if (window.location.hash !== newHash) {
+      history.replaceState(null, "", newHash);
+    }
+  }
+
   function wireCorps() {
     const f = CORPS_STATE.filters;
-    $("#corps-search").addEventListener("input", e => { f.search = e.target.value; renderCorpsTable(); });
-    $("#corps-illiq").addEventListener("change", e => { f.illiq = e.target.value; renderCorpsTable(); });
-    $("#corps-wa").addEventListener("change", e => { f.wa = e.target.value; renderCorpsTable(); });
-    $("#corps-email").addEventListener("change", e => { f.email = e.target.value; renderCorpsTable(); });
-    $("#corps-ac").addEventListener("change", e => { f.ac = e.target.value; renderCorpsTable(); });
-    $("#corps-aum").addEventListener("change", e => { f.aum = e.target.value; renderCorpsTable(); });
+    const onChange = (key) => (e) => {
+      f[key] = e.target.value;
+      renderCorpsTable();
+      syncCorpsHash();
+    };
+    $("#corps-search").addEventListener("input", onChange("search"));
+    $("#corps-illiq").addEventListener("change", onChange("illiq"));
+    $("#corps-wa").addEventListener("change", onChange("wa"));
+    $("#corps-email").addEventListener("change", onChange("email"));
+    $("#corps-ac").addEventListener("change", onChange("ac"));
+    $("#corps-aum").addEventListener("change", onChange("aum"));
   }
 
   async function showCorps() {

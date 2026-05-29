@@ -6,7 +6,7 @@
 <title>Kroll PortVal · BD Command Center</title>
 <link rel="preconnect" href="https://api.github.com">
 <link rel="preconnect" href="https://raw.githubusercontent.com">
-<link rel="stylesheet" href="style.css?v=18">
+<link rel="stylesheet" href="style.css?v=19">
 </head>
 <body>
 <header class="topbar">
@@ -70,16 +70,10 @@
     </div>
   </div>
 
-  <!-- 5. Recent triggers -->
-  <div class="section-block">
-    <h2 class="section-title">Open triggers <span class="section-hint">oldest first · red = SLA-overdue</span></h2>
-    <p class="muted-text">Jump to the <a href="#/triggers">full trigger queue</a> &rarr;</p>
-    <div id="ov-triggers-strip" class="trigger-strip">
-      <p class="loading">Loading recent triggers…</p>
-    </div>
-  </div>
-
-  <!-- 5. Unlocks (improvement queue) — bottom of overview -->
+  <!-- Unlocks (improvement queue) — bottom of overview.
+       Note: Open triggers section removed per Felix 2026-05-29; the nav
+       badge on the Triggers tab carries the same signal (count + red
+       when any SLA-overdue). -->
   <div class="section-block">
     <h2 class="section-title">Unlocks <span class="section-hint">close one gap → widen the funnel</span></h2>
     <div class="improve-grid" id="ov-improve">
@@ -215,10 +209,10 @@
   <p>Data CSVs (snapshots + classification) are read from the triggers repo under <code>data/</code>. See <a href="DESIGN_NOTES.md">DESIGN_NOTES.md</a>.</p>
 </footer>
 
-<script src="data.js?v=18"></script>
-<script src="triggers.js?v=18"></script>
-<script src="overview.js?v=18"></script>
-<script src="tables.js?v=18"></script>
-<script src="app.js?v=18"></script>
+<script src="data.js?v=19"></script>
+<script src="triggers.js?v=19"></script>
+<script src="overview.js?v=19"></script>
+<script src="tables.js?v=19"></script>
+<script src="app.js?v=19"></script>
 </body>
 </html>
