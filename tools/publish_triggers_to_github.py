@@ -1011,7 +1011,7 @@ def main() -> None:
     # See projects/krollBD/workflows/enrichment_cascade.md for design.
     firing_cerefs: set[str] = set()
     firing_cerefs.update(c["ceref"] for c in brand_new)
-    firing_cerefs.update(c["ceref"] for c in changed)
+    firing_cerefs.update(c["key"] for c in changed)
     # R1 ROs may attach to any corp in the new snapshot
     new_ro_corps = {r["corp_ceref"] for r in new_ros} - {r["corp_ceref"] for r in old_ros}
     firing_cerefs.update(new_ro_corps & {c["ceref"] for c in new_corps})
