@@ -301,7 +301,7 @@
 
   function renderCoverageFunnel(sets) {
     const stages = [
-      { n: sets.corps.length, l: "Active corps", retiredSub: `+${sets.corpsRetired.toLocaleString()} retired` },
+      { n: sets.corps.length, l: "Active T9-licensed corps", retiredSub: `+${sets.corpsRetired.toLocaleString()} retired` },
       { n: sets.allSite.length, l: "Website found" },
       { n: sets.allEmail.length, l: "Email captured" },
       { n: sets.allAum.length, l: "AUM disclosed" },
@@ -327,7 +327,7 @@
       <div class="cov-arrow">→</div>
       <div class="cov-step"><div class="cov-n">${activeInds.toLocaleString()}</div><div class="cov-l">Currently active</div></div>
       <div class="cov-arrow">→</div>
-      <div class="cov-step"><div class="cov-n">${uniqueRos.toLocaleString()}</div><div class="cov-l">Serve as RO on a Type 9 corp</div><div class="cov-sub">${pairs.length.toLocaleString()} corp-RO assignments</div></div>
+      <div class="cov-step"><div class="cov-n">${uniqueRos.toLocaleString()}</div><div class="cov-l">Serve as RO on an active T9 corp</div><div class="cov-sub">${pairs.length.toLocaleString()} corp-RO assignments</div></div>
     `;
   }
 
