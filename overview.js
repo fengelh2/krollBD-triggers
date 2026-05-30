@@ -299,13 +299,15 @@
     const bdBotY = rowTop(1) + barH;
     let svg = "";
     // Right-side bracket spanning rows 0+1 (illiquids+mixed = BD-relevant).
-    // ] shape opening leftward, sits in the right margin of the viewBox.
-    const brX1 = W - 18;
-    const brX2 = W - 10;
-    svg += `<path d="M ${brX1} ${bdTopY} L ${brX2} ${bdTopY} L ${brX2} ${bdBotY} L ${brX1} ${bdBotY}" stroke="#991b1b" stroke-width="1.5" fill="none"/>`;
-    // Rotated label sits to the right of the bracket, read top-to-bottom
+    // Bracket sits right after the n=N labels of the bars, label horizontal
+    // (rotated labels clipped vertically on previous version).
+    const brX1 = PAD_L + xMax + 36;       // just past the longest n=N label
+    const brX2 = brX1 + 8;
     const brYM = (bdTopY + bdBotY) / 2;
-    svg += `<text x="${W - 4}" y="${brYM}" font-size="9" text-anchor="middle" fill="#991b1b" font-weight="600" font-family="Inter,sans-serif" transform="rotate(90 ${W - 4} ${brYM})">BD-relevant: ${bdN.toLocaleString()}</text>`;
+    svg += `<path d="M ${brX1} ${bdTopY} L ${brX2} ${bdTopY} L ${brX2} ${bdBotY} L ${brX1} ${bdBotY}" stroke="#991b1b" stroke-width="1.5" fill="none"/>`;
+    // Two-line horizontal label, anchored to the right of the bracket
+    svg += `<text x="${brX2 + 5}" y="${brYM - 3}" font-size="11" fill="#991b1b" font-weight="700" font-family="Inter,sans-serif">${bdN.toLocaleString()}</text>`;
+    svg += `<text x="${brX2 + 5}" y="${brYM + 9}" font-size="9" fill="#991b1b" font-family="Inter,sans-serif">BD-relevant</text>`;
 
     tiers.forEach((t, i) => {
       const yTop = PAD_T + i * ((H - PAD_T - PAD_B) / tiers.length);
