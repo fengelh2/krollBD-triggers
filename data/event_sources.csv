@@ -3,7 +3,7 @@ HKICPA,https://mas.hkicpa.org.hk/mycpa/public/event/list?searchAll=1,accounting+
 Informa Connect,https://informaconnect.com/events/?subBrands%5B0%5D=Informa%20Connect,mixed,yes,yes,Felix-provided. Informa global events — filter HK after extraction.
 AVCJ (Ion Analytics),https://community.ionanalytics.com/events,private_equity+private_debt,yes,yes,Felix-provided. Ion runs AVCJ + Debtwire + Mergermarket events.
 AIMA,https://www.aima.org/events.html,hedge_funds+alts,no,no,Best-guess URL.
-HKVCA,https://www.hkvca.com.hk/events/,private_equity+venture,no,no,Best-guess URL.
+HKVCA,https://www.hkvca.com.hk/en/event/,private_equity+venture,yes,yes,HKVCA en/event/ — main events list.
 HKIFA,https://www.hkifa.org.hk/events/,asset_management+regulatory,no,no,Best-guess URL.
 APER,https://www.asianprivatecapital.com/events/,private_equity,no,no,Best-guess.
 AsianInvestor,https://www.asianinvestor.net/events,asset_management,no,no,Best-guess.
@@ -17,3 +17,9 @@ EY HK insights,https://www.ey.com/en_hk/insights/events,audit+advisory,no,yes,Be
 PwC HK events,https://www.pwchk.com/en/events.html,audit+advisory,no,no,Best-guess.
 KPMG HK events,https://kpmg.com/cn/en/home/events.html,audit+advisory,no,yes,Best-guess.
 Deloitte HK events,https://www2.deloitte.com/cn/en/pages/about-deloitte/events.html,audit+advisory,no,no,Best-guess.
+Eventbrite HK · PE,https://www.eventbrite.hk/d/hong-kong/private-equity/,private_equity,yes,yes,Public Eventbrite HK search for private equity events — includes informal/networking.
+Eventbrite HK · private credit,https://www.eventbrite.hk/d/hong-kong/private-credit/,private_debt,yes,yes,Public Eventbrite HK search for private credit / debt events.
+Eventbrite HK · asset management,https://www.eventbrite.hk/d/hong-kong/asset-management/,asset_management,yes,yes,Public Eventbrite HK search for asset management events.
+Eventbrite HK · family office,https://www.eventbrite.hk/d/hong-kong/family-office/,family_office,yes,yes,Public Eventbrite HK search for family office events.
+Eventbrite HK · hedge fund,https://www.eventbrite.hk/d/hong-kong/hedge-fund/,hedge_funds,yes,yes,Public Eventbrite HK search for hedge fund events.
+Eventbrite HK · finance,https://www.eventbrite.hk/d/hong-kong/finance/,finance_general,yes,yes,Public Eventbrite HK search — broad finance net to catch luncheons / cocktails / breakfasts.

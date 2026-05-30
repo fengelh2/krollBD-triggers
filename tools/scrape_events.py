@@ -31,13 +31,59 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from classify_strategy import scrape_firecrawl, _scrape_firecrawl_only  # noqa: E402
+import os as _os
+import requests as _requests
+from classify_strategy import scrape_firecrawl, _scrape_firecrawl_only, FIRECRAWL_KEY  # noqa: E402
 from llm_router import llm_call  # noqa: E402
 
 # For SPA-heavy event sites, the default 1500ms wait isn't enough — the event
 # listing renders client-side and we'd get only the page shell. Use this
 # longer wait when requires_js=yes in event_sources.csv.
 JS_HEAVY_WAIT_MS = 6000
+
+
+def _scrape_firecrawl_aggressive(url: str) -> str:
+    """Like _scrape_firecrawl_only but uses Firecrawl 'actions' to wait, scroll
+    several times, and wait again — triggers lazy-loaded event lists that
+    require scroll-into-view OR don't render until after first scroll event.
+
+    Used as a second-pass fallback when standard JS-render wait returned
+    page-chrome only."""
+    if not FIRECRAWL_KEY:
+        return ""
+    body = {
+        "url": url,
+        "formats": ["markdown"],
+        "onlyMainContent": True,
+        "timeout": 45000,                # longer overall timeout for the actions
+        "actions": [
+            {"type": "wait", "milliseconds": 4000},
+            {"type": "scroll", "direction": "down"},
+            {"type": "wait", "milliseconds": 2500},
+            {"type": "scroll", "direction": "down"},
+            {"type": "wait", "milliseconds": 2500},
+            {"type": "scroll", "direction": "down"},
+            {"type": "wait", "milliseconds": 3000},
+        ],
+    }
+    try:
+        r = _requests.post(
+            "https://api.firecrawl.dev/v1/scrape",
+            headers={"Authorization": f"Bearer {FIRECRAWL_KEY}",
+                     "Content-Type": "application/json"},
+            json=body,
+            timeout=60,
+        )
+    except _requests.RequestException as e:
+        print(f"  [firecrawl-aggressive] network error: {e}", file=sys.stderr)
+        return ""
+    if not r.ok:
+        print(f"  [firecrawl-aggressive] HTTP {r.status_code}: {r.text[:200]}", file=sys.stderr)
+        return ""
+    try:
+        return (r.json().get("data", {}).get("markdown") or "")[:14000]
+    except ValueError:
+        return ""
 
 SOURCES_PATH = PROJECT_ROOT / "data" / "event_sources.csv"
 EVENTS_PATH = PROJECT_ROOT / "data" / "events.csv"
@@ -171,6 +217,9 @@ def main():
     ap.add_argument("--include-unconfirmed", action="store_true",
                     help="also try best-guess URLs that haven't been verified")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--aggressive", action="store_true",
+                    help="for requires_js=yes sources, use Firecrawl actions (scroll+wait) "
+                         "to trigger lazy-loaded event lists. Costs ~3-5× normal Firecrawl credits.")
     args = ap.parse_args()
 
     sources = _read_sources(args.source or None, args.include_unconfirmed)
@@ -201,7 +250,9 @@ def main():
         print(f"  url: {url}", file=sys.stderr)
         requires_js = (s.get("requires_js") or "").lower() in ("yes", "y", "true", "1")
         try:
-            if requires_js:
+            if requires_js and args.aggressive:
+                md = _scrape_firecrawl_aggressive(url)
+            elif requires_js:
                 # Force Firecrawl path with long JS wait so SPA event lists render.
                 md = _scrape_firecrawl_only(url, wait_ms=JS_HEAVY_WAIT_MS)
             else:
