@@ -377,6 +377,12 @@ footer p{margin:2px 0}
 .evt-must-see{color:#b45309;font-weight:700;font-size:14px;margin-right:2px}
 .evt-row-must-see{background:#fffbeb}
 .evt-row-must-see td{border-top:1px solid #fde68a}
+/* PE / private credit / alts topic chip */
+.evt-pe-tag{display:inline-block;padding:1px 6px;margin-left:6px;background:#dbeafe;
+  border:1px solid #93c5fd;color:#1e40af;font-size:10px;font-weight:600;border-radius:3px;
+  vertical-align:middle;letter-spacing:0.02em}
+.evt-row-pe{background:#f0f9ff}  /* alone — soft blue */
+.evt-row-must-see.evt-row-pe{background:#fef7e0}   /* both flags — keeps the must-see yellow priority */
 
 .trigger-chip.sla-overdue{border-left:4px solid var(--red);background:#fef4f4}
 .trigger-chip.sla-warn{border-left:4px solid #f59e0b}

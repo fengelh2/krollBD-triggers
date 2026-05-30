@@ -61,6 +61,12 @@
     // cocktails / drinks / networking / AGM). These are where Felix actually
     // builds the relationships that drive referrals.
     const mustSeeRe = /\b(luncheon|brownbag|breakfast|cocktails?|drinks|networking|agm|reception)\b/i;
+
+    // Topic relevance: title mentions PE, private credit/debt, or related
+    // alts wording. Case-insensitive for full words; abbreviations require
+    // uppercase to dodge false positives (e.g. 'lp' in 'completely').
+    const peTopicRe = /\b(private[\s\-]?(equity|credit|debt)|venture[\s\-]?capital|buyout|leveraged[\s\-]?buyout|LBO|secondaries|direct[\s\-]?lending|fund[\s\-]?of[\s\-]?funds|carried[\s\-]?interest|alternative[\s\-]?investments?|alts?)\b/i;
+    const peAbbrevRe = /\b(PE|VC|PD|PC|GP|LP)\b/;   // case-sensitive: uppercase only
     const head = `
       <thead><tr>
         <th>Date</th><th>Title</th><th>Host</th><th>Topic</th>
@@ -70,12 +76,18 @@
       const isVirtual = (r.is_virtual || "").toString().toLowerCase() === "true";
       const cityChip = isVirtual ? "<span class='evt-virtual'>virtual</span>" : esc(r.city || "");
       const linkHtml = r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">register &rarr;</a>` : "";
-      const mustSee = mustSeeRe.test(r.title || "");
+      const title = r.title || "";
+      const mustSee = mustSeeRe.test(title);
+      const isPETopic = peTopicRe.test(title) || peAbbrevRe.test(title);
       const star = mustSee ? `<span class="evt-must-see" title="High-value networking event">★</span> ` : "";
-      const trClass = mustSee ? " class=\"evt-row-must-see\"" : "";
+      const peTag = isPETopic ? ` <span class="evt-pe-tag" title="PE / private credit / alts topic">PE/PD</span>` : "";
+      const rowClasses = [];
+      if (mustSee) rowClasses.push("evt-row-must-see");
+      if (isPETopic) rowClasses.push("evt-row-pe");
+      const trClass = rowClasses.length ? ` class="${rowClasses.join(" ")}"` : "";
       return `<tr${trClass}>
         <td class="evt-date"><code>${esc(r.date_start || "—")}</code>${r.date_end ? `<br><small>&rarr; ${esc(r.date_end)}</small>` : ""}${r.time ? `<br><small class="muted-text">${esc(r.time)}</small>` : ""}</td>
-        <td>${star}<strong>${esc(r.title)}</strong>${r.audience ? `<br><small class="muted-text">${esc(r.audience)}</small>` : ""}</td>
+        <td>${star}<strong>${esc(title)}</strong>${peTag}${r.audience ? `<br><small class="muted-text">${esc(r.audience)}</small>` : ""}</td>
         <td><span class="evt-host">${esc(r.host)}</span></td>
         <td>${esc(r.topic || "")}</td>
         <td>${esc(r.venue || "")}${r.venue && (r.city || isVirtual) ? "<br>" : ""}<small>${cityChip}</small></td>
