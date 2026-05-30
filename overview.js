@@ -269,7 +269,7 @@
       probable: "#4b5563",   // dark gray
       unverified: "#9ca3af", // mid gray
       suspect: "#d1d5db",    // light gray
-      not_found: "#fbbf24",  // muted amber — visible but no longer dominant
+      not_found: "#c79b9b",  // dusty rose — distinguishable from grays without shouting
       unknown: "#e5e7eb",    // very light gray
     };
     const counts = {};
@@ -286,7 +286,7 @@
     const totals = tiers.map(t => buckets.reduce((s, b) => s + counts[t][b], 0));
     const maxTotal = Math.max(1, ...totals);
 
-    const W = 600, H = 220, PAD_L = 90, PAD_R = 60, PAD_T = 10, PAD_B = 36;
+    const W = 600, H = 220, PAD_L = 90, PAD_R = 80, PAD_T = 10, PAD_B = 36;
     const barH = (H - PAD_T - PAD_B) / tiers.length - 8;
     const xMax = W - PAD_L - PAD_R;
 
@@ -298,10 +298,14 @@
     const bdTopY = rowTop(0);
     const bdBotY = rowTop(1) + barH;
     let svg = "";
-    // Bracket shape: |--- spanning the two top rows
-    svg += `<path d="M 16 ${bdTopY} L 8 ${bdTopY} L 8 ${bdBotY} L 16 ${bdBotY}" stroke="#991b1b" stroke-width="1.5" fill="none"/>`;
-    // Label rotated 90° on the bracket
-    svg += `<text x="3" y="${(bdTopY + bdBotY) / 2}" font-size="9" text-anchor="middle" fill="#991b1b" font-weight="600" font-family="Inter,sans-serif" transform="rotate(-90 3 ${(bdTopY + bdBotY) / 2})">BD-relevant: ${bdN.toLocaleString()}</text>`;
+    // Right-side bracket spanning rows 0+1 (illiquids+mixed = BD-relevant).
+    // ] shape opening leftward, sits in the right margin of the viewBox.
+    const brX1 = W - 18;
+    const brX2 = W - 10;
+    svg += `<path d="M ${brX1} ${bdTopY} L ${brX2} ${bdTopY} L ${brX2} ${bdBotY} L ${brX1} ${bdBotY}" stroke="#991b1b" stroke-width="1.5" fill="none"/>`;
+    // Rotated label sits to the right of the bracket, read top-to-bottom
+    const brYM = (bdTopY + bdBotY) / 2;
+    svg += `<text x="${W - 4}" y="${brYM}" font-size="9" text-anchor="middle" fill="#991b1b" font-weight="600" font-family="Inter,sans-serif" transform="rotate(90 ${W - 4} ${brYM})">BD-relevant: ${bdN.toLocaleString()}</text>`;
 
     tiers.forEach((t, i) => {
       const yTop = PAD_T + i * ((H - PAD_T - PAD_B) / tiers.length);
