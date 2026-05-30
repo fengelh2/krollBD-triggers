@@ -442,8 +442,9 @@ def email_candidates(ros: list[dict], firm: str, max_total: int = 15,
                      verified_domain: str | None = None,
                      observed_named: list[str] | None = None,
                      observed_generics: list[str] | None = None,
-                     hunter_hits: list[dict] | None = None) -> list[dict]:
-    """Generate candidate addresses, prioritizing hunter > observed > aggregator > guess.
+                     hunter_hits: list[dict] | None = None,
+                     inferred_pattern_emails: list[dict] | None = None) -> list[dict]:
+    """Generate candidate addresses, prioritizing hunter > observed > inferred-pattern > guess.
 
     Returns list of {email, kind, confidence, ro?} dicts.
     """
@@ -462,6 +463,25 @@ def email_candidates(ros: list[dict], firm: str, max_total: int = 15,
             "confidence": "hunter_verified",
             "ro": h.get("ro"),
             "score": h.get("score"),
+        })
+
+    # 0b. Inferred named emails from bulk SerpAPI pattern discovery
+    #     (apply_email_patterns.py). Pattern is firm-wide aggregator-derived
+    #     (typically ~65-95% accurate per the aggregator stats), applied to
+    #     SFC's RO names. Medium confidence — name is real, email format
+    #     follows the firm's documented majority pattern, but no
+    #     per-address verification.
+    for h in (inferred_pattern_emails or []):
+        em = (h.get("email") or "").lower().strip()
+        if not em or em in seen:
+            continue
+        seen.add(em)
+        out.append({
+            "email": em,
+            "kind": "inferred_pattern",
+            "confidence": "medium",
+            "ro": h.get("ro"),
+            "pattern": h.get("pattern"),
         })
 
     # 1. Emails ALREADY observed on the firm's own website — verified, high priority
@@ -659,6 +679,7 @@ def build_c1_triggers(new_corps: list[dict], ro_rows: list[dict],
                     observed_named=ctx.get("observed_named"),
                     observed_generics=ctx.get("observed_generics"),
                     hunter_hits=ctx.get("hunter_hits"),
+                    inferred_pattern_emails=ctx.get("inferred_pattern_emails"),
                 ),
                 **_strategy_meta(ctx),
             },
@@ -1010,6 +1031,29 @@ def main() -> None:
                 if ce and str(r.get("skip_enrichment", "")).strip() in ("1", "true", "yes", "Y"):
                     skip_set.add(ce)
 
+    # Load the bulk pattern-discovery worklist (data/inferred_named_emails.csv).
+    # These are firm-pattern × SFC-RO constructions from apply_email_patterns.py
+    # — medium-confidence guesses, but every RO of the firm gets one without
+    # burning any Hunter quota. Surface them in email_candidates() between
+    # Hunter (verified) and observed-on-site, so the operator sees a real
+    # name+email pair if no other source had one.
+    inferred_path = PROJECT_ROOT / "data" / "inferred_named_emails.csv"
+    inferred_by_ceref: dict[str, list[dict]] = {}
+    if inferred_path.exists():
+        with inferred_path.open(encoding="utf-8-sig") as f:
+            for r in csv.DictReader(f):
+                ce = (r.get("ceref") or "").strip()
+                em = (r.get("inferred_email") or "").strip()
+                ro = (r.get("ro_name") or "").strip()
+                if not (ce and em):
+                    continue
+                inferred_by_ceref.setdefault(ce, []).append({
+                    "email": em,
+                    "ro": ro,
+                    "ro_ceref": (r.get("ro_ceref") or "").strip(),
+                    "pattern": (r.get("pattern") or "").strip(),
+                })
+
     strategy_path = PROJECT_ROOT / "data" / "strategy_classification.csv"
     if strategy_path.exists():
         for r in read_csv(strategy_path):
@@ -1028,6 +1072,9 @@ def main() -> None:
             ctx["website_accuracy"] = r.get("website_accuracy", "")
             if r["ceref"] in skip_set:
                 ctx["skip_enrichment"] = True
+            inf = inferred_by_ceref.get(r["ceref"])
+            if inf:
+                ctx["inferred_pattern_emails"] = inf
 
     brand_new, changed = diff_corp_status(new_corps, old_corps)
 

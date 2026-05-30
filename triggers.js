@@ -309,6 +309,8 @@
             const mailto = `mailto:${c.email}?subject=${subj}&body=${body}`;
             const conf = (c.confidence || "low").toLowerCase();
             const kindLabel = ({
+              "hunter_io": "hunter.io verified",
+              "inferred_pattern": "inferred from firm pattern",
               "observed_on_site": "verified · on firm site",
               "generic_on_site": "verified · generic inbox on site",
               "ro_via_aggregator": "aggregator-declared pattern",
