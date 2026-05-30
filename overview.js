@@ -35,17 +35,26 @@
 
     const bd = C.filter(K.isBdRelevant);
     const bdSite = bd.filter(r => ["verified","probable"].includes(K.waBucket(r)));
-    const bdEmail = bdSite.filter(K.hasEmail);
-    const bdAum = bdEmail.filter(K.hasAum);
+    // "+ email captured" stage = ANY contact (verified or inferred-pattern).
+    // Breakdown is shown on the funnel box so the confidence tier is visible.
+    const bdContact = bdSite.filter(K.hasAnyContact);
+    const bdEmailVerified = bdSite.filter(K.hasEmail);
+    const bdEmailInferredOnly = bdSite.filter(r => !K.hasEmail(r) && K.hasInferredEmail(r));
+    const bdAum = bdContact.filter(K.hasAum);
 
     const allSite = C.filter(r => ["verified","probable"].includes(K.waBucket(r)));
-    const allEmail = allSite.filter(K.hasEmail);
-    const allAum = allEmail.filter(K.hasAum);
+    const allContact = allSite.filter(K.hasAnyContact);
+    const allEmailVerified = allSite.filter(K.hasEmail);
+    const allEmailInferredOnly = allSite.filter(r => !K.hasEmail(r) && K.hasInferredEmail(r));
+    const allAum = allContact.filter(K.hasAum);
 
     return {
       C, corps, corpsRetired,
-      bd, bdSite, bdEmail, bdAum,
-      allSite, allEmail, allAum,
+      bd, bdSite,
+      // bdEmail kept under the same name for back-compat; now means ANY contact.
+      bdEmail: bdContact, bdEmailVerified, bdEmailInferredOnly, bdAum,
+      allSite,
+      allEmail: allContact, allEmailVerified, allEmailInferredOnly, allAum,
     };
   }
 
@@ -56,7 +65,9 @@
     const stages = [
       { n: sets.bd.length,      l: "BD-relevant",       d: "book type = illiquids or mixed", href: "#/corps?illiq=bd" },
       { n: sets.bdSite.length,  l: "+ website found",   d: "verified or probable",            href: "#/corps?illiq=bd&wa=site" },
-      { n: sets.bdEmail.length, l: "+ email captured",  d: "any named email on site",         href: "#/corps?illiq=bd&wa=site&email=yes" },
+      { n: sets.bdEmail.length, l: "+ contact captured",
+        d: `${sets.bdEmailVerified.length} verified · ${sets.bdEmailInferredOnly.length} inferred from pattern`,
+        href: "#/corps?illiq=bd&wa=site&email=yes" },
       { n: sets.bdAum.length,   l: "+ AUM disclosed",   d: "any AUM extracted",               href: "#/corps?illiq=bd&wa=site&email=yes&aum=yes" },
     ];
     const base = stages[0].n || 1;
@@ -133,10 +144,15 @@
   function renderImproveQueue(data, sets) {
     const bd = sets.bd;
 
-    // ---- Hunter cohort: BD + verified/probable site + no NAMED email + has website
-    // Split into two sub-buckets so the card is honest about partial-coverage state.
+    // ---- Hunter cohort: BD + verified/probable site + no NAMED email + no
+    // inferred pattern + has website. Excluding inferred-email firms because
+    // they already have a candidate — Hunter would only verify, not discover,
+    // and Hunter's quota is too tight to burn on verification.
     const hunterAll = bd.filter(r =>
-      ["verified", "probable"].includes(K.waBucket(r)) && !K.hasEmail(r) && K.hasWebsite(r));
+      ["verified", "probable"].includes(K.waBucket(r))
+      && !K.hasEmail(r)
+      && !K.hasInferredEmail(r)
+      && K.hasWebsite(r));
     const hunterZero = hunterAll.filter(r => !K.hasGenericEmail(r));
     const hunterGenOnly = hunterAll.filter(r => K.hasGenericEmail(r));
 
@@ -292,7 +308,8 @@
     const stages = [
       { n: sets.corps.length, l: "Active T9-licensed corps", retiredSub: `+${sets.corpsRetired.toLocaleString()} retired`, anchor: true },
       { n: sets.allSite.length, l: "Website found" },
-      { n: sets.allEmail.length, l: "Email captured" },
+      { n: sets.allEmail.length, l: "Contact captured",
+        retiredSub: `${sets.allEmailVerified.length.toLocaleString()} verified · ${sets.allEmailInferredOnly.length.toLocaleString()} inferred` },
       { n: sets.allAum.length, l: "AUM disclosed" },
     ];
     const base = stages[0].n || 1;

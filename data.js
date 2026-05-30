@@ -154,6 +154,14 @@
   function hasGenericEmail(row) {
     return !!(row.generic_emails_on_site || "").trim();
   }
+  function hasInferredEmail(row) {
+    // From apply_email_patterns.py — pattern × SFC RO names. Medium-confidence
+    // candidates (not verified per-address).
+    return !!(row.inferred_named_emails || "").trim();
+  }
+  function hasAnyContact(row) {
+    return hasEmail(row) || hasInferredEmail(row);
+  }
   function hasWebsite(row) {
     return !!((row.website_url || "").trim());
   }
@@ -180,6 +188,8 @@
     isBdRelevant,
     hasEmail,
     hasGenericEmail,
+    hasInferredEmail,
+    hasAnyContact,
     hasWebsite,
     hasAum,
     waBucket,
