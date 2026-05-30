@@ -56,8 +56,8 @@ import random as _random
 import time as _time
 
 _SERPAPI_URL = "https://serpapi.com/search.json"
-_SERPAPI_MAX_RETRIES = 2
-_SERPAPI_BASE_BACKOFF = 1.5  # seconds, then ×2 with jitter
+_SERPAPI_MAX_RETRIES = 5  # bumped from 2 — SerpAPI 429 windows are ~15-30s
+_SERPAPI_BASE_BACKOFF = 4.0  # seconds, then ×2 with jitter
 
 
 def _serpapi_get(params: dict, *, timeout: int = 20) -> tuple[dict, str]:

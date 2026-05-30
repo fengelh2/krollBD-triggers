@@ -199,7 +199,7 @@ def main():
         else:
             no_match += 1
             deltas[ceref] = {STAMP_COL: now, LINKEDIN_COL: ""}
-        time.sleep(0.2)
+        time.sleep(1.5)  # pacing: SerpAPI 429s when we sprint after a burst
         if i % 10 == 0:
             _checkpoint(deltas, fieldnames)
 

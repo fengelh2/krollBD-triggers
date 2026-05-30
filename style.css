@@ -65,6 +65,12 @@ button{font-family:inherit}
   display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;
 }
 .section-hint{font-size:11px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400;font-style:italic}
+.section-narrative{font-size:13px;color:var(--fg-soft);line-height:1.55;margin:0 0 14px;padding:8px 12px;
+  background:#fafbfc;border-left:3px solid #d1d5db;border-radius:0 3px 3px 0}
+.section-narrative strong{color:var(--fg)}
+.section-narrative a{color:var(--fg);text-decoration:underline}
+.narrative-link{margin-left:6px;font-size:11px;color:var(--muted);font-style:italic;text-decoration:none !important}
+.narrative-link:hover{color:var(--fg);text-decoration:underline !important}
 
 /* ---- KPI grid (Overview) ---- */
 .kpis{

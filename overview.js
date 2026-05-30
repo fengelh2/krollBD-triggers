@@ -62,6 +62,16 @@
   // BD BULLSEYE FUNNEL
   // =====================================================================
   function renderBdFunnel(sets) {
+    // Narrative connector: link BD-relevant cohort back to the parent
+    // 2,814 active corps shown in Database Strength.
+    const narrative = $("#ov-funnel-narrative");
+    if (narrative) {
+      const totalCorps = sets.corps.length;
+      const bdCount = sets.bd.length;
+      const pct = totalCorps ? Math.round(100 * bdCount / totalCorps) : 0;
+      narrative.innerHTML = `Starting from <a href="#db-strength"><span class="anchor-num">${totalCorps.toLocaleString()}</span> active T9-licensed corps</a>, narrowing to the <strong>${bdCount.toLocaleString()}</strong> (${pct}%) with illiquid or mixed books — the firms Kroll PortVal can credibly engage. <a href="#db-strength" class="narrative-link">see Database strength &darr;</a>`;
+    }
+
     const stages = [
       { n: sets.bd.length,      l: "BD-relevant",       d: "book type = illiquids or mixed", href: "#/corps?illiq=bd" },
       { n: sets.bdSite.length,  l: "+ website found",   d: "verified or probable",            href: "#/corps?illiq=bd&wa=site" },
