@@ -57,22 +57,28 @@
       return ad < bd ? -1 : ad > bd ? 1 : 0;
     });
     $("#events-count").textContent = `— ${rows.length.toLocaleString()} matching · ${STATE.rows.length.toLocaleString()} total`;
+    // "shouldn't miss" = informal networking event (luncheon / breakfast /
+    // cocktails / drinks / networking / AGM). These are where Felix actually
+    // builds the relationships that drive referrals.
+    const mustSeeRe = /\b(luncheon|brownbag|breakfast|cocktails?|drinks|networking|agm|reception)\b/i;
     const head = `
       <thead><tr>
         <th>Date</th><th>Title</th><th>Host</th><th>Topic</th>
-        <th>Venue / City</th><th>Time</th><th>Link</th>
+        <th>Venue / City</th><th>Link</th>
       </tr></thead>`;
     const body = "<tbody>" + rows.map(r => {
       const isVirtual = (r.is_virtual || "").toString().toLowerCase() === "true";
       const cityChip = isVirtual ? "<span class='evt-virtual'>virtual</span>" : esc(r.city || "");
       const linkHtml = r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">register &rarr;</a>` : "";
-      return `<tr>
-        <td><code>${esc(r.date_start || "—")}</code>${r.date_end ? ` <small>→ ${esc(r.date_end)}</small>` : ""}</td>
-        <td><strong>${esc(r.title)}</strong>${r.audience ? `<br><small class="muted-text">${esc(r.audience)}</small>` : ""}</td>
+      const mustSee = mustSeeRe.test(r.title || "");
+      const star = mustSee ? `<span class="evt-must-see" title="High-value networking event">★</span> ` : "";
+      const trClass = mustSee ? " class=\"evt-row-must-see\"" : "";
+      return `<tr${trClass}>
+        <td class="evt-date"><code>${esc(r.date_start || "—")}</code>${r.date_end ? `<br><small>&rarr; ${esc(r.date_end)}</small>` : ""}${r.time ? `<br><small class="muted-text">${esc(r.time)}</small>` : ""}</td>
+        <td>${star}<strong>${esc(r.title)}</strong>${r.audience ? `<br><small class="muted-text">${esc(r.audience)}</small>` : ""}</td>
         <td><span class="evt-host">${esc(r.host)}</span></td>
         <td>${esc(r.topic || "")}</td>
         <td>${esc(r.venue || "")}${r.venue && (r.city || isVirtual) ? "<br>" : ""}<small>${cityChip}</small></td>
-        <td><small>${esc(r.time || "")}</small></td>
         <td>${linkHtml}</td>
       </tr>`;
     }).join("") + "</tbody>";
