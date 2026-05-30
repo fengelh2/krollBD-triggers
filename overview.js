@@ -286,7 +286,7 @@
     const totals = tiers.map(t => buckets.reduce((s, b) => s + counts[t][b], 0));
     const maxTotal = Math.max(1, ...totals);
 
-    const W = 600, H = 220, PAD_L = 90, PAD_R = 80, PAD_T = 10, PAD_B = 36;
+    const W = 600, H = 220, PAD_L = 90, PAD_R = 120, PAD_T = 10, PAD_B = 36;
     const barH = (H - PAD_T - PAD_B) / tiers.length - 8;
     const xMax = W - PAD_L - PAD_R;
 
@@ -299,15 +299,15 @@
     const bdBotY = rowTop(1) + barH;
     let svg = "";
     // Right-side bracket spanning rows 0+1 (illiquids+mixed = BD-relevant).
-    // Bracket sits right after the n=N labels of the bars, label horizontal
-    // (rotated labels clipped vertically on previous version).
-    const brX1 = PAD_L + xMax + 36;       // just past the longest n=N label
+    // Sits just past the n=N labels with room for a two-line caption that
+    // doesn't get clipped by the viewBox.
+    const brX1 = PAD_L + xMax + 18;
     const brX2 = brX1 + 8;
     const brYM = (bdTopY + bdBotY) / 2;
-    svg += `<path d="M ${brX1} ${bdTopY} L ${brX2} ${bdTopY} L ${brX2} ${bdBotY} L ${brX1} ${bdBotY}" stroke="#991b1b" stroke-width="1.5" fill="none"/>`;
-    // Two-line horizontal label, anchored to the right of the bracket
-    svg += `<text x="${brX2 + 5}" y="${brYM - 3}" font-size="11" fill="#991b1b" font-weight="700" font-family="Inter,sans-serif">${bdN.toLocaleString()}</text>`;
-    svg += `<text x="${brX2 + 5}" y="${brYM + 9}" font-size="9" fill="#991b1b" font-family="Inter,sans-serif">BD-relevant</text>`;
+    const BR_COLOR = "#1f2937";          // charcoal, monochrome with the chart palette
+    svg += `<path d="M ${brX1} ${bdTopY} L ${brX2} ${bdTopY} L ${brX2} ${bdBotY} L ${brX1} ${bdBotY}" stroke="${BR_COLOR}" stroke-width="1.5" fill="none"/>`;
+    svg += `<text x="${brX2 + 5}" y="${brYM - 3}" font-size="11" fill="${BR_COLOR}" font-weight="700" font-family="Inter,sans-serif">${bdN.toLocaleString()}</text>`;
+    svg += `<text x="${brX2 + 5}" y="${brYM + 9}" font-size="9" fill="${BR_COLOR}" font-family="Inter,sans-serif">BD-relevant</text>`;
 
     tiers.forEach((t, i) => {
       const yTop = PAD_T + i * ((H - PAD_T - PAD_B) / tiers.length);
@@ -328,7 +328,7 @@
     svg += `<line x1="${PAD_L}" y1="${H - PAD_B + 8}" x2="${W - PAD_R}" y2="${H - PAD_B + 8}" stroke="#e4e6ea"/>`;
     svg += `<text x="${PAD_L}" y="${H - 18}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">bar width = count · total = ${C.length.toLocaleString()}</text>`;
     // BD-bullseye tie-in
-    svg += `<text x="${PAD_L}" y="${H - 5}" font-size="10" fill="#991b1b" font-family="Inter,sans-serif" font-weight="600">illiquids + mixed = ${bdN.toLocaleString()} — the BD bullseye baseline (top funnel)</text>`;
+    svg += `<text x="${PAD_L}" y="${H - 5}" font-size="10" fill="#1f2937" font-family="Inter,sans-serif" font-weight="600">illiquids + mixed = ${bdN.toLocaleString()} — the BD bullseye baseline (top funnel)</text>`;
     $("#ov-wa-chart").innerHTML = svg;
     $("#ov-wa-legend").innerHTML = buckets.map(b =>
       `<span class="legend-item"><span class="swatch" style="background:${colors[b]}"></span>${b}</span>`
