@@ -269,7 +269,7 @@
       probable: "#4b5563",   // dark gray
       unverified: "#9ca3af", // mid gray
       suspect: "#d1d5db",    // light gray
-      not_found: "#b45309",  // burnt amber accent (the only colored bar)
+      not_found: "#fbbf24",  // muted amber — visible but no longer dominant
       unknown: "#e5e7eb",    // very light gray
     };
     const counts = {};
@@ -286,10 +286,23 @@
     const totals = tiers.map(t => buckets.reduce((s, b) => s + counts[t][b], 0));
     const maxTotal = Math.max(1, ...totals);
 
-    const W = 600, H = 220, PAD_L = 90, PAD_R = 60, PAD_T = 10, PAD_B = 26;
+    const W = 600, H = 220, PAD_L = 90, PAD_R = 60, PAD_T = 10, PAD_B = 36;
     const barH = (H - PAD_T - PAD_B) / tiers.length - 8;
     const xMax = W - PAD_L - PAD_R;
+
+    // BD-relevant bracket: illiquids (row 0) + mixed (row 1) together = the
+    // BD bullseye baseline (694 firms). Draw a thin red bracket on the LEFT
+    // spanning these two rows so the eye groups them.
+    const rowTop = (i) => PAD_T + i * ((H - PAD_T - PAD_B) / tiers.length);
+    const bdN = totals[0] + totals[1];
+    const bdTopY = rowTop(0);
+    const bdBotY = rowTop(1) + barH;
     let svg = "";
+    // Bracket shape: |--- spanning the two top rows
+    svg += `<path d="M 16 ${bdTopY} L 8 ${bdTopY} L 8 ${bdBotY} L 16 ${bdBotY}" stroke="#991b1b" stroke-width="1.5" fill="none"/>`;
+    // Label rotated 90° on the bracket
+    svg += `<text x="3" y="${(bdTopY + bdBotY) / 2}" font-size="9" text-anchor="middle" fill="#991b1b" font-weight="600" font-family="Inter,sans-serif" transform="rotate(-90 3 ${(bdTopY + bdBotY) / 2})">BD-relevant: ${bdN.toLocaleString()}</text>`;
+
     tiers.forEach((t, i) => {
       const yTop = PAD_T + i * ((H - PAD_T - PAD_B) / tiers.length);
       svg += `<text x="${PAD_L - 6}" y="${yTop + barH/2 + 4}" font-size="11" text-anchor="end" fill="#3b424a" font-family="Inter,sans-serif">${tierLabels[t]}</text>`;
@@ -306,8 +319,10 @@
       }
       svg += `<text x="${x + 4}" y="${yTop + barH/2 + 4}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">n=${total}</text>`;
     });
-    svg += `<line x1="${PAD_L}" y1="${H - PAD_B}" x2="${W - PAD_R}" y2="${H - PAD_B}" stroke="#e4e6ea"/>`;
-    svg += `<text x="${PAD_L}" y="${H - 8}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">bar width = count · total = ${C.length.toLocaleString()}</text>`;
+    svg += `<line x1="${PAD_L}" y1="${H - PAD_B + 8}" x2="${W - PAD_R}" y2="${H - PAD_B + 8}" stroke="#e4e6ea"/>`;
+    svg += `<text x="${PAD_L}" y="${H - 18}" font-size="10" fill="#7a818b" font-family="Inter,sans-serif">bar width = count · total = ${C.length.toLocaleString()}</text>`;
+    // BD-bullseye tie-in
+    svg += `<text x="${PAD_L}" y="${H - 5}" font-size="10" fill="#991b1b" font-family="Inter,sans-serif" font-weight="600">illiquids + mixed = ${bdN.toLocaleString()} — the BD bullseye baseline (top funnel)</text>`;
     $("#ov-wa-chart").innerHTML = svg;
     $("#ov-wa-legend").innerHTML = buckets.map(b =>
       `<span class="legend-item"><span class="swatch" style="background:${colors[b]}"></span>${b}</span>`
