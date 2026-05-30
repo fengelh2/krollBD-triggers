@@ -27,11 +27,39 @@ import sys
 import time
 from pathlib import Path
 
+import re as _re
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from find_email_via_search import _serpapi_get  # noqa: E402
 from classify_strategy import canonical_fieldnames  # noqa: E402
+
+
+# ---------------- Wrong-person collision filter ----------------
+# SerpAPI returns the highest-PageRank LinkedIn profile that loosely matches
+# the query tokens. For common Chinese-romanized names that's frequently a
+# DIFFERENT person with a similar name. Filter: URL slug must contain the
+# RO's surname AND at least one first-name token.
+
+def is_plausible_linkedin_match(url: str, ro: dict) -> bool:
+    m = _re.search(r"/in/([^/?#]+)", url or "")
+    if not m:
+        return False
+    slug = m.group(1).lower()
+    slug = _re.sub(r"-\d+$", "", slug)                # strip trailing -<hash>
+    slug = _re.sub(r"[^a-z]+", "", slug)              # normalize: letters only
+    surname = (ro.get("ro_last") or "").lower().strip()
+    surname = _re.sub(r"[^a-z]+", "", surname)
+    if not (surname and surname in slug):
+        return False
+    # Build first-name token set from short + full forms
+    first_blob = ((ro.get("ro_first_short") or "") + " " + (ro.get("ro_first_full") or "")).lower()
+    tokens = {_re.sub(r"[^a-z]+", "", t) for t in first_blob.split() if t}
+    tokens = {t for t in tokens if len(t) >= 2}        # ignore single-char noise
+    if not tokens:
+        return False
+    return any(t in slug for t in tokens)
 
 CSV_PATH = PROJECT_ROOT / "data" / "strategy_classification.csv"
 PAIRS_PATH = PROJECT_ROOT / "data" / "snapshots" / "sfc_t9_corp_ros_latest.csv"
@@ -179,13 +207,18 @@ def main():
             errors += 1
             deltas[ceref] = {STAMP_COL: now, LINKEDIN_COL: ""}
             continue
-        # Pull first organic result that's a LinkedIn /in/ profile
+        # Pull first organic result that's a LinkedIn /in/ profile AND passes
+        # the plausibility filter (slug contains RO surname + first-name token).
+        # Rejects common-name collisions like Wu Mingji for CHI Hai.
         url = ""
         for item in data.get("organic_results", []):
             link = (item.get("link") or "")
-            if "linkedin.com/in/" in link:
+            if "linkedin.com/in/" not in link:
+                continue
+            if is_plausible_linkedin_match(link, ro):
                 url = link
                 break
+            # else: implausible match, try next result
         if url:
             hits += 1
             deltas[ceref] = {STAMP_COL: now, LINKEDIN_COL: url}
