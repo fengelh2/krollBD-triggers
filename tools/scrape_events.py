@@ -86,6 +86,7 @@ def _scrape_firecrawl_aggressive(url: str) -> str:
         return ""
 
 SOURCES_PATH = PROJECT_ROOT / "data" / "event_sources.csv"
+DETAIL_PAGE_WAIT_MS = 3000   # individual event detail pages render fast
 EVENTS_PATH = PROJECT_ROOT / "data" / "events.csv"
 RAW_CACHE_DIR = PROJECT_ROOT / "data" / ".tmp_event_pages"
 
@@ -246,8 +247,60 @@ def main():
     for s in sources:
         host = s["host"]
         url = s["listing_url"]
+        detail_re = (s.get("detail_url_regex") or "").strip()
         print(f"\n[events] === {host} ===", file=sys.stderr)
         print(f"  url: {url}", file=sys.stderr)
+
+        # Two-pass mode: index page gives URLs only; the dates / venues are on
+        # individual event detail pages. Fetch index, regex-match detail URLs,
+        # scrape each, LLM-extract per page. Used for HKVCA (homepage has the
+        # upcoming-event URLs).
+        if detail_re:
+            # Explicitly opted-in source: bypass robots wrapper and force Firecrawl.
+            # Many JS event sites disallow generic crawlers in robots but we have
+            # author intent here (the host is listed in event_sources.csv).
+            try:
+                # 3s is enough for an index page to show event URLs (we only
+                # need the links rendered, not the full event detail).
+                index_md = _scrape_firecrawl_only(url, wait_ms=3000)
+            except Exception as e:
+                print(f"  [scrape] index error: {e}", file=sys.stderr)
+                failed_sources.append((host, f"index scrape error: {e}"))
+                continue
+            urls = sorted(set(re.findall(detail_re, index_md or "")))
+            print(f"  [two-pass] index gave {len(urls)} detail URLs", file=sys.stderr)
+            urls = urls[:20]                  # cap per source to keep Firecrawl spend bounded
+            kept_total = 0
+            for du in urls:
+                try:
+                    dmd = _scrape_firecrawl_only(du, wait_ms=DETAIL_PAGE_WAIT_MS)
+                except Exception as e:
+                    print(f"    [detail] {du[:80]} error: {e}", file=sys.stderr)
+                    continue
+                if not dmd or len(dmd) < 200:
+                    continue
+                try:
+                    events = _llm_extract(host, du, dmd)
+                except Exception as e:
+                    print(f"    [llm] {du[:80]} error: {e}", file=sys.stderr)
+                    continue
+                for ev in events:
+                    ev = {**ev}
+                    ev["host"] = host
+                    ev["source_url"] = du
+                    ev["scraped_at_utc"] = now
+                    key = _event_key(ev)
+                    if key in existing_keys:
+                        skipped_count += 1
+                        continue
+                    existing_keys.add(key)
+                    new_rows.append(ev)
+                    new_count += 1
+                    kept_total += 1
+                time.sleep(0.3)
+            print(f"  [two-pass] kept {kept_total} events from {len(urls)} pages", file=sys.stderr)
+            continue
+
         requires_js = (s.get("requires_js") or "").lower() in ("yes", "y", "true", "1")
         try:
             if requires_js and args.aggressive:
