@@ -6,7 +6,7 @@
 <title>Kroll PortVal · BD Command Center</title>
 <link rel="preconnect" href="https://api.github.com">
 <link rel="preconnect" href="https://raw.githubusercontent.com">
-<link rel="stylesheet" href="style.css?v=25">
+<link rel="stylesheet" href="style.css?v=26">
 </head>
 <body>
 <header class="topbar">
@@ -25,6 +25,7 @@
     <a href="#/corps" data-tab="corps">Corps</a>
     <a href="#/individuals" data-tab="individuals">Individuals</a>
     <a href="#/pairs" data-tab="pairs">Corp &harr; RO pairs</a>
+    <a href="#/events" data-tab="events">Events<span class="nav-badge" id="nav-events-badge" hidden></span></a>
     <a href="#/triggers" data-tab="triggers">Triggers<span class="nav-badge" id="nav-triggers-badge" hidden></span></a>
   </nav>
 </header>
@@ -152,6 +153,30 @@
   </div>
 </section>
 
+<!-- ============ EVENTS ============ -->
+<section class="view" id="view-events" hidden>
+  <div class="section-block">
+    <h2 class="section-title">Events <span class="section-hint" id="events-count">— HK private capital + finance events</span></h2>
+    <p class="section-narrative">Sourced from <a href="https://github.com/fengelh2/krollBD/blob/main/data/event_sources.csv">event_sources.csv</a> (AVCJ / Informa / HKICPA / HKVCA / etc.) — refreshed via <code>tools/scrape_events.py</code>. Filtered to Hong Kong relevance at extraction time.</p>
+    <div class="table-filters" id="events-filters">
+      <input type="search" id="events-search" placeholder="search title / speaker / venue…" />
+      <select id="events-host">
+        <option value="">host: all</option>
+      </select>
+      <select id="events-topic">
+        <option value="">topic: all</option>
+      </select>
+      <select id="events-window">
+        <option value="future">future events</option>
+        <option value="month">next 30 days</option>
+        <option value="week">next 7 days</option>
+        <option value="all">all (incl. past)</option>
+      </select>
+    </div>
+    <div class="table-wrap"><table class="data-table" id="events-table"></table></div>
+  </div>
+</section>
+
 <!-- ============ TRIGGERS (legacy view) ============ -->
 <section class="view" id="view-triggers" hidden>
   <div class="section-block">
@@ -204,10 +229,11 @@
   <p>Data CSVs (snapshots + classification) are read from the triggers repo under <code>data/</code>. See <a href="DESIGN_NOTES.md">DESIGN_NOTES.md</a>.</p>
 </footer>
 
-<script src="data.js?v=25"></script>
-<script src="triggers.js?v=25"></script>
-<script src="overview.js?v=25"></script>
-<script src="tables.js?v=25"></script>
-<script src="app.js?v=25"></script>
+<script src="data.js?v=26"></script>
+<script src="triggers.js?v=26"></script>
+<script src="overview.js?v=26"></script>
+<script src="tables.js?v=26"></script>
+<script src="events.js?v=26"></script>
+<script src="app.js?v=26"></script>
 </body>
 </html>

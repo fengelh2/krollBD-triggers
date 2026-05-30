@@ -1,0 +1,19 @@
+host,listing_url,topic_default,confirmed,requires_js,notes
+HKICPA,https://mas.hkicpa.org.hk/mycpa/public/event/list?searchAll=1,accounting+regulatory,yes,yes,Felix-provided. HKICPA MyCPA event search — SPA needs long JS wait.
+Informa Connect,https://informaconnect.com/events/?subBrands%5B0%5D=Informa%20Connect,mixed,yes,yes,Felix-provided. Informa global events — filter HK after extraction.
+AVCJ (Ion Analytics),https://community.ionanalytics.com/events,private_equity+private_debt,yes,yes,Felix-provided. Ion runs AVCJ + Debtwire + Mergermarket events.
+AIMA,https://www.aima.org/events.html,hedge_funds+alts,no,no,Best-guess URL.
+HKVCA,https://www.hkvca.com.hk/events/,private_equity+venture,no,no,Best-guess URL.
+HKIFA,https://www.hkifa.org.hk/events/,asset_management+regulatory,no,no,Best-guess URL.
+APER,https://www.asianprivatecapital.com/events/,private_equity,no,no,Best-guess.
+AsianInvestor,https://www.asianinvestor.net/events,asset_management,no,no,Best-guess.
+Preqin,https://www.preqin.com/insights/events,alts_data,no,yes,Best-guess SPA.
+PEI,https://www.privateequityinternational.com/events/,private_equity,no,no,Best-guess.
+Private Debt Investor,https://www.privatedebtinvestor.com/events/,private_debt,no,no,Best-guess.
+PERE,https://www.perenews.com/events/,private_real_estate,no,no,Best-guess.
+CFA Society Hong Kong,https://www.cfasociety.org/hongkong/Pages/EventsCalendar.aspx,asset_management+alts,no,no,Best-guess SharePoint calendar.
+SuperReturn Asia,https://informaconnect.com/superreturn-asia/,private_equity,no,yes,Annual flagship event.
+EY HK insights,https://www.ey.com/en_hk/insights/events,audit+advisory,no,yes,Best-guess.
+PwC HK events,https://www.pwchk.com/en/events.html,audit+advisory,no,no,Best-guess.
+KPMG HK events,https://kpmg.com/cn/en/home/events.html,audit+advisory,no,yes,Best-guess.
+Deloitte HK events,https://www2.deloitte.com/cn/en/pages/about-deloitte/events.html,audit+advisory,no,no,Best-guess.

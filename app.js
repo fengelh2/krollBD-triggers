@@ -63,7 +63,7 @@
   window.K.promptForPat = promptForPat;
 
   // ---- route ----
-  const ROUTES = ["overview", "corps", "individuals", "pairs", "triggers"];
+  const ROUTES = ["overview", "corps", "individuals", "pairs", "events", "triggers"];
 
   function currentRoute() {
     const h = (window.location.hash || "#/overview").replace(/^#\//, "");
@@ -90,6 +90,8 @@
       K.Tables.showInd();
     } else if (tab === "pairs") {
       K.Tables.showPairs();
+    } else if (tab === "events") {
+      K.Events.show();
     } else if (tab === "triggers") {
       K.Triggers.init();  // idempotent
     }
