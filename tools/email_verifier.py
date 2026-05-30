@@ -150,9 +150,11 @@ def verify(email: str) -> dict | None:
         if email_l in cache:
             return cache[email_l]
 
+    # Endpoint: Email Reputation API (different product from Email Validation;
+    # both report deliverability, response shapes differ).
     try:
         r = requests.get(
-            "https://emailvalidation.abstractapi.com/v1/",
+            "https://emailreputation.abstractapi.com/v1/",
             params={"api_key": ABSTRACT_KEY, "email": email_l},
             timeout=TIMEOUT,
         )
@@ -172,23 +174,28 @@ def verify(email: str) -> dict | None:
     except Exception as e:
         return _record(email_l, STATUS_ERROR, err=f"json: {e}")
 
-    deliv = (data.get("deliverability") or "").upper()
+    # Email Reputation response shape: nested under email_deliverability + email_quality
+    deliv = ((data.get("email_deliverability") or {}).get("status") or "").lower()
     status_map = {
-        "DELIVERABLE": STATUS_DELIVERABLE,
-        "UNDELIVERABLE": STATUS_UNDELIVERABLE,
-        "RISKY": STATUS_RISKY,
-        "UNKNOWN": STATUS_UNKNOWN,
+        "deliverable": STATUS_DELIVERABLE,
+        "undeliverable": STATUS_UNDELIVERABLE,
+        "risky": STATUS_RISKY,
+        "unknown": STATUS_UNKNOWN,
     }
     status = status_map.get(deliv, STATUS_UNKNOWN)
+    ed = data.get("email_deliverability") or {}
+    eq = data.get("email_quality") or {}
 
     rec = _record(
         email_l, status,
-        is_valid_format=_truthy(data.get("is_valid_format")),
-        is_smtp_valid=_truthy(data.get("is_smtp_valid")),
-        is_catch_all=_truthy(data.get("is_catchall_email")),
-        is_role=_truthy(data.get("is_role_email")),
-        is_disposable=_truthy(data.get("is_disposable_email")),
-        quality_score=_score(data.get("quality_score")),
+        is_valid_format=_truthy(ed.get("is_format_valid")),
+        is_smtp_valid=_truthy(ed.get("is_smtp_valid")),
+        is_catch_all=_truthy(eq.get("is_catchall")),
+        is_role=_truthy(eq.get("is_role_based")),
+        is_disposable=_truthy(eq.get("is_disposable")),
+        quality_score=_score(eq.get("score")),
+        is_mx_valid=_truthy(ed.get("is_mx_valid")),
+        status_detail=ed.get("status_detail") or "",
     )
     _save_cache_merged({email_l: rec})
     return rec

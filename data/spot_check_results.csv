@@ -1,0 +1,101 @@
+ceref,firm,ro_name,wa_tier,pattern,email,status,is_smtp_valid,is_catch_all,quality_score
+BDW170,Anchor Equity Partners (Asia) Limited,CHOI Seong Il,verified,{first}.{last},seongil.choi@anchorpe.com,deliverable,True,False,0.99
+AEI343,State Street Global Advisors Asia Limited,ANDERSON Kevin David,verified,{first}{last},kevinanderson@ssga.com,deliverable,True,False,0.99
+AEI343,State Street Global Advisors Asia Limited,LO Ka Ying,verified,{first}{last},kayinglo@ssga.com,deliverable,True,False,0.99
+BNR191,EQT Partners Capital Limited,SHAW Sun Kan Gordon,verified,{f}{last},sshaw@eqtgroup.com,deliverable,True,True,0.8
+AAD291,Morgan Stanley Asia Limited,"CHUI Yik Chiu, Vincent",verified,{first}.{last},vincent.chui@morganstanley.com,deliverable,True,False,0.99
+ALR969,Mercer Investments (HK) Limited,CHEN Rupeng,verified,{first}.{last},rupeng.chen@mercer.com,deliverable,True,False,0.99
+AKY982,Peak Capital Limited,POWELL Simon,verified,{f}{last},spowell@peak.hk,deliverable,True,False,0.99
+AXB644,Partners Capital Asia Limited,WATSON Adam James,verified,{first}.{last},adamjames.watson@partners-cap.com,deliverable,True,False,0.99
+AQR870,Hong Kong Mingdao Asset Management Limited,"LAU Sai Kit, Dennis",verified,{f}{last},dlau@mingdaocapital.com,deliverable,True,False,0.99
+BOX307,GLP HK Investment Management Limited,TSE Ching Ping,verified,{first}.{last},chingping.tse@glp.com,deliverable,True,False,0.99
+ARW223,ARCH Capital Management Co. Limited,UMALI Jonathan Espinili,verified,{f}{last},jumali@archcapital.net,undeliverable,False,False,0.0
+BEN880,Boman Capital (Hong Kong) Limited,WEI Ruihao,verified,{first}.{last},ruihao.wei@boman.group,undeliverable,False,False,0.0
+BWS134,FH Asset Management Limited,CHOI Tsan Wan,verified,{first}.{last},tsanwan.choi@fh-asset.site,undeliverable,False,False,0.0
+BOB230,Farallon Capital Asia (HK) Limited,CALDWELL Paul Andrew,verified,{f}{last},pcaldwell@faralloncapital.com,deliverable,True,False,0.99
+BOC542,Olive Asset Management (Hong Kong) Limited,LIU Tengfei,verified,{first}.{last},tengfei.liu@oliveam.com,undeliverable,False,False,0.0
+BQP051,Immensus Capital Investment Management (HK) Limited,YAO Zhengye,verified,{f}{last},zyao@immensus-capital.squarespace.com,undeliverable,False,False,0.0
+AOB278,UBP Asset Management Asia Limited,DU Yiping,verified,{first}.{last},yiping.du@ubp.com,deliverable,True,False,0.99
+AEI057,CITIC CLSA Capital Partners HK Limited,HU Baifeng,verified,{first}.{last},baifeng.hu@clsacapital.com,undeliverable,False,False,0.0
+AGP568,UBS Asset Management (Hong Kong) Limited,GUI Lin,verified,{first}.{last},lin.gui@ubs.com,deliverable,True,False,0.99
+ABM970,China Merchants China Investment Management Limited,"CHU Lap Lik, Victor",verified,{first}.{last},victor.chu@cmcdi.com.hk,deliverable,True,False,0.99
+AAI957,Lombard Odier (Hong Kong) Limited,ADLER Philippe David,verified,{f}.{last},p.adler@lombardodier.com,deliverable,True,False,0.99
+AKV333,OCP Asia (Hong Kong) Limited,JUNG Il Yong,verified,{first}.{last},ilyong.jung@ocpasia.com,deliverable,True,False,0.99
+BVL048,GrandBridge Partners Limited,BAO Shijie,verified,{first}.{last},shijie.bao@grandbridgepartners.com,deliverable,True,False,0.99
+AAI957,Lombard Odier (Hong Kong) Limited,ZURCHER Philippe Alain,verified,{f}.{last},p.zurcher@lombardodier.com,deliverable,True,False,0.99
+AAB026,J.P. Morgan Securities (Far East) Limited,HUANG Peihao,verified,{first}.{last},peihao.huang@jpmorgan.com,deliverable,True,False,0.99
+BHO405,Atta Capital Limited,SONG Xin,verified,{first}.{last},xin.song@attacapital.com,deliverable,True,False,0.99
+ALW590,State Street Global Advisors Singapore Limited,ANDERSON Kevin David,verified,{first}{last},kevinanderson@ssga.com,deliverable,True,False,0.99
+AUN967,Hamilton Lane (Hong Kong) Limited,DELGADO-MOREIRA Juan Manuel,verified,{f}{last},dmanuel@hamiltonlane.com,undeliverable,False,False,0.0
+AYU347,"Mesirow Financial Hong Kong, Limited",ALI Mujtaba Syed,verified,{first}.{last},mujtabasyed.ali@mesirow.com,deliverable,True,False,0.99
+AAF778,Brown Brothers Harriman (Hong Kong) Limited,ZHAO Hai Hua,verified,{first}.{last},haihua.zhao@bbh.com,deliverable,True,False,0.99
+BPY497,Fides Capital Group Limited,HUANG Jie,verified,{first}.{last},jie.huang@fidescg.com,undeliverable,False,False,0.0
+BOR158,Cambium Grove Partners Limited,LAN Willy Yu-wei,verified,{first}.{last},willy.lan@cambiumgrove.com,deliverable,True,False,0.99
+BAI946,Tor Investment Management (Hong Kong) Limited,MIKOSH Christopher Louis,verified,{f}{last},cmikosh@torinvestment.com,deliverable,True,False,0.99
+AQL991,Balyasny Asset Management (Hong Kong) Limited (trading as Corbets Capital),HEW Jian Yi,verified,{f}{last},jhew@bamfunds.com,deliverable,True,False,0.99
+AYV367,EIG Global Energy (Asia) Limited,LIU Yangyang,verified,{first}.{last},yangyang.liu@eigpartners.com,deliverable,True,False,0.99
+AFJ002,Value Partners Hong Kong Limited,CHING Wing Tat,verified,{first}{last},wingtatching@valuepartners-group.com,deliverable,True,False,0.99
+AKV333,OCP Asia (Hong Kong) Limited,SIMMONS Daniel Ross,verified,{first}.{last},danielross.simmons@ocpasia.com,deliverable,True,False,0.99
+BUY638,Qoo Asset Management Limited,"WAN Chuen Hing, Alexander",verified,{f}{last},awan@qooam.com,deliverable,True,False,0.99
+BJP081,Ishana Capital Limited,UPADHYAYULA Madhukar Srinivas,verified,{first}.{last},madhukar.upadhyayula@ishanacapital.com,deliverable,True,False,0.99
+BOC542,Olive Asset Management (Hong Kong) Limited,MAO Qifeng,verified,{first}.{last},qifeng.mao@oliveam.com,undeliverable,False,False,0.0
+BPU803,Vectr Ventures Advisors Limited,LAW Arthur Cheuk Fung,verified,{first}.{last},arthur.law@vectr.co,undeliverable,False,False,0.0
+AGH102,Altus Capital Limited,TAM Leo Ho Kei,verified,{first}.{last},leo.tam@altus.com.hk,deliverable,True,False,0.99
+AJB478,Wellington Management Hong Kong Limited,BERGER Joshua Michael,verified,{f}{last},jberger@ellington.com,deliverable,True,False,0.99
+BHO405,Atta Capital Limited,YU Yang,verified,{first}.{last},yang.yu@attacapital.com,deliverable,True,False,0.99
+AAI957,Lombard Odier (Hong Kong) Limited,MENDOZA BEGGIATO Juan Manuel,verified,{f}.{last},b.mendoza@lombardodier.com,deliverable,True,False,0.99
+BRZ335,Prestige Global Capital Management Limited,"TAI Yuen Fai, Patricia",verified,{first}.{last},patricia.tai@pwgglobal.com,undeliverable,False,False,0.0
+AEI343,State Street Global Advisors Asia Limited,SIU Hiu Ting,verified,{first}{last},hiutingsiu@ssga.com,deliverable,True,False,0.99
+AAD291,Morgan Stanley Asia Limited,CHEUNG Chi Ming,verified,{first}.{last},chiming.cheung@morganstanley.com,deliverable,True,False,0.99
+ABM970,China Merchants China Investment Management Limited,NG Chi Keung,verified,{first}.{last},chikeung.ng@cmcdi.com.hk,undeliverable,False,False,0.0
+AJF298,AlTi Wealth Management (Hong Kong) Limited,GREEN Joshua Michael,verified,{first}.{last},joshua.green@alti-global.com,deliverable,True,False,0.99
+AVA101,CMB International Asset Management Limited,QI Xiaoxiao,probable,{first}{last},xiaoxiaoqi@cmbi.com.hk,deliverable,True,False,0.99
+AJL465,"CMS Capital (HK) Co., Limited",LIU Haiyan,probable,{first}{last},haiyanliu@cmschina.com.hk,undeliverable,False,False,0.0
+AAC257,Barclays Capital Asia Limited,LIU Angela Yang,probable,{first}.{last},angelayang.liu@barclays.com,deliverable,True,False,0.99
+BPX707,Fosun International Asset Management Limited,TANG Yingying,probable,{first}.{last},yingying.tang@fosunwealth.com,deliverable,True,False,0.99
+AAB444,Amundi Hong Kong Limited,YEUNG Kwong Yiu,probable,{first}.{last},kwongyiu.yeung@amundi.com,deliverable,True,False,0.99
+ACS909,Lei Shing Hong Securities Limited,LIM Si Wah,probable,{first}.{last},siwah.lim@lsh.com,deliverable,True,False,0.99
+ACN469,NH Investment & Securities (H.K.) Limited,ZHU Xiaolin,probable,{first}{last},xiaolinzhu@lexology.com,deliverable,True,False,0.99
+AFT069,Templewater Hong Kong Limited,WAN Yufeng,probable,{first}.{last},yufeng.wan@templewater.com,deliverable,True,False,0.99
+AAC352,Merrill Lynch Far East Limited,FU Xin,probable,{first}.{last},xin.fu@bankofamerica.com,deliverable,True,False,0.99
+AVA101,CMB International Asset Management Limited,ZHANG Jing,probable,{first}{last},jingzhang@cmbi.com.hk,deliverable,True,False,0.99
+AAE879,CITIC Securities Brokerage (HK) Limited,CAI Chengmiao,probable,{first}{last},chengmiaocai@citics.com.hk,deliverable,True,False,0.99
+AAB444,Amundi Hong Kong Limited,ZHONG Xiaofeng,probable,{first}.{last},xiaofeng.zhong@amundi.com,deliverable,True,False,0.99
+AED807,Korea Investment & Securities Asia Limited,KIM Gregory Byung Kuan,probable,{first}.{last},gregory.kim@koreaholdings.com,undeliverable,False,False,0.0
+AAD365,"Anglo Chinese Securities, Limited",MAWDSLEY Nicholas Edward,probable,{f}{last},nmawdsley@anglochinesegroup.com,deliverable,True,False,0.99
+AAF432,Fosun International Securities Limited,YU Jiang,probable,{first}.{last},jiang.yu@fosunwealth.com,deliverable,True,False,0.99
+ABY953,China Renaissance Broking Services (Hong Kong) Limited,ZHU Zhenyu,probable,{first}{last},zhenyuzhu@chinarenaissance.com,deliverable,True,False,0.99
+ADW536,KB Securities Hong Kong Limited,PARK Sang Jun,probable,{f}{last},spark@en.kbsec.com,undeliverable,False,False,0.0
+ACS909,Lei Shing Hong Securities Limited,NG Siu Mee,probable,{first}.{last},siumee.ng@lsh.com,deliverable,True,False,0.99
+AAC352,Merrill Lynch Far East Limited,LUCIDO Lorenzo Giuseppe,probable,{first}.{last},lorenzo.lucido@bankofamerica.com,deliverable,True,False,0.99
+AAF351,Nomura Asset Management Hong Kong Limited,XU Bo,probable,{first}.{last},bo.xu@nomura-am.co.jp,deliverable,True,False,0.99
+ACQ651,CMB International Futures Limited,SIU Wing On,probable,{first}{last},wingonsiu@cmbi.com.hk,deliverable,True,False,0.99
+AAB499,Yunfeng Financial Markets Limited,NG Tsz Ming,probable,{first}.{last},tszming.ng@yff.com,undeliverable,False,False,0.0
+ACN469,NH Investment & Securities (H.K.) Limited,LEE Yun Ki,probable,{first}{last},yunkilee@lexology.com,deliverable,True,False,0.99
+AJL465,"CMS Capital (HK) Co., Limited",ZHANG Xiangjie,probable,{first}{last},xiangjiezhang@cmschina.com.hk,undeliverable,False,False,0.0
+AAG715,Pictet Asset Management (Hong Kong) Limited,LERESCHE Nicolas David,probable,{f}{last},nleresche@pictet.com,deliverable,True,False,0.99
+ADT913,Kingsway SW Asset Management Limited,"CHAN Choi Ming, Diana",probable,{first}.{last},diana.chan@sunwahkingsway.com,deliverable,True,False,0.99
+AAE430,DBS Asia Capital Limited,"YU Koon Ying, Harry",probable,{first}{last},harryyu@dbs.com,deliverable,True,False,0.99
+AAE879,CITIC Securities Brokerage (HK) Limited,KWOK Hoi Yan,probable,{first}{last},hoiyankwok@citics.com.hk,deliverable,True,False,0.99
+AAJ177,Baring Asset Management (Asia) Limited,CHAN Ivy,probable,{first}.{last},ivy.chan@barings.com,deliverable,True,False,0.99
+ACX287,HSBC Corporate Finance (Hong Kong) Limited,SO Yuk Kit,probable,{first}.{last},yukkit.so@hsbc.com,deliverable,True,False,0.99
+AEL202,Cinda International Securities Limited,HO Sze Man,probable,{first}.{last},szeman.ho@cinda.com.hk,undeliverable,False,False,0.0
+AAJ984,Deutsche Securities Asia Limited,HILLHOUSE Craig Jon,probable,{first}.{last},craigjon.hillhouse@db.com,deliverable,True,False,0.99
+BPX707,Fosun International Asset Management Limited,LI Juan,probable,{first}.{last},juan.li@fosunwealth.com,deliverable,True,False,0.99
+ACE409,China Everbright Capital Limited,SHEN Dehua,probable,{first}.{last},dehua.shen@ebshk.com,deliverable,True,False,0.99
+AAC257,Barclays Capital Asia Limited,HUF Rachel Catherine,probable,{first}.{last},rachel.huf@barclays.com,deliverable,True,False,0.99
+AAK249,CITIC Securities (Hong Kong) Limited,CHAN Chi Chuen,probable,{first}.{last},chichuen.chan@clsa.com,deliverable,True,False,0.99
+AAK249,CITIC Securities (Hong Kong) Limited,FONG Hiu Fai,probable,{first}.{last},hiufai.fong@clsa.com,deliverable,True,False,0.99
+AEZ953,Mizuho Securities Asia Limited,NG Ho Ching,probable,{first}.{last},hoching.ng@mizuhogroup.com,deliverable,True,False,0.99
+AFF275,BlackRock Asset Management North Asia Limited,ANGARA Aarti,probable,{first}.{last},aarti.angara@blackrock.com,deliverable,True,False,0.99
+AAJ984,Deutsche Securities Asia Limited,CHAKRAVORTY Ananda,probable,{first}.{last},ananda.chakravorty@db.com,deliverable,True,False,0.99
+AAJ177,Baring Asset Management (Asia) Limited,TSE Man Kit,probable,{first}.{last},mankit.tse@barings.com,deliverable,True,False,0.99
+AAD365,"Anglo Chinese Securities, Limited",CLARK Stephen Edward,probable,{f}{last},sclark@anglochinesegroup.com,deliverable,True,False,0.99
+ACN418,Cinda International Futures Limited,LEE Chun Wai,probable,{first}.{last},chunwai.lee@cinda.com.hk,undeliverable,False,False,0.0
+AAG715,Pictet Asset Management (Hong Kong) Limited,WANG SIMOND Lan,probable,{f}{last},swang@pictet.com,deliverable,True,False,0.99
+AAI650,"China Merchants Securities (HK) Co., Limited",JIANG Yue,probable,{first}{last},yuejiang@cmschina.com.hk,undeliverable,False,False,0.0
+AAG715,Pictet Asset Management (Hong Kong) Limited,WATKINS Junjie,probable,{f}{last},jwatkins@pictet.com,deliverable,True,False,0.99
+ACC536,Goldman Sachs (Asia) L.L.C.,"CHIU Man Yat, Michael",probable,{first}.{last},michael.chiu@gs.com,deliverable,True,False,0.99
+ABV570,Oriental Patron Securities Limited,ZHUANG Wei,probable,{first}.{last},wei.zhuang@oriental-patron.com.hk,undeliverable,False,False,0.0
+AAB639,Daiwa Capital Markets Hong Kong Limited,AIKAWA Futoshi,probable,{first}.{last},futoshi.aikawa@hk.daiwacm.com,error,,,
+AAV882,UBS Securities Asia Limited,CHAN Raymond Yiu Yue,probable,{first}.{last},raymond.chan@ubs.com,error,,,
